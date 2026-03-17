@@ -490,7 +490,8 @@ def settings():
                              {'id': 'tencent', 'name': '腾讯混元'},
                              {'id': 'zhipu', 'name': '智谱AI (GLM)'},
                              {'id': 'moonshot', 'name': '月之暗面 (Moonshot)'},
-                             {'id': 'yi', 'name': '零一万物 (Yi)'}
+                             {'id': 'yi', 'name': '零一万物 (Yi)'},
+                             {'id': 'minimax', 'name': 'MiniMax'}
                          ])
 
 

@@ -191,7 +191,8 @@
                 • 腾讯: 混元 Lite/Standard/Pro<br>
                 • 智谱: GLM-3/GLM-4 系列<br>
                 • 月之暗面: Moonshot 8K/32K/128K<br>
-                • 零一万物: Yi Light/Medium/Large
+                • 零一万物: Yi Light/Medium/Large<br>
+                • MiniMax: M2.5, M2.8, ABAB 6.5系列
             </p>
         </div>
     </div>
@@ -248,6 +249,12 @@ const modelOptions = {
         { value: 'yi-large', name: 'Yi Large' },
         { value: 'yi-medium', name: 'Yi Medium' },
         { value: 'yi-light', name: 'Yi Light' }
+    ],
+    minimax: [
+        { value: 'MiniMax-M2.5', name: 'MiniMax-M2.5' },
+        { value: 'MiniMax-M2.8', name: 'MiniMax-M2.8' },
+        { value: 'abab6.5s-chat', name: 'ABAB 6.5S Chat' },
+        { value: 'abab6.5g-chat', name: 'ABAB 6.5G Chat' }
     ]
 };
 
@@ -259,7 +266,8 @@ const modelHints = {
     tencent: '访问 https://console.cloud.tencent.com/hunyuan 获取API Key',
     zhipu: '访问 https://open.bigmodel.cn 获取API Key',
     moonshot: '访问 https://platform.moonshot.cn 获取API Key',
-    yi: '访问 https://platform.lingyiwanwu.com 获取API Key'
+    yi: '访问 https://platform.lingyiwanwu.com 获取API Key',
+    minimax: '访问 https://platform.minimax.io 获取API Key'
 };
 
 function updateModelOptions() {

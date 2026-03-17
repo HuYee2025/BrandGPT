@@ -336,6 +336,35 @@ class YiClient(BaseModelClient):
         return result['choices'][0]['message']['content']
 
 
+class MiniMaxClient(BaseModelClient):
+    """MiniMax 模型客户端"""
+
+    def __init__(self, api_key: str, model_name: str = 'MiniMax-M2.5', **kwargs):
+        super().__init__(api_key, model_name, **kwargs)
+        self.api_base = 'https://api.minimax.chat/v1'
+
+    def chat(self, messages: list, stream: bool = False) -> str | Generator:
+        """发送聊天请求"""
+        url = f"{self.api_base}/text/chatcompletion_v2"
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f'Bearer {self.api_key}'
+        }
+
+        data = {
+            'model': self.model_name,
+            'messages': messages,
+            'temperature': self.temperature,
+            'max_tokens': self.max_tokens
+        }
+
+        response = requests.post(url, json=data, headers=headers, timeout=60)
+        response.raise_for_status()
+        result = response.json()
+
+        return result['choices'][0]['message']['content']
+
+
 # 提供商映射
 PROVIDERS = {
     'openai': {'name': 'OpenAI', 'class': OpenAIClient, 'default_model': 'gpt-4'},
@@ -346,6 +375,7 @@ PROVIDERS = {
     'zhipu': {'name': '智谱AI', 'class': ZhipuClient, 'default_model': 'glm-4'},
     'moonshot': {'name': '月之暗面', 'class': MoonshotClient, 'default_model': 'moonshot-v1-8k'},
     'yi': {'name': '零一万物', 'class': YiClient, 'default_model': 'yi-medium'},
+    'minimax': {'name': 'MiniMax', 'class': MiniMaxClient, 'default_model': 'MiniMax-M2.5'},
 }
 
 
