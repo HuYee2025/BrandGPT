@@ -531,6 +531,25 @@ def settings():
                          ])
 
 
+# ==================== 管理员API设置 ====================
+
+@app.route('/admin/update-api', methods=['POST'])
+def admin_update_api():
+    """管理员更新API配置"""
+    api_key = request.form.get('api_key', '')
+    provider = request.form.get('provider', 'openai')
+
+    # 更新环境变量（仅当前进程生效）
+    os.environ['OPENAI_API_KEY'] = api_key
+    os.environ['AI_PROVIDER'] = provider
+
+    # 如果需要永久保存，可以写入配置文件
+    flash('API配置已更新', 'success')
+
+    # 返回到聊天页面
+    return redirect(url_for('chat'))
+
+
 # ==================== 错误处理 ====================
 
 @app.errorhandler(404)
