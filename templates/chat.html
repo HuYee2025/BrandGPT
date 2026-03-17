@@ -164,6 +164,14 @@
     animation: fadeIn 0.3s ease;
 }
 
+.message-content p {
+    margin: 0 0 8px 0;
+}
+
+.message-content p:last-child {
+    margin-bottom: 0;
+}
+
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -184,23 +192,22 @@
 
 .chat-input {
     width: 100%;
-    padding: 16px 50px 16px 20px;
-    border-radius: 16px;
-    border: 1px solid var(--border-color);
-    background: #F1EEE7;
+    padding: 14px 50px 14px 20px;
+    border-radius: 8px;
+    border: 1px solid #D4CEC1;
+    background: #FFFFFF;
     color: var(--text-dark);
     font-size: 1rem;
     font-family: inherit;
     resize: none;
     outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    max-height: 200px;
+    transition: border-color 0.2s;
+    height: 90px;
+    line-height: 1.5;
 }
 
 .chat-input:focus {
     border-color: var(--text-dark);
-    background: #FFFFFF;
-    box-shadow: 0 0 0 3px rgba(20,20,18,0.08);
 }
 
 .chat-input::placeholder {
@@ -209,14 +216,14 @@
 
 .btn-send {
     position: absolute;
-    right: 12px;
-    bottom: 12px;
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
+    right: 10px;
+    bottom: 10px;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
     border: none;
-    background: var(--text-dark);
-    color: #F1EEE7;
+    background: #141412;
+    color: #FFFFFF;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -225,7 +232,7 @@
 }
 
 .btn-send:hover {
-    opacity: 0.9;
+    opacity: 0.8;
 }
 
 .btn-send:disabled {
@@ -234,8 +241,8 @@
 }
 
 .btn-send svg {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
 }
 
 /* 加载动画 */
@@ -347,8 +354,8 @@
                     onkeydown="handleKeyDown(event)"
                 ></textarea>
                 <button class="btn-send" onclick="sendMessage()" id="sendBtn">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M12 19V5M5 12l7-7 7 7"/>
                     </svg>
                 </button>
             </div>

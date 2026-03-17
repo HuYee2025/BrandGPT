@@ -576,9 +576,7 @@ def admin_update_api():
     with open(config_path, 'w', encoding='utf-8') as f:
         json.dump(config_data, f, ensure_ascii=False, indent=2)
 
-    flash('API配置已更新', 'success')
-
-    # 返回到聊天页面
+    # 返回到聊天页面，不显示提示
     return redirect(url_for('chat'))
 
 
