@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}{{ report.title }} - 餐饮品牌AI顾问{% endblock %}
+
+{% block extra_head %}
+<style>
+.report-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.report-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid rgba(255,107,53,0.3);
+}
+
+.report-title {
+    font-size: 2rem;
+    color: #f7c331;
+    margin: 0;
+}
+
+.report-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-download {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #ff6b35, #f7c331);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: transform 0.2s;
+}
+
+.btn-download:hover {
+    transform: scale(1.05);
+}
+
+.btn-back {
+    padding: 12px 24px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.2s;
+}
+
+.btn-back:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.report-content {
+    background: rgba(255,255,255,0.05);
+    border-radius: 16px;
+    padding: 40px;
+    line-height: 1.8;
+}
+
+.report-content h1 {
+    color: #f7c331;
+    font-size: 1.8rem;
+    margin: 30px 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.report-content h2 {
+    color: #ff6b35;
+    font-size: 1.4rem;
+    margin: 25px 0 15px;
+}
+
+.report-content h3 {
+    color: #f7c331;
+    font-size: 1.2rem;
+    margin: 20px 0 10px;
+}
+
+.report-content p {
+    margin: 12px 0;
+    color: #ddd;
+}
+
+.report-content ul, .report-content ol {
+    margin: 12px 0;
+    padding-left: 25px;
+}
+
+.report-content li {
+    margin: 8px 0;
+    color: #ccc;
+}
+
+.report-content strong {
+    color: #f7c331;
+}
+
+.report-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.report-content th, .report-content td {
+    padding: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+    text-align: left;
+}
+
+.report-content th {
+    background: rgba(255,107,53,0.2);
+    color: #f7c331;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="report-container">
+    <div class="report-header">
+        <h1 class="report-title">{{ report.title }}</h1>
+        <div class="report-actions">
+            <button class="btn-download" onclick="downloadReport()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                下载Word
+            </button>
+            <button class="btn-back" onclick="window.location.href='{{ url_for('chat') }}'">
+                返回对话
+            </button>
+        </div>
+    </div>
+
+    <div class="report-content">
+        {{ report.html_content | safe if report.html_content else report.content }}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function downloadReport() {
+    window.location.href = '/api/report/download/{{ report.id }}';
+}
+</script>
+{% endblock %}
