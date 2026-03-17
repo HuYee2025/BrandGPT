@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}AI问答 - 餐饮品牌AI顾问{% endblock %}
+{% block title %}AI问答 - 品牌AI顾问{% endblock %}
 
 {% block extra_head %}
 <style>
@@ -319,21 +319,33 @@
                 <circle cx="24" cy="26" r="4" fill="#141412"/>
             </svg>
         </div>
-        <h1 class="welcome-title">餐饮品牌AI顾问</h1>
-        <p class="welcome-subtitle">通过智能对话，了解您的餐饮创业想法，生成专业商业计划书</p>
+        <h1 class="welcome-title">品牌AI顾问</h1>
+        <p class="welcome-subtitle">通过智能对话，了解您的创业想法，生成专业商业计划书</p>
 
         <div class="welcome-cards">
             <div class="welcome-card" onclick="startChat('我想开一家火锅店，请帮我规划')">
-                <h4>火锅店规划</h4>
-                <p>获取火锅店选址、装修、菜品定价等全面建议</p>
+                <h4>火锅店</h4>
+                <p>选址、装修、菜品定价等全面建议</p>
             </div>
-            <div class="welcome-card" onclick="startChat('我想开一家奶茶店，请帮我做商业计划')">
-                <h4>奶茶店计划</h4>
-                <p>奶茶店品牌定位、成本控制和营销策略</p>
+            <div class="welcome-card" onclick="startChat('我想开一家面馆，请帮我做商业计划')">
+                <h4>面馆</h4>
+                <p>品牌定位、成本控制和营销策略</p>
             </div>
-            <div class="welcome-card" onclick="startChat('我想做餐饮连锁加盟，请给我一些建议')">
-                <h4>连锁加盟咨询</h4>
-                <p>了解加盟模式、合同注意事项和运营支持</p>
+            <div class="welcome-card" onclick="startChat('我想开一家美甲店，请给我一些建议')">
+                <h4>美甲店</h4>
+                <p>项目定价、选址和运营模式</p>
+            </div>
+            <div class="welcome-card" onclick="startChat('我想开一家连锁超市，请帮我规划')">
+                <h4>连锁超市</h4>
+                <p>供应链管理、成本控制和扩张策略</p>
+            </div>
+            <div class="welcome-card" onclick="startChat('我想开一家西餐厅，请帮我做商业计划')">
+                <h4>西餐厅</h4>
+                <p>菜品定位、定价和客户群体分析</p>
+            </div>
+            <div class="welcome-card" onclick="startChat('我想开一家中餐厅，请给我一些建议')">
+                <h4>中餐厅</h4>
+                <p>菜系定位、厨师团队和运营策略</p>
             </div>
         </div>
     </div>
@@ -349,7 +361,7 @@
                 <textarea
                     id="chatInput"
                     class="chat-input"
-                    placeholder="输入您的餐饮创业想法..."
+                    placeholder="输入您的创业想法..."
                     rows="1"
                     onkeydown="handleKeyDown(event)"
                 ></textarea>
@@ -525,7 +537,7 @@ function generateReport() {
                 </button>
             </div>
             <p style="margin-top: 16px; font-size: 0.8rem; color: var(--text-muted);">
-                支付完成后，您将获得完整的餐饮品牌商业计划书
+                支付完成后，您将获得完整的商业计划书
             </p>
         </div>
     `;
