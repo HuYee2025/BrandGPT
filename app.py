@@ -483,8 +483,14 @@ def settings():
     return render_template('settings.html',
                          user=current_user,
                          providers=[
-                             {'id': 'openai', 'name': 'OpenAI (GPT-4)'},
-                             {'id': 'claude', 'name': 'Claude'}
+                             {'id': 'openai', 'name': 'OpenAI (GPT)'},
+                             {'id': 'claude', 'name': 'Claude'},
+                             {'id': 'baidu', 'name': '百度文心一言'},
+                             {'id': 'alibaba', 'name': '阿里通义千问'},
+                             {'id': 'tencent', 'name': '腾讯混元'},
+                             {'id': 'zhipu', 'name': '智谱AI (GLM)'},
+                             {'id': 'moonshot', 'name': '月之暗面 (Moonshot)'},
+                             {'id': 'yi', 'name': '零一万物 (Yi)'}
                          ])
 
 
