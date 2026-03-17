@@ -56,7 +56,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
-    max-width: 1100px;
+    max-width: 1000px;
     width: 100%;
 }
 
@@ -291,19 +291,13 @@
     opacity: 0.9;
 }
 
-/* 响应式 */
-@media (max-width: 768px) {
-    .welcome-cards {
-        grid-template-columns: 1fr;
-    }
+/* 固定宽度 - 不考虑移动端 */
+.welcome-card {
+    min-width: 320px;
+}
 
-    .welcome-title {
-        font-size: 1.6rem;
-    }
-
-    .message {
-        max-width: 90%;
-    }
+.message {
+    max-width: 700px;
 }
 </style>
 {% endblock %}
