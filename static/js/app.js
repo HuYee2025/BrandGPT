@@ -1,5 +1,5 @@
 /*
- * 餐饮品牌AI顾问 - 前端交互逻辑
+ * 品牌AI顾问 - 前端交互逻辑
  */
 
 // 显示提示消息
@@ -76,7 +76,7 @@ function throttle(func, limit) {
 
 // 页面加载完成后的初始化
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('餐饮品牌AI顾问已加载');
+    console.log('品牌AI顾问已加载');
 
     // 自动聚焦登录输入框
     const firstInput = document.querySelector('.auth-form input');

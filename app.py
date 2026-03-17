@@ -1,5 +1,5 @@
 """
-餐饮品牌AI顾问系统 - Flask主应用
+品牌AI顾问系统 - Flask主应用
 """
 import os
 import json
@@ -137,8 +137,8 @@ def chat_post():
         # 构建消息列表
         messages = [{'role': 'system', 'content': SYSTEM_PROMPT}] + session['temp_context'] + [{'role': 'user', 'content': message}]
 
-        # 读取配置文件
-        config_path = os.path.join(os.path.dirname(__file__), 'api_config.json')
+        # 读取配置文件（从项目外部读取）
+        config_path = os.path.join(os.path.dirname(__file__), '..', 'api_config.json')
         api_key = ''
         provider = 'openai'
         model_name = 'gpt-4'
@@ -565,8 +565,8 @@ def admin_update_api():
     os.environ['AI_API_URL'] = api_url
     os.environ['AI_MODEL'] = model_name
 
-    # 写入配置文件（永久保存）
-    config_path = os.path.join(os.path.dirname(__file__), 'api_config.json')
+    # 写入配置文件（永久保存）- 放在项目外部避免更新时被覆盖
+    config_path = os.path.join(os.path.dirname(__file__), '..', 'api_config.json')
     config_data = {
         'api_key': api_key,
         'provider': provider,

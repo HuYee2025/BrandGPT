@@ -130,14 +130,14 @@ def generate_report_prompt(conversation_history: list) -> str:
 
     conversation_text = "\n".join(content)
 
-    prompt = f"""基于以下对话记录，生成一份完整的餐饮品牌商业计划书。
+    prompt = f"""基于以下对话记录，生成一份完整的品牌商业计划书。
 
 对话记录：
 {conversation_text}
 
 请按照以下结构生成报告：
 
-# 餐饮品牌商业计划书
+# 品牌商业计划书
 
 ## 一、项目概述
 - 项目名称
@@ -187,12 +187,12 @@ def generate_report_prompt(conversation_history: list) -> str:
 
 def get_initial_question() -> str:
     """获取初始问题"""
-    return """你好！我是餐饮品牌AI顾问，很高兴为你服务。
+    return """你好！我是品牌AI顾问，很高兴为你服务。
 
 在开始之前，我想先了解一下你的基本情况：
 
-请简单描述一下你想要创建的餐饮项目？例如：
-- 你想做什么类型的餐饮？（快餐、正餐、火锅、奶茶等）
+请简单描述一下你想要创建的创业项目？例如：
+- 你想做什么类型的项目？（零售、服务、科技等）
 - 你的品牌叫什么名字？
 - 你为什么想做这个项目？
 

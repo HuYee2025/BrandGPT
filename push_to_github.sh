@@ -3,7 +3,7 @@
 # 推送到GitHub脚本
 # 使用方法: 运行此脚本，按照提示操作
 
-echo "=== 餐饮品牌AI顾问系统 - GitHub推送脚本 ==="
+echo "=== 品牌AI顾问系统 - GitHub推送脚本 ==="
 echo ""
 
 # 检查是否已设置remote
