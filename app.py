@@ -43,7 +43,7 @@ def index():
     """首页"""
     if current_user.is_authenticated:
         return redirect(url_for('chat'))
-    return render_template('login.html')
+    return render_template('index.html')
 
 
 # ==================== 用户认证 ====================
