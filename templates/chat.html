@@ -464,10 +464,32 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('chatInput').value = '{{ initial_prompt }}';
     sendMessage();
     {% else %}
-    // 没有初始prompt时，聚焦输入框
-    document.getElementById('chatInput').focus();
+    // 没有选择品类时，发送初始请求获取开场白
+    sendInitialMessage();
     {% endif %}
 });
+
+// 发送初始消息（获取AI开场白）
+function sendInitialMessage() {
+    fetch('{{ url_for("chat") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'is_initial=true'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            addMessage('assistant', '抱歉，发生了错误：' + data.error);
+        } else {
+            addMessage('assistant', data.response);
+        }
+    })
+    .catch(error => {
+        addMessage('assistant', '抱歉，发生了错误，请稍后重试');
+    });
+}
 
 // 新建对话（清除当前聊天记录）
 function newChat() {

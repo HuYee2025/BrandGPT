@@ -126,6 +126,12 @@ def chat():
 def chat_post():
     """处理聊天消息"""
     message = request.form.get('message', '')
+    is_initial = request.form.get('is_initial', 'false') == 'true'
+
+    # 如果是初始请求（没有选择品类），返回开场白
+    if is_initial:
+        initial_prompt = """作为您的品牌咨询顾问，我将从专业的角度一步步引导您，将您头脑中的新项目从模糊变得清晰。首先，请描述一下您的项目所处的行业、品类以及核心产品是什么？"""
+        return jsonify({'response': initial_prompt})
 
     if not message:
         return jsonify({'error': '消息不能为空'}), 400
