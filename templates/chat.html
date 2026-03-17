@@ -96,6 +96,7 @@
     display: none;
     height: 100%;
     flex-direction: column;
+    padding-bottom: 40px;
 }
 
 .chat-container.active {
@@ -187,8 +188,8 @@
 }
 
 .chat-input-container {
-    width: 100%;
-    max-width: 850px;
+    width: 850px;
+    max-width: 100%;
     margin: 0 auto;
     position: relative;
     background: #FFFFFF;
@@ -199,7 +200,7 @@
 
 .chat-input {
     width: 100%;
-    padding: 16px 60px 16px 24px;
+    padding: 16px 24px 50px 24px;
     border-radius: 24px;
     border: none;
     background: transparent;
@@ -227,8 +228,7 @@
 .btn-send {
     position: absolute;
     right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
+    bottom: 12px;
     width: 36px;
     height: 36px;
     border-radius: 50%;
