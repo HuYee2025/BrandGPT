@@ -34,18 +34,28 @@
             <div id="apiAdminPanel" style="display: none;">
                 <form method="POST" action="{{ url_for('admin_update_api') }}">
                     <div style="margin-bottom: 16px;">
-                        <label style="display: block; margin-bottom: 8px; color: var(--text-light); font-size: 0.9rem;">API Key</label>
-                        <input type="text" name="api_key" value="{{ config.get('OPENAI_API_KEY', '') }}" placeholder="输入API Key" style="width: 100%; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 0.95rem;">
+                        <label style="display: block; margin-bottom: 8px; color: var(--text-light); font-size: 0.9rem;">提供商</label>
+                        <select name="provider" id="adminProvider" onchange="updateApiUrl()" style="width: 100%; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 0.95rem; background: #FFFFFF;">
+                            <option value="openai" data-url="https://api.openai.com/v1">OpenAI</option>
+                            <option value="minimax" data-url="https://api.minimax.chat/v1">MiniMax</option>
+                            <option value="zhipu" data-url="https://open.bigmodel.cn/api/paas/v4">智谱AI</option>
+                            <option value="baidu" data-url="https://qianfan.baidubce.com/v2">百度文心一言</option>
+                            <option value="alibaba" data-url="https://dashscope.aliyuncs.com/api/v1">阿里通义千问</option>
+                            <option value="moonshot" data-url="https://api.moonshot.cn/v1">月之暗面</option>
+                            <option value="yi" data-url="https://api.lingyiwanwu.com/v1">零一万物</option>
+                        </select>
                     </div>
                     <div style="margin-bottom: 16px;">
-                        <label style="display: block; margin-bottom: 8px; color: var(--text-light); font-size: 0.9rem;">提供商</label>
-                        <select name="provider" style="width: 100%; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 0.95rem; background: #FFFFFF;">
-                            <option value="openai">OpenAI</option>
-                            <option value="minimax">MiniMax</option>
-                            <option value="zhipu">智谱AI</option>
-                            <option value="baidu">百度文心一言</option>
-                            <option value="alibaba">阿里通义千问</option>
-                        </select>
+                        <label style="display: block; margin-bottom: 8px; color: var(--text-light); font-size: 0.9rem;">API地址</label>
+                        <input type="text" name="api_url" id="apiUrlInput" value="https://api.openai.com/v1" placeholder="API地址" style="width: 100%; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 0.95rem;">
+                    </div>
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; margin-bottom: 8px; color: var(--text-light); font-size: 0.9rem;">模型名称</label>
+                        <input type="text" name="model_name" id="modelNameInput" value="gpt-4" placeholder="如: gpt-4, MiniMax-M2.5" style="width: 100%; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 0.95rem;">
+                    </div>
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; margin-bottom: 8px; color: var(--text-light); font-size: 0.9rem;">API Key</label>
+                        <input type="text" name="api_key" value="" placeholder="输入API Key" style="width: 100%; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 0.95rem;">
                     </div>
                     <div style="display: flex; gap: 12px;">
                         <button type="submit" style="flex: 1; background: var(--text-dark); color: #FFFFFF; border: none; padding: 14px; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer;">保存</button>
@@ -76,6 +86,28 @@
             document.getElementById('apiAdminPanel').style.display = 'block';
         } else {
             document.getElementById('apiAdminError').style.display = 'block';
+        }
+    }
+
+    function updateApiUrl() {
+        const provider = document.getElementById('adminProvider');
+        const selectedOption = provider.options[provider.selectedIndex];
+        const url = selectedOption.getAttribute('data-url');
+        document.getElementById('apiUrlInput').value = url;
+
+        // 根据提供商设置默认模型
+        const modelDefaults = {
+            'openai': 'gpt-4',
+            'minimax': 'MiniMax-M2.5',
+            'zhipu': 'glm-4',
+            'baidu': 'ernie-4.0-8k',
+            'alibaba': 'qwen-turbo',
+            'moonshot': 'moonshot-v1-8k',
+            'yi': 'yi-medium'
+        };
+        const providerValue = provider.value;
+        if (modelDefaults[providerValue]) {
+            document.getElementById('modelNameInput').value = modelDefaults[providerValue];
         }
     }
 

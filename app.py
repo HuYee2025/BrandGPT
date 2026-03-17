@@ -137,16 +137,34 @@ def chat_post():
         # 构建消息列表
         messages = [{'role': 'system', 'content': SYSTEM_PROMPT}] + session['temp_context'] + [{'role': 'user', 'content': message}]
 
-        # 获取API Key（使用默认或环境变量）
-        api_key = os.getenv('OPENAI_API_KEY', '')
-        provider = os.getenv('AI_PROVIDER', 'openai')
-        model_name = os.getenv('AI_MODEL', 'gpt-3.5-turbo')
+        # 读取配置文件
+        config_path = os.path.join(os.path.dirname(__file__), 'api_config.json')
+        api_key = ''
+        provider = 'openai'
+        model_name = 'gpt-4'
+        api_url = ''
+
+        if os.path.exists(config_path):
+            with open(config_path, 'r', encoding='utf-8') as f:
+                config = json.load(f)
+                api_key = config.get('api_key', '')
+                provider = config.get('provider', 'openai')
+                model_name = config.get('model_name', 'gpt-4')
+                api_url = config.get('api_url', '')
+
+        # 如果配置文件没有，使用环境变量
+        if not api_key:
+            api_key = os.getenv('OPENAI_API_KEY', '')
+        if not model_name:
+            model_name = os.getenv('AI_MODEL', 'gpt-4')
+        if not api_url:
+            api_url = os.getenv('AI_API_URL', '')
 
         if not api_key:
-            return jsonify({'error': '请先配置API Key'}), 400
+            return jsonify({'error': '请先在API管理中配置API Key'}), 400
 
-        # 调用AI
-        client = get_model_client(provider, api_key, model_name)
+        # 调用AI，传递base_url
+        client = get_model_client(provider, api_key, model_name, base_url=api_url if api_url else None)
         response = client.chat(messages)
 
         # 更新上下文
@@ -538,12 +556,26 @@ def admin_update_api():
     """管理员更新API配置"""
     api_key = request.form.get('api_key', '')
     provider = request.form.get('provider', 'openai')
+    api_url = request.form.get('api_url', '')
+    model_name = request.form.get('model_name', '')
 
     # 更新环境变量（仅当前进程生效）
     os.environ['OPENAI_API_KEY'] = api_key
     os.environ['AI_PROVIDER'] = provider
+    os.environ['AI_API_URL'] = api_url
+    os.environ['AI_MODEL'] = model_name
 
-    # 如果需要永久保存，可以写入配置文件
+    # 写入配置文件（永久保存）
+    config_path = os.path.join(os.path.dirname(__file__), 'api_config.json')
+    config_data = {
+        'api_key': api_key,
+        'provider': provider,
+        'api_url': api_url,
+        'model_name': model_name
+    }
+    with open(config_path, 'w', encoding='utf-8') as f:
+        json.dump(config_data, f, ensure_ascii=False, indent=2)
+
     flash('API配置已更新', 'success')
 
     # 返回到聊天页面

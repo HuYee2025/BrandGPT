@@ -27,7 +27,8 @@ class OpenAIClient(BaseModelClient):
 
     def __init__(self, api_key: str, model_name: str = 'gpt-4', **kwargs):
         super().__init__(api_key, model_name, **kwargs)
-        self.client = OpenAI(api_key=api_key)
+        base_url = kwargs.get('base_url', None)
+        self.client = OpenAI(api_key=api_key, base_url=base_url)
 
     def chat(self, messages: list, stream: bool = False) -> str | Generator:
         """发送聊天请求"""
@@ -103,7 +104,7 @@ class BaiduClient(BaseModelClient):
 
     def __init__(self, api_key: str, model_name: str = 'ernie-4.0-8k', **kwargs):
         super().__init__(api_key, model_name, **kwargs)
-        self.api_base = 'https://qianfan.baidubce.com/v2'
+        self.api_base = kwargs.get('base_url', 'https://qianfan.baidubce.com/v2')
 
     def chat(self, messages: list, stream: bool = False) -> str | Generator:
         """发送聊天请求"""
@@ -139,7 +140,7 @@ class AlibabaClient(BaseModelClient):
 
     def __init__(self, api_key: str, model_name: str = 'qwen-turbo', **kwargs):
         super().__init__(api_key, model_name, **kwargs)
-        self.api_base = 'https://dashscope.aliyuncs.com/api/v1'
+        self.api_base = kwargs.get('base_url', 'https://dashscope.aliyuncs.com/api/v1')
 
     def chat(self, messages: list, stream: bool = False) -> str | Generator:
         """发送聊天请求"""
@@ -246,7 +247,7 @@ class ZhipuClient(BaseModelClient):
 
     def __init__(self, api_key: str, model_name: str = 'glm-4', **kwargs):
         super().__init__(api_key, model_name, **kwargs)
-        self.api_base = 'https://open.bigmodel.cn/api/paas/v4'
+        self.api_base = kwargs.get('base_url', 'https://open.bigmodel.cn/api/paas/v4')
 
     def chat(self, messages: list, stream: bool = False) -> str | Generator:
         """发送聊天请求"""
@@ -283,7 +284,7 @@ class MoonshotClient(BaseModelClient):
 
     def __init__(self, api_key: str, model_name: str = 'moonshot-v1-8k', **kwargs):
         super().__init__(api_key, model_name, **kwargs)
-        self.api_base = 'https://api.moonshot.cn/v1'
+        self.api_base = kwargs.get('base_url', 'https://api.moonshot.cn/v1')
 
     def chat(self, messages: list, stream: bool = False) -> str | Generator:
         """发送聊天请求"""
@@ -312,7 +313,7 @@ class YiClient(BaseModelClient):
 
     def __init__(self, api_key: str, model_name: str = 'yi-medium', **kwargs):
         super().__init__(api_key, model_name, **kwargs)
-        self.api_base = 'https://api.lingyiwanwu.com/v1'
+        self.api_base = kwargs.get('base_url', 'https://api.lingyiwanwu.com/v1')
 
     def chat(self, messages: list, stream: bool = False) -> str | Generator:
         """发送聊天请求"""
@@ -341,7 +342,7 @@ class MiniMaxClient(BaseModelClient):
 
     def __init__(self, api_key: str, model_name: str = 'MiniMax-M2.5', **kwargs):
         super().__init__(api_key, model_name, **kwargs)
-        self.api_base = 'https://api.minimax.chat/v1'
+        self.api_base = kwargs.get('base_url', 'https://api.minimax.chat/v1')
 
     def chat(self, messages: list, stream: bool = False) -> str | Generator:
         """发送聊天请求"""
