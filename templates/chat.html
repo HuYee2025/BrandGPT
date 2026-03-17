@@ -454,6 +454,13 @@
 <script>
 let messageCount = 0;
 
+// 检查是否有初始prompt（从首页点击品类卡片进入）
+{% if initial_prompt %}
+document.addEventListener('DOMContentLoaded', function() {
+    startChat('{{ initial_prompt }}');
+});
+{% endif %}
+
 // 返回品类选择页面
 function backToCategories() {
     document.getElementById('welcomeScreen').style.display = 'flex';

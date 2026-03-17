@@ -41,7 +41,61 @@
 .hero-actions {
     display: flex;
     gap: 16px;
-    margin-bottom: 60px;
+    margin-bottom: 0;
+}
+
+/* 品类选择 */
+.categories {
+    padding: 40px 20px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.categories-title {
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 32px;
+}
+
+.category-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.category-card {
+    background: #FFFFFF;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    text-decoration: none;
+    display: block;
+    transition: all 0.2s ease;
+}
+
+.category-card:hover {
+    border-color: var(--text-dark);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
+}
+
+.category-card h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 6px;
+}
+
+.category-card p {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    line-height: 1.4;
+    margin: 0;
 }
 
 .btn-lg {
@@ -211,20 +265,36 @@
         <div class="hero-actions">
             <a href="{{ url_for('chat') }}" class="btn btn-primary btn-lg">开始咨询</a>
         </div>
+    </section>
 
-        <div class="hero-stats">
-            <div class="stat-item">
-                <span class="stat-number">7</span>
-                <span class="stat-label">核心维度</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">∞</span>
-                <span class="stat-label">智能追问</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">100%</span>
-                <span class="stat-label">定制化</span>
-            </div>
+    <!-- 品类选择 -->
+    <section class="categories">
+        <div class="categories-title">选择您的创业方向</div>
+        <div class="category-cards">
+            <a href="{{ url_for('chat') }}?prompt=我想开一家火锅店，请帮我规划" class="category-card">
+                <h4>火锅店</h4>
+                <p>选址、装修、菜品定价等全面建议</p>
+            </a>
+            <a href="{{ url_for('chat') }}?prompt=我想开一家面馆，请帮我做商业计划" class="category-card">
+                <h4>面馆</h4>
+                <p>品牌定位、成本控制和营销策略</p>
+            </a>
+            <a href="{{ url_for('chat') }}?prompt=我想开一家美甲店，请给我一些建议" class="category-card">
+                <h4>美甲店</h4>
+                <p>项目定价、选址和运营模式</p>
+            </a>
+            <a href="{{ url_for('chat') }}?prompt=我想开一家连锁超市，请帮我规划" class="category-card">
+                <h4>连锁超市</h4>
+                <p>供应链管理、成本控制和扩张策略</p>
+            </a>
+            <a href="{{ url_for('chat') }}?prompt=我想开一家西餐厅，请帮我做商业计划" class="category-card">
+                <h4>西餐厅</h4>
+                <p>菜品定位、定价和客户群体分析</p>
+            </a>
+            <a href="{{ url_for('chat') }}?prompt=我想开一家中餐厅，请给我一些建议" class="category-card">
+                <h4>中餐厅</h4>
+                <p>菜系定位、厨师团队和运营策略</p>
+            </a>
         </div>
     </section>
 

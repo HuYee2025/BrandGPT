@@ -118,7 +118,8 @@ def logout():
 @app.route('/chat')
 def chat():
     """AI问答页面"""
-    return render_template('chat.html')
+    prompt = request.args.get('prompt', '')
+    return render_template('chat.html', initial_prompt=prompt)
 
 
 @app.route('/chat', methods=['POST'])
