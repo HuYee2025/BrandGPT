@@ -326,17 +326,18 @@ body {
 
 /* 按钮 */
 .btn {
-    padding: 14px 24px;
+    padding: 14px 32px;
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 0.95rem;
     font-weight: 600;
     transition: all 0.2s ease;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
+    text-decoration: none;
 }
 
 .btn-primary {

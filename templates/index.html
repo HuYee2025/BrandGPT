@@ -198,13 +198,15 @@
     min-height: calc(100vh - 70px);
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
     padding: 60px 40px;
     position: relative;
     overflow: hidden;
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 0 auto;
-    gap: 60px;
+    gap: 40px;
 }
 
 .hero-bg {
@@ -229,7 +231,7 @@
 }
 
 .hero-content {
-    flex: 1;
+    width: 100%;
     max-width: 680px;
     z-index: 1;
 }
@@ -284,6 +286,7 @@
     display: flex;
     gap: 14px;
     margin-bottom: 44px;
+    justify-content: center;
 }
 
 .btn-lg {
@@ -338,10 +341,7 @@
 
 /* Hero视觉元素 */
 .hero-visual {
-    position: relative;
-    width: 360px;
-    height: 360px;
-    flex-shrink: 0;
+    display: none;
 }
 
 .floating-card {
