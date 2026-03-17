@@ -49,7 +49,7 @@ body {
 }
 
 .nav-container {
-    max-width: 1200px;
+    max-width: 1620px;
     margin: 0 auto;
     padding: 15px 30px;
     display: flex;
@@ -87,7 +87,7 @@ body {
 
 /* 主内容区 */
 .main-content {
-    max-width: 1200px;
+    max-width: 1620px;
     margin: 0 auto;
     padding: 80px 20px 40px;
 }
