@@ -58,6 +58,7 @@
     gap: 16px;
     max-width: 1000px;
     width: 100%;
+    margin: 0 auto;
 }
 
 .welcome-card {
@@ -180,34 +181,36 @@
 /* 输入区域 */
 .chat-input-wrapper {
     padding: 20px;
-    background: #FFFFFF;
+    background: transparent;
     border-top: 1px solid var(--border-color);
 }
 
 .chat-input-container {
-    max-width: 800px;
+    max-width: 850px;
     margin: 0 auto;
     position: relative;
+    background: #FFFFFF;
+    border-radius: 24px;
+    border: 1px solid var(--border-color);
 }
 
 .chat-input {
     width: 100%;
-    padding: 14px 50px 14px 20px;
-    border-radius: 8px;
-    border: 1px solid #D4CEC1;
-    background: #FFFFFF;
+    padding: 16px 60px 16px 24px;
+    border-radius: 24px;
+    border: none;
+    background: transparent;
     color: var(--text-dark);
     font-size: 1rem;
     font-family: inherit;
     resize: none;
     outline: none;
-    transition: border-color 0.2s;
-    height: 90px;
+    height: 56px;
     line-height: 1.5;
 }
 
 .chat-input:focus {
-    border-color: var(--text-dark);
+    border: none;
 }
 
 .chat-input::placeholder {
@@ -216,11 +219,12 @@
 
 .btn-send {
     position: absolute;
-    right: 10px;
-    bottom: 10px;
-    width: 32px;
-    height: 32px;
-    border-radius: 6px;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
     border: none;
     background: #141412;
     color: #FFFFFF;
