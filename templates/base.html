@@ -10,7 +10,10 @@
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <a href="{{ url_for('index') }}" class="nav-logo">品牌AI顾问</a>
+            <a href="{{ url_for('index') }}" class="nav-logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo" style="width: 32px; height: 32px; vertical-align: middle; margin-right: 8px;">
+                品牌AI顾问
+            </a>
             <div class="nav-links">
                 <a href="{{ url_for('chat') }}" class="nav-link">AI问答</a>
                 <a href="#" class="nav-link" onclick="showApiAdmin()">API管理</a>

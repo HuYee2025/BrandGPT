@@ -177,6 +177,13 @@
     margin-bottom: 28px;
 }
 
+/* 首页logo */
+.home-page .hero img {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 16px;
+}
+
 /* 响应式 - 仅针对大屏幕优化 */
 @media (min-width: 1400px) {
     .hero-title {
@@ -192,6 +199,7 @@
 <div class="home-page">
     <!-- Hero区域 -->
     <section class="hero">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo" style="width: 80px; height: 80px; margin-bottom: 20px;">
         <h1 class="hero-title">品牌AI顾问</h1>
 
         <p class="hero-desc">
