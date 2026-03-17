@@ -4,132 +4,155 @@
 
 {% block extra_head %}
 <style>
+/* ChatGPT风格对话框 */
+.chat-page {
+    height: calc(100vh - 70px);
+    display: flex;
+    flex-direction: column;
+}
+
+/* 欢迎界面 */
+.welcome-screen {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.welcome-logo {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 24px;
+}
+
+.welcome-logo svg {
+    width: 100%;
+    height: 100%;
+}
+
+.welcome-title {
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+}
+
+.welcome-subtitle {
+    font-size: 1rem;
+    color: var(--text-light);
+    margin-bottom: 40px;
+    max-width: 500px;
+}
+
+.welcome-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    max-width: 900px;
+    width: 100%;
+}
+
+.welcome-card {
+    background: #FFFFFF;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.welcome-card:hover {
+    border-color: var(--text-dark);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.welcome-card h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 6px;
+}
+
+.welcome-card p {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    line-height: 1.4;
+}
+
+/* 对话界面 */
 .chat-container {
-    display: flex;
-    height: calc(100vh - 120px);
-    gap: 20px;
-}
-
-.sidebar {
-    width: 280px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 16px;
-    padding: 20px;
-    display: flex;
+    display: none;
+    height: 100%;
     flex-direction: column;
 }
 
-.sidebar-header {
+.chat-container.active {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.sidebar-title {
-    font-size: 1.1rem;
-    color: #f7c331;
-}
-
-.btn-new-chat {
-    background: linear-gradient(135deg, #ff6b35, #f7c331);
-    border: none;
-    padding: 10px 16px;
-    border-radius: 8px;
-    color: #fff;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: transform 0.2s;
-}
-
-.btn-new-chat:hover {
-    transform: scale(1.05);
-}
-
-.conversation-list {
-    flex: 1;
-    overflow-y: auto;
-}
-
-.conversation-item {
-    padding: 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-bottom: 8px;
-    transition: background 0.2s;
-    color: #ccc;
-    font-size: 0.9rem;
-}
-
-.conversation-item:hover {
-    background: rgba(255,255,255,0.1);
-}
-
-.conversation-item.active {
-    background: rgba(255,107,53,0.3);
-    color: #fff;
-}
-
-.chat-main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    background: rgba(255,255,255,0.05);
-    border-radius: 16px;
-    overflow: hidden;
-}
-
-.chat-header {
-    padding: 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.chat-title {
-    font-size: 1.2rem;
-    color: #f7c331;
-}
-
-.btn-generate-report {
-    background: linear-gradient(135deg, #ff6b35, #f7c331);
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    color: #fff;
-    cursor: pointer;
-    font-size: 0.9rem;
 }
 
 .chat-messages {
     flex: 1;
-    padding: 20px;
+    padding: 20px 0;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 24px;
 }
 
 .message {
     max-width: 80%;
     padding: 16px 20px;
-    border-radius: 16px;
+    border-radius: 18px;
     line-height: 1.6;
     white-space: pre-wrap;
+    font-size: 0.98rem;
 }
 
 .message.user {
     align-self: flex-end;
-    background: linear-gradient(135deg, #ff6b35, #f7c331);
-    color: #fff;
+    background: var(--text-dark);
+    color: #F1EEE7;
+    border-bottom-right-radius: 6px;
 }
 
 .message.assistant {
     align-self: flex-start;
-    background: rgba(255,255,255,0.1);
-    color: #fff;
-    border: 1px solid rgba(255,255,255,0.1);
+    background: #FFFFFF;
+    color: var(--text-dark);
+    border: 1px solid var(--border-color);
+    border-bottom-left-radius: 6px;
+}
+
+.message-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-right: 12px;
+}
+
+.message-avatar svg {
+    width: 20px;
+    height: 20px;
+}
+
+.message.user .message-avatar {
+    background: var(--text-dark);
+    order: 2;
+    margin-right: 0;
+    margin-left: 12px;
+}
+
+.message.user + .message.assistant,
+.message.assistant + .message.user {
+    margin-top: 4px;
 }
 
 .message-content {
@@ -141,53 +164,63 @@
     to { opacity: 1; transform: translateY(0); }
 }
 
-.chat-input-area {
+/* 输入区域 */
+.chat-input-wrapper {
     padding: 20px;
-    border-top: 1px solid rgba(255,255,255,0.1);
+    background: #FFFFFF;
+    border-top: 1px solid var(--border-color);
 }
 
-.chat-input-wrapper {
-    display: flex;
-    gap: 12px;
+.chat-input-container {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
 }
 
 .chat-input {
-    flex: 1;
-    padding: 14px 20px;
-    border-radius: 30px;
-    border: 2px solid rgba(255,255,255,0.1);
-    background: rgba(255,255,255,0.05);
-    color: #fff;
+    width: 100%;
+    padding: 16px 50px 16px 20px;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    background: #F1EEE7;
+    color: var(--text-dark);
     font-size: 1rem;
+    font-family: inherit;
     resize: none;
     outline: none;
-    transition: border-color 0.3s;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    max-height: 200px;
 }
 
 .chat-input:focus {
-    border-color: #ff6b35;
+    border-color: var(--text-dark);
+    background: #FFFFFF;
+    box-shadow: 0 0 0 3px rgba(20,20,18,0.08);
 }
 
 .chat-input::placeholder {
-    color: #888;
+    color: var(--text-muted);
 }
 
 .btn-send {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
     border: none;
-    background: linear-gradient(135deg, #ff6b35, #f7c331);
-    color: #fff;
+    background: var(--text-dark);
+    color: #F1EEE7;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.2s;
+    transition: opacity 0.2s;
 }
 
 .btn-send:hover {
-    transform: scale(1.1);
+    opacity: 0.9;
 }
 
 .btn-send:disabled {
@@ -195,262 +228,142 @@
     cursor: not-allowed;
 }
 
+.btn-send svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* 加载动画 */
 .typing-indicator {
-    display: inline-flex;
+    display: flex;
     gap: 4px;
+    padding: 8px 0;
 }
 
 .typing-indicator span {
     width: 8px;
     height: 8px;
-    background: #888;
+    background: var(--text-light);
     border-radius: 50%;
-    animation: typing 1.4s infinite;
+    animation: typing 1.4s infinite ease-in-out;
 }
 
-.typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-.typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
 
 @keyframes typing {
     0%, 60%, 100% { transform: translateY(0); }
-    30% { transform: translateY(-10px); }
+    30% { transform: translateY(-6px); }
 }
 
-.empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    color: #888;
-    text-align: center;
+/* 生成报告按钮 */
+.btn-generate-report {
+    background: var(--text-dark);
+    color: #F1EEE7;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: opacity 0.2s;
+    margin-top: 20px;
 }
 
-.empty-state-icon {
-    font-size: 4rem;
-    margin-bottom: 20px;
+.btn-generate-report:hover {
+    opacity: 0.9;
 }
 
-.empty-state-text {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-}
+/* 响应式 */
+@media (max-width: 768px) {
+    .welcome-cards {
+        grid-template-columns: 1fr;
+    }
 
-.empty-state-hint {
-    font-size: 0.9rem;
-    opacity: 0.7;
+    .welcome-title {
+        font-size: 1.6rem;
+    }
+
+    .message {
+        max-width: 90%;
+    }
 }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="chat-container">
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <span class="sidebar-title">对话历史</span>
-            <button class="btn-new-chat" onclick="newConversation()">+ 新对话</button>
+<div class="chat-page">
+    <!-- 欢迎界面 -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-logo">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="24" cy="24" r="22" stroke="#141412" stroke-width="2" fill="none"/>
+                <path d="M16 32V20L24 16L32 20V32L24 36V24L16 20V32Z" stroke="#141412" stroke-width="2" fill="none"/>
+                <circle cx="24" cy="26" r="4" fill="#141412"/>
+            </svg>
         </div>
-        <div class="conversation-list" id="conversationList">
-            {% for conv in conversations %}
-            <div class="conversation-item" data-id="{{ conv.id }}" onclick="loadConversation({{ conv.id }})">
-                {{ conv.title }}
+        <h1 class="welcome-title">餐饮品牌AI顾问</h1>
+        <p class="welcome-subtitle">通过智能对话，了解您的餐饮创业想法，生成专业商业计划书</p>
+
+        <div class="welcome-cards">
+            <div class="welcome-card" onclick="startChat('我想开一家火锅店，请帮我规划')">
+                <h4>火锅店规划</h4>
+                <p>获取火锅店选址、装修、菜品定价等全面建议</p>
             </div>
-            {% endfor %}
+            <div class="welcome-card" onclick="startChat('我想开一家奶茶店，请帮我做商业计划')">
+                <h4>奶茶店计划</h4>
+                <p>奶茶店品牌定位、成本控制和营销策略</p>
+            </div>
+            <div class="welcome-card" onclick="startChat('我想做餐饮连锁加盟，请给我一些建议')">
+                <h4>连锁加盟咨询</h4>
+                <p>了解加盟模式、合同注意事项和运营支持</p>
+            </div>
         </div>
-    </aside>
+    </div>
 
-    <div class="chat-main">
-        <div class="chat-header">
-            <span class="chat-title" id="chatTitle">新对话</span>
-            <button class="btn-generate-report" id="btnGenerateReport" onclick="generateReport()" style="display:none;">
-                生成报告
-            </button>
-        </div>
-
+    <!-- 对话界面 -->
+    <div class="chat-container" id="chatContainer">
         <div class="chat-messages" id="chatMessages">
-            <div class="empty-state">
-                <div class="empty-state-icon">🤖</div>
-                <div class="empty-state-text">欢迎使用餐饮品牌AI顾问</div>
-                <div class="empty-state-hint">点击"新对话"开始咨询</div>
-            </div>
+            <!-- 消息将在这里显示 -->
         </div>
 
-        <div class="chat-input-area">
-            <div class="chat-input-wrapper">
+        <div class="chat-input-wrapper">
+            <div class="chat-input-container">
                 <textarea
-                    class="chat-input"
                     id="chatInput"
-                    placeholder="请输入你的回答..."
+                    class="chat-input"
+                    placeholder="输入您的餐饮创业想法..."
                     rows="1"
                     onkeydown="handleKeyDown(event)"
                 ></textarea>
-                <button class="btn-send" id="btnSend" onclick="sendMessage()">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="22" y1="2" x2="11" y2="13"></line>
-                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                <button class="btn-send" onclick="sendMessage()" id="sendBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
                     </svg>
                 </button>
             </div>
         </div>
     </div>
 </div>
-{% endblock %}
 
-{% block scripts %}
 <script>
-let currentConversationId = null;
-let isLoading = false;
+let messageCount = 0;
 
-// 创建新对话
-async function newConversation() {
-    try {
-        const response = await fetch('/api/chat/new', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'}
-        });
-        const data = await response.json();
+function startChat(prompt) {
+    document.getElementById('welcomeScreen').style.display = 'none';
+    document.getElementById('chatContainer').classList.add('active');
 
-        currentConversationId = data.conversation_id;
-        document.getElementById('chatMessages').innerHTML = '';
-        addMessage('assistant', data.message);
-        document.getElementById('btnGenerateReport').style.display = 'none';
-
-        // 更新侧边栏
-        loadConversationList();
-    } catch (error) {
-        alert('创建对话失败: ' + error);
+    if (prompt) {
+        document.getElementById('chatInput').value = prompt;
+        sendMessage();
     }
 }
 
-// 加载对话列表
-async function loadConversationList() {
-    try {
-        const response = await fetch('/api/conversations');
-        const conversations = await response.json();
-
-        const list = document.getElementById('conversationList');
-        list.innerHTML = conversations.map(conv => `
-            <div class="conversation-item ${conv.id === currentConversationId ? 'active' : ''}"
-                 data-id="${conv.id}" onclick="loadConversation(${conv.id})">
-                ${conv.title} - ${conv.updated_at}
-            </div>
-        `).join('');
-    } catch (error) {
-        console.error('加载对话列表失败:', error);
-    }
-}
-
-// 加载对话
-async function loadConversation(conversationId) {
-    try {
-        const response = await fetch(`/api/conversations/${conversationId}`);
-        const messages = await response.json();
-
-        currentConversationId = conversationId;
-        document.getElementById('chatMessages').innerHTML = '';
-
-        messages.forEach(msg => {
-            if (msg.role !== 'system') {
-                addMessage(msg.role, msg.content);
-            }
-        });
-
-        document.getElementById('btnGenerateReport').style.display = 'block';
-
-        // 更新侧边栏选中状态
-        document.querySelectorAll('.conversation-item').forEach(item => {
-            item.classList.toggle('active', item.dataset.id == conversationId);
-        });
-    } catch (error) {
-        alert('加载对话失败: ' + error);
-    }
-}
-
-// 发送消息
-async function sendMessage() {
-    if (isLoading || !currentConversationId) return;
-
-    const input = document.getElementById('chatInput');
-    const message = input.value.trim();
-    if (!message) return;
-
-    isLoading = true;
-    input.value = '';
-
-    // 显示用户消息
-    addMessage('user', message);
-
-    // 添加loading
-    const loadingId = addLoadingMessage();
-
-    try {
-        const response = await fetch(`/api/chat/${currentConversationId}/send`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({message})
-        });
-
-        const data = await response.json();
-
-        // 移除loading
-        document.getElementById(loadingId)?.remove();
-
-        if (data.error) {
-            alert(data.error);
-        } else {
-            // 显示AI响应
-            addMessage('assistant', data.message);
-        }
-    } catch (error) {
-        document.getElementById(loadingId)?.remove();
-        alert('发送失败: ' + error);
-    } finally {
-        isLoading = false;
-    }
-}
-
-// 添加消息到界面
-function addMessage(role, content) {
-    const messages = document.getElementById('chatMessages');
-
-    // 清除空状态
-    const emptyState = messages.querySelector('.empty-state');
-    if (emptyState) emptyState.remove();
-
-    const div = document.createElement('div');
-    div.className = `message ${role}`;
-    div.innerHTML = `<div class="message-content">${escapeHtml(content)}</div>`;
-
-    messages.appendChild(div);
-    messages.scrollTop = messages.scrollHeight;
-
-    // 显示生成报告按钮
-    if (role === 'assistant') {
-        document.getElementById('btnGenerateReport').style.display = 'block';
-    }
-}
-
-// 添加loading消息
-function addLoadingMessage() {
-    const id = 'loading-' + Date.now();
-    const messages = document.getElementById('chatMessages');
-
-    const div = document.createElement('div');
-    div.className = 'message assistant';
-    div.id = id;
-    div.innerHTML = `
-        <div class="typing-indicator">
-            <span></span><span></span><span></span>
-        </div>
-    `;
-
-    messages.appendChild(div);
-    messages.scrollTop = messages.scrollHeight;
-
-    return id;
-}
-
-// 回车发送
 function handleKeyDown(event) {
     if (event.key === 'Enter' && !event.shiftKey) {
         event.preventDefault();
@@ -458,51 +371,159 @@ function handleKeyDown(event) {
     }
 }
 
-// HTML转义
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-}
+function sendMessage() {
+    const input = document.getElementById('chatInput');
+    const message = input.value.trim();
 
-// 生成报告
-async function generateReport() {
-    if (!currentConversationId) return;
+    if (!message) return;
 
-    if (!confirm('确定要生成商业计划书吗？这将基于您当前的对话内容。')) {
-        return;
-    }
+    // 添加用户消息
+    addMessage('user', message);
+    input.value = '';
+    messageCount++;
 
-    const btn = document.getElementById('btnGenerateReport');
-    btn.textContent = '生成中...';
-    btn.disabled = true;
+    // 显示加载状态
+    showTyping();
 
-    try {
-        const response = await fetch(`/api/report/generate/${currentConversationId}`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'}
-        });
-
-        const data = await response.json();
+    // 发送请求
+    fetch('{{ url_for("chat") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'message=' + encodeURIComponent(message)
+    })
+    .then(response => response.json())
+    .then(data => {
+        hideTyping();
 
         if (data.error) {
-            alert(data.error);
+            addMessage('assistant', '抱歉，发生了错误：' + data.error);
         } else {
-            // 跳转到报告页面
-            window.location.href = `/report/${data.report_id}`;
+            addMessage('assistant', data.response);
+
+            // 如果是生成报告的回复，添加生成报告按钮
+            if (data.response.includes('商业计划书') || data.response.includes('报告')) {
+                setTimeout(() => {
+                    addGenerateButton();
+                }, 500);
+            }
         }
-    } catch (error) {
-        alert('生成报告失败: ' + error);
-    } finally {
-        btn.textContent = '生成报告';
-        btn.disabled = false;
+    })
+    .catch(error => {
+        hideTyping();
+        addMessage('assistant', '抱歉，发生了网络错误，请稍后重试。');
+    });
+}
+
+function addMessage(role, content) {
+    const messagesDiv = document.getElementById('chatMessages');
+
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message ' + role;
+
+    let avatarHtml = '';
+    if (role === 'assistant') {
+        avatarHtml = `<div class="message-avatar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 16v-4M12 8h.01"/>
+            </svg>
+        </div>`;
+    }
+
+    messageDiv.innerHTML = avatarHtml + '<div class="message-content">' + content + '</div>';
+    messagesDiv.appendChild(messageDiv);
+
+    // 滚动到底部
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+function showTyping() {
+    const messagesDiv = document.getElementById('chatMessages');
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'message assistant';
+    typingDiv.id = 'typingIndicator';
+    typingDiv.innerHTML = `<div class="typing-indicator">
+        <span></span><span></span><span></span>
+    </div>`;
+    messagesDiv.appendChild(typingDiv);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+function hideTyping() {
+    const typingDiv = document.getElementById('typingIndicator');
+    if (typingDiv) {
+        typingDiv.remove();
     }
 }
 
-// 页面加载后初始化
-document.addEventListener('DOMContentLoaded', function() {
-    const input = document.getElementById('chatInput');
-    input.focus();
-});
+function addGenerateButton() {
+    const messagesDiv = document.getElementById('chatMessages');
+    const btnDiv = document.createElement('div');
+    btnDiv.className = 'message assistant';
+    btnDiv.innerHTML = `<button class="btn-generate-report" onclick="generateReport()">
+        生成商业计划书
+    </button>`;
+    messagesDiv.appendChild(btnDiv);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+function generateReport() {
+    // 显示付费弹窗
+    const messagesDiv = document.getElementById('chatMessages');
+
+    const payDiv = document.createElement('div');
+    payDiv.className = 'message assistant';
+    payDiv.innerHTML = `
+        <div style="text-align: center; padding: 20px;">
+            <h3 style="margin-bottom: 16px; color: var(--text-dark);">生成商业计划书</h3>
+            <p style="margin-bottom: 20px; color: var(--text-light);">
+                感谢您的咨询！AI对话免费，生成完整商业计划书需要付费
+            </p>
+            <div style="background: #F1EEE7; padding: 24px; border-radius: 12px; margin-bottom: 20px;">
+                <div style="font-size: 2.5rem; font-weight: 700; color: var(--text-dark); margin-bottom: 8px;">
+                    ¥19.9
+                </div>
+                <div style="color: var(--text-muted); font-size: 0.9rem;">完整商业计划书</div>
+            </div>
+            <div style="display: flex; gap: 12px; justify-content: center;">
+                <button onclick="processPayment()" style="
+                    background: var(--text-dark);
+                    color: #F1EEE7;
+                    border: none;
+                    padding: 14px 32px;
+                    border-radius: 10px;
+                    font-size: 1rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                ">
+                    立即支付
+                </button>
+                <button onclick="this.closest('.message').remove()" style="
+                    background: transparent;
+                    color: var(--text-light);
+                    border: 1px solid var(--border-color);
+                    padding: 14px 24px;
+                    border-radius: 10px;
+                    font-size: 1rem;
+                    cursor: pointer;
+                ">
+                    取消
+                </button>
+            </div>
+            <p style="margin-top: 16px; font-size: 0.8rem; color: var(--text-muted);">
+                支付完成后，您将获得完整的餐饮品牌商业计划书
+            </p>
+        </div>
+    `;
+    messagesDiv.appendChild(payDiv);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+function processPayment() {
+    // 模拟支付成功
+    alert('支付功能开发中，请联系客服完成支付。\n\n微信：AI顾问客服');
+}
 </script>
 {% endblock %}

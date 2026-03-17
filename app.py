@@ -116,13 +116,49 @@ def logout():
 # ==================== AI问答 ====================
 
 @app.route('/chat')
-@login_required
 def chat():
     """AI问答页面"""
-    # 获取用户最近的对话
-    conversations = Conversation.query.filter_by(user_id=current_user.id)\
-        .order_by(Conversation.updated_at.desc()).limit(10).all()
-    return render_template('chat.html', conversations=conversations)
+    return render_template('chat.html')
+
+
+@app.route('/chat', methods=['POST'])
+def chat_post():
+    """处理聊天消息"""
+    message = request.form.get('message', '')
+
+    if not message:
+        return jsonify({'error': '消息不能为空'}), 400
+
+    try:
+        # 获取或创建临时会话
+        if 'temp_context' not in session:
+            session['temp_context'] = []
+
+        # 构建消息列表
+        messages = [{'role': 'system', 'content': SYSTEM_PROMPT}] + session['temp_context'] + [{'role': 'user', 'content': message}]
+
+        # 获取API Key（使用默认或环境变量）
+        api_key = os.getenv('OPENAI_API_KEY', '')
+        provider = os.getenv('AI_PROVIDER', 'openai')
+        model_name = os.getenv('AI_MODEL', 'gpt-3.5-turbo')
+
+        if not api_key:
+            return jsonify({'error': '请先配置API Key'}), 400
+
+        # 调用AI
+        client = get_model_client(provider, api_key, model_name)
+        response = client.chat(messages)
+
+        # 更新上下文
+        session['temp_context'] = session.get('temp_context', []) + [
+            {'role': 'user', 'content': message},
+            {'role': 'assistant', 'content': response}
+        ]
+
+        return jsonify({'response': response})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 
 @app.route('/api/chat/new', methods=['POST'])
