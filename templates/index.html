@@ -22,12 +22,11 @@
 }
 
 .hero-title {
-    font-size: 4.5rem;
-    font-weight: 700;
-    line-height: 1.1;
+    font-size: 3rem;
+    font-weight: 600;
+    line-height: 1.2;
     margin-bottom: 24px;
     color: var(--text-dark);
-    letter-spacing: -2px;
 }
 
 .hero-desc {
@@ -53,10 +52,11 @@
 
 .categories-title {
     text-align: center;
-    font-size: 1.1rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 2px;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 32px;
+}
     margin-bottom: 32px;
 }
 
@@ -125,6 +125,7 @@
 .hero-stats {
     display: flex;
     gap: 60px;
+    margin-top: 60px;
 }
 
 .stat-item {
@@ -155,10 +156,9 @@
 
 .process-title {
     text-align: center;
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 2px;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text-dark);
     margin-bottom: 40px;
 }
 
@@ -264,6 +264,21 @@
 
         <div class="hero-actions">
             <a href="{{ url_for('chat') }}" class="btn btn-primary btn-lg">开始咨询</a>
+        </div>
+
+        <div class="hero-stats">
+            <div class="stat-item">
+                <span class="stat-number">7</span>
+                <span class="stat-label">核心维度</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">∞</span>
+                <span class="stat-label">智能追问</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">100%</span>
+                <span class="stat-label">定制化</span>
+            </div>
         </div>
     </section>
 
