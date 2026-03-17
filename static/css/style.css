@@ -342,7 +342,7 @@ body {
 .btn-primary {
     background: var(--text-dark);
     color: #FFFFFF;
-    width: 100%;
+    width: auto;
 }
 
 .btn-primary:hover {
