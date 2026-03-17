@@ -127,8 +127,8 @@
 }
 
 .chat-header-back:hover {
-    background: var(--card-bg);
-    color: var(--text-dark);
+    background: #141412;
+    color: #FFFFFF;
 }
 
 .chat-header-back svg {
@@ -146,8 +146,8 @@
 
 .chat-header-new {
     padding: 8px 16px;
-    background: var(--text-dark);
-    color: #FFFFFF;
+    background: #E3DACB;
+    color: #141412;
     border: none;
     border-radius: 8px;
     font-size: 0.85rem;
@@ -419,7 +419,7 @@
     <div class="chat-container" id="chatContainer">
         <!-- 聊天头部 -->
         <div class="chat-header">
-            <button class="chat-header-back" onclick="backToCategories()">
+            <button class="chat-header-back" onclick="window.location.href='{{ url_for(\"index\") }}'">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M19 12H5M12 19l-7-7 7-7"/>
                 </svg>
@@ -454,19 +454,20 @@
 <script>
 let messageCount = 0;
 
-// 检查是否有初始prompt（从首页点击品类卡片进入）
-{% if initial_prompt %}
+// 页面加载时直接显示对话界面
 document.addEventListener('DOMContentLoaded', function() {
-    startChat('{{ initial_prompt }}');
-});
-{% endif %}
+    document.getElementById('welcomeScreen').style.display = 'none';
+    document.getElementById('chatContainer').classList.add('active');
 
-// 返回品类选择页面
-function backToCategories() {
-    document.getElementById('welcomeScreen').style.display = 'flex';
-    document.getElementById('chatContainer').classList.remove('active');
-    document.querySelector('.chat-header-title').textContent = '新对话';
-}
+    // 如果有初始prompt，自动发送
+    {% if initial_prompt %}
+    document.getElementById('chatInput').value = '{{ initial_prompt }}';
+    sendMessage();
+    {% else %}
+    // 没有初始prompt时，聚焦输入框
+    document.getElementById('chatInput').focus();
+    {% endif %}
+});
 
 // 新建对话（清除当前聊天记录）
 function newChat() {
