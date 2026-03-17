@@ -3,304 +3,59 @@
 {% block title %}首页 - 餐饮品牌AI顾问{% endblock %}
 
 {% block content %}
-<div class="home-page">
-    <!-- Hero区域 -->
-    <section class="hero">
-        <div class="hero-bg">
-            <div class="grid-pattern"></div>
-        </div>
-
-        <div class="hero-content">
-            <div class="hero-badge">
-                <span class="badge-dot"></span>
-                AI驱动的商业计划书生成
-            </div>
-
-            <h1 class="hero-title">
-                您的专属<br>
-                <span class="gradient-text">餐饮品牌AI顾问</span>
-            </h1>
-
-            <p class="hero-desc">
-                基于大模型智能分析，通过多轮对话深度挖掘您的创业想法，<br>
-                自动生成专业定制化的商业计划书
-            </p>
-
-            <div class="hero-actions">
-                <a href="{{ url_for('chat') }}" class="btn btn-primary btn-lg">
-                    <span>立即开始</span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </a>
-                <a href="#features" class="btn btn-outline">了解更多</a>
-            </div>
-
-            <div class="hero-stats">
-                <div class="stat-item">
-                    <span class="stat-number">7</span>
-                    <span class="stat-label">核心维度</span>
-                </div>
-                <div class="stat-divider"></div>
-                <div class="stat-item">
-                    <span class="stat-number">∞</span>
-                    <span class="stat-label">智能追问</span>
-                </div>
-                <div class="stat-divider"></div>
-                <div class="stat-item">
-                    <span class="stat-number">100%</span>
-                    <span class="stat-label">定制化</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="hero-visual">
-            <div class="floating-card card-1">
-                <div class="card-icon">📊</div>
-                <div class="card-text">SWOT分析</div>
-            </div>
-            <div class="floating-card card-2">
-                <div class="card-icon">💰</div>
-                <div class="card-text">财务预测</div>
-            </div>
-            <div class="floating-card card-3">
-                <div class="card-icon">🎯</div>
-                <div class="card-text">市场定位</div>
-            </div>
-            <div class="floating-card card-4">
-                <div class="card-icon">📋</div>
-                <div class="card-text">商业计划书</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 特性区域 -->
-    <section class="features" id="features">
-        <div class="section-header">
-            <h2>为什么选择我们</h2>
-            <p>AI技术与餐饮行业的深度结合</p>
-        </div>
-
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                        <path d="M2 17l10 5 10-5"/>
-                        <path d="M2 12l10 5 10-5"/>
-                    </svg>
-                </div>
-                <h3>智能深度分析</h3>
-                <p>AI模拟顶级投资顾问思维，深度挖掘项目优势与风险</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M12 6v6l4 2"/>
-                    </svg>
-                </div>
-                <h3>动态多轮对话</h3>
-                <p>根据您的回答智能生成针对性问题，像真人顾问一样深入了解</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                        <polyline points="14 2 14 8 20 8"/>
-                        <line x1="16" y1="13" x2="8" y2="13"/>
-                        <line x1="16" y1="17" x2="8" y2="17"/>
-                    </svg>
-                </div>
-                <h3>定制化报告</h3>
-                <p>基于您的独特想法，生成个性化商业计划书，非固定模板</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                    </svg>
-                </div>
-                <h3>多模型支持</h3>
-                <p>支持OpenAI、Claude、DeepSeek等主流大模型，灵活配置</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- 流程区域 -->
-    <section class="process">
-        <div class="section-header">
-            <h2>使用流程</h2>
-            <p>简单四步生成您的商业计划书</p>
-        </div>
-
-        <div class="process-steps">
-            <div class="step">
-                <div class="step-number">1</div>
-                <div class="step-content">
-                    <h4>注册账号</h4>
-                    <p>创建个人账号</p>
-                </div>
-            </div>
-            <div class="step-arrow">→</div>
-            <div class="step">
-                <div class="step-number">2</div>
-                <div class="step-content">
-                    <h4>配置API</h4>
-                    <p>设置AI模型</p>
-                </div>
-            </div>
-            <div class="step-arrow">→</div>
-            <div class="step">
-                <div class="step-number">3</div>
-                <div class="step-content">
-                    <h4>AI对话</h4>
-                    <p>回答AI提问</p>
-                </div>
-            </div>
-            <div class="step-arrow">→</div>
-            <div class="step">
-                <div class="step-number">4</div>
-                <div class="step-content">
-                    <h4>生成报告</h4>
-                    <p>获取商业计划书</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA区域 -->
-    <section class="cta">
-        <div class="cta-content">
-            <h2>准备好开启您的餐饮创业之旅了吗？</h2>
-            <p>AI智能顾问帮助您快速梳理商业思路</p>
-            <a href="{{ url_for('chat') }}" class="btn btn-primary btn-lg">
-                立即开始
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-            </a>
-        </div>
-    </section>
-</div>
-
 <style>
-/* 首页样式 */
 .home-page {
     min-height: 100vh;
 }
 
-/* Hero区域 */
+/* Hero区域 - 宽幅电影感 */
 .hero {
-    min-height: calc(100vh - 70px);
+    min-height: calc(100vh - 200px);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
     text-align: center;
-    padding: 60px 40px;
-    position: relative;
-    overflow: hidden;
+    padding: 80px 40px 60px;
     max-width: 1200px;
     margin: 0 auto;
-    gap: 40px;
-}
-
-.hero-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 0;
-}
-
-.grid-pattern {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image:
-        linear-gradient(rgba(20,20,18,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(20,20,18,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-}
-
-.hero-content {
-    width: 100%;
-    max-width: 680px;
-    z-index: 1;
-}
-
-.hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    background: #E3DACB;
-    border-radius: 50px;
-    color: #141412;
-    font-size: 0.85rem;
-    font-weight: 500;
-    margin-bottom: 24px;
-}
-
-.badge-dot {
-    width: 8px;
-    height: 8px;
-    background: #141412;
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
 }
 
 .hero-title {
-    font-size: 3.2rem;
+    font-size: 4.5rem;
     font-weight: 700;
-    line-height: 1.2;
+    line-height: 1.1;
     margin-bottom: 24px;
-    letter-spacing: -0.5px;
-    color: #141412;
-}
-
-.gradient-text {
-    color: #141412;
+    color: var(--text-dark);
+    letter-spacing: -2px;
 }
 
 .hero-desc {
-    font-size: 1.1rem;
-    color: #6B6862;
+    font-size: 1.3rem;
+    color: var(--text-light);
+    max-width: 600px;
+    margin-bottom: 48px;
     line-height: 1.7;
-    margin-bottom: 36px;
 }
 
 .hero-actions {
     display: flex;
-    gap: 14px;
-    margin-bottom: 44px;
-    justify-content: center;
+    gap: 16px;
+    margin-bottom: 60px;
 }
 
 .btn-lg {
-    padding: 16px 32px;
-    font-size: 1rem;
+    padding: 18px 40px;
+    font-size: 1.05rem;
 }
 
 .btn-outline {
-    padding: 16px 32px;
-    font-size: 1rem;
+    padding: 18px 40px;
+    font-size: 1.05rem;
     background: transparent;
     border: 2px solid #141412;
     color: #141412;
-    border-radius: 10px;
+    border-radius: 8px;
     text-decoration: none;
     font-weight: 600;
     transition: all 0.2s;
@@ -311,10 +66,10 @@
     color: #F1EEE7;
 }
 
+/* 核心数据 */
 .hero-stats {
     display: flex;
-    align-items: center;
-    gap: 30px;
+    gap: 60px;
 }
 
 .stat-item {
@@ -323,263 +78,197 @@
 
 .stat-number {
     display: block;
-    font-size: 1.8rem;
+    font-size: 2.5rem;
     font-weight: 700;
-    color: #141412;
+    color: var(--text-dark);
+    margin-bottom: 4px;
 }
 
 .stat-label {
-    font-size: 0.85rem;
-    color: #9A958D;
-}
-
-.stat-divider {
-    width: 1px;
-    height: 36px;
-    background: #D4CEC1;
-}
-
-/* Hero视觉元素 */
-.hero-visual {
-    display: none;
-}
-
-.floating-card {
-    position: absolute;
-    background: #FFFFFF;
-    border: 1px solid #E3DACB;
-    border-radius: 14px;
-    padding: 14px 18px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    animation: floatCard 6s ease-in-out infinite;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-}
-
-.card-1 { top: 20px; left: 20px; animation-delay: 0s; }
-.card-2 { top: 70px; right: 0; animation-delay: -1.5s; }
-.card-3 { bottom: 90px; left: 40px; animation-delay: -3s; }
-.card-4 { bottom: 20px; right: 30px; animation-delay: -4.5s; }
-
-@keyframes floatCard {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-12px); }
-}
-
-.card-icon {
-    font-size: 1.3rem;
-}
-
-.card-text {
-    font-weight: 500;
-    color: #141412;
     font-size: 0.9rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-/* 特性区域 */
-.features {
-    padding: 80px 40px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.section-header {
-    text-align: center;
-    margin-bottom: 48px;
-}
-
-.section-header h2 {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 12px;
-    color: #141412;
-}
-
-.section-header p {
-    color: #6B6862;
-    font-size: 1rem;
-}
-
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.feature-card {
-    background: #E3DACB;
-    border-radius: 14px;
-    padding: 28px 20px;
-    text-align: center;
-    transition: all 0.2s;
-}
-
-.feature-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-}
-
-.feature-icon {
-    width: 52px;
-    height: 52px;
-    margin: 0 auto 16px;
-    background: #FFFFFF;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.feature-icon svg {
-    width: 24px;
-    height: 24px;
-    stroke: #141412;
-}
-
-.feature-card h3 {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 10px;
-    color: #141412;
-}
-
-.feature-card p {
-    color: #6B6862;
-    font-size: 0.85rem;
-    line-height: 1.5;
-}
-
-/* 流程区域 */
+/* 流程区域 - 极简 */
 .process {
     padding: 60px 40px 100px;
-    max-width: 1000px;
+    max-width: 1400px;
     margin: 0 auto;
+}
+
+.process-title {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 40px;
 }
 
 .process-steps {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 16px;
+    gap: 0;
 }
 
 .step {
     display: flex;
     align-items: center;
-    gap: 14px;
-    background: #E3DACB;
-    border-radius: 12px;
-    padding: 20px;
-    min-width: 160px;
+    gap: 16px;
+    padding: 24px 32px;
+    background: transparent;
 }
 
 .step-number {
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     background: #141412;
-    border-radius: 10px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
-    font-weight: 700;
+    font-weight: 600;
     color: #F1EEE7;
     flex-shrink: 0;
 }
 
+.step-content {
+    text-align: left;
+}
+
 .step-content h4 {
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     font-weight: 600;
+    color: var(--text-dark);
     margin-bottom: 2px;
-    color: #141412;
 }
 
 .step-content p {
-    color: #6B6862;
-    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
 }
 
 .step-arrow {
-    color: #9A958D;
-    font-size: 1.2rem;
+    color: var(--border-color);
+    font-size: 1.5rem;
+    padding: 0 20px;
 }
 
-/* CTA区域 */
+/* CTA区域 - 简约 */
 .cta {
-    padding: 60px 40px;
+    padding: 80px 40px;
     background: #E3DACB;
     text-align: center;
 }
 
 .cta-content h2 {
-    font-size: 1.6rem;
-    font-weight: 700;
+    font-size: 2rem;
+    font-weight: 600;
     margin-bottom: 12px;
-    color: #141412;
+    color: var(--text-dark);
 }
 
 .cta-content p {
-    color: #6B6862;
+    color: var(--text-light);
     margin-bottom: 28px;
 }
 
-/* 响应式 */
-@media (max-width: 1024px) {
+/* 响应式 - 仅针对大屏幕优化 */
+@media (min-width: 1400px) {
+    .hero-title {
+        font-size: 5rem;
+    }
+
     .hero {
-        flex-direction: column;
-        text-align: center;
-        padding: 40px 20px;
-    }
-
-    .hero-content {
-        max-width: 100%;
-    }
-
-    .hero-title {
-        font-size: 2.2rem;
-    }
-
-    .hero-actions {
-        justify-content: center;
-    }
-
-    .hero-stats {
-        justify-content: center;
-    }
-
-    .hero-visual {
-        display: none;
-    }
-
-    .features-grid {
-        grid-template-columns: 1fr;
-        max-width: 400px;
-    }
-
-    .process-steps {
-        flex-wrap: wrap;
-    }
-
-    .step-arrow {
-        display: none;
-    }
-}
-
-@media (max-width: 640px) {
-    .hero-title {
-        font-size: 1.8rem;
-    }
-
-    .features-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .hero-actions {
-        flex-direction: column;
+        min-height: calc(100vh - 150px);
     }
 }
 </style>
+
+<div class="home-page">
+    <!-- Hero区域 -->
+    <section class="hero">
+        <h1 class="hero-title">餐饮品牌AI顾问</h1>
+
+        <p class="hero-desc">
+            基于大模型智能分析，通过多轮对话深度挖掘您的创业想法<br>
+            自动生成专业定制化的商业计划书
+        </p>
+
+        <div class="hero-actions">
+            <a href="{{ url_for('chat') }}" class="btn btn-primary btn-lg">开始咨询</a>
+            <a href="#process" class="btn btn-outline">了解更多</a>
+        </div>
+
+        <div class="hero-stats">
+            <div class="stat-item">
+                <span class="stat-number">7</span>
+                <span class="stat-label">核心维度</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">∞</span>
+                <span class="stat-label">智能追问</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">100%</span>
+                <span class="stat-label">定制化</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 流程区域 -->
+    <section class="process" id="process">
+        <div class="process-title">使用流程</div>
+
+        <div class="process-steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>描述想法</h4>
+                    <p>输入您的餐饮创业想法</p>
+                </div>
+            </div>
+            <div class="step-arrow">→</div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>AI追问</h4>
+                    <p>回答AI的深度问题</p>
+                </div>
+            </div>
+            <div class="step-arrow">→</div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>生成报告</h4>
+                    <p>获取完整商业计划书</p>
+                </div>
+            </div>
+            <div class="step-arrow">→</div>
+
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h4>付费获取</h4>
+                    <p>19.9元下载完整报告</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA区域 -->
+    <section class="cta">
+        <div class="cta-content">
+            <h2>准备好开启餐饮创业之旅了吗？</h2>
+            <p>AI智能顾问帮助您快速梳理商业思路</p>
+            <a href="{{ url_for('chat') }}" class="btn btn-primary btn-lg">立即开始</a>
+        </div>
+    </section>
+</div>
 {% endblock %}
