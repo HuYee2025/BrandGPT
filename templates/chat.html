@@ -100,6 +100,65 @@
     padding-bottom: 40px;
 }
 
+.chat-header {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-color);
+    max-width: 850px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.chat-header-back {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: all 0.2s;
+    background: transparent;
+    border: none;
+}
+
+.chat-header-back:hover {
+    background: var(--card-bg);
+    color: var(--text-dark);
+}
+
+.chat-header-back svg {
+    width: 18px;
+    height: 18px;
+}
+
+.chat-header-title {
+    flex: 1;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.chat-header-new {
+    padding: 8px 16px;
+    background: var(--text-dark);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.chat-header-new:hover {
+    opacity: 0.8;
+}
+
 .chat-container.active {
     display: flex;
 }
@@ -358,6 +417,17 @@
 
     <!-- 对话界面 -->
     <div class="chat-container" id="chatContainer">
+        <!-- 聊天头部 -->
+        <div class="chat-header">
+            <button class="chat-header-back" onclick="backToCategories()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                返回
+            </button>
+            <span class="chat-header-title">新对话</span>
+            <button class="chat-header-new" onclick="newChat()">新建对话</button>
+        </div>
         <div class="chat-messages" id="chatMessages">
             <!-- 消息将在这里显示 -->
         </div>
@@ -383,6 +453,24 @@
 
 <script>
 let messageCount = 0;
+
+// 返回品类选择页面
+function backToCategories() {
+    document.getElementById('welcomeScreen').style.display = 'flex';
+    document.getElementById('chatContainer').classList.remove('active');
+    document.querySelector('.chat-header-title').textContent = '新对话';
+}
+
+// 新建对话（清除当前聊天记录）
+function newChat() {
+    if (confirm('确定要开始新对话吗？当前对话记录将被清除。')) {
+        // 清除本地消息显示
+        document.getElementById('chatMessages').innerHTML = '';
+        document.querySelector('.chat-header-title').textContent = '新对话';
+        // 聚焦输入框
+        document.getElementById('chatInput').focus();
+    }
+}
 
 function startChat(prompt) {
     document.getElementById('welcomeScreen').style.display = 'none';
@@ -411,6 +499,12 @@ function sendMessage() {
     addMessage('user', message);
     input.value = '';
     messageCount++;
+
+    // 首次对话时更新标题为对话摘要
+    if (messageCount === 1) {
+        const summary = message.length > 15 ? message.substring(0, 15) + '...' : message;
+        document.querySelector('.chat-header-title').textContent = summary;
+    }
 
     // 显示加载状态
     showTyping();
