@@ -143,23 +143,30 @@
     transform: translateY(-50%);
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 0;
+    gap: 8px;
     z-index: 10;
 }
 
+.progress-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 28px;
+}
+
 .progress-step {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     background: #E3DACB;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: var(--text-muted);
     transition: all 0.3s;
     cursor: default;
+    flex-shrink: 0;
 }
 
 .progress-step.active {
@@ -173,24 +180,20 @@
 }
 
 .progress-step-label {
-    position: absolute;
-    left: 44px;
     font-size: 0.7rem;
     color: var(--text-muted);
     white-space: nowrap;
-    background: transparent;
 }
 
-.progress-step.active + .progress-step-label,
-.progress-step.active ~ .progress-step-label {
+.progress-step.active ~ .progress-item .progress-step-label {
     color: #141412;
-    font-weight: 600;
 }
 
 .progress-line {
     width: 2px;
-    height: 30px;
+    height: 8px;
     background: #E3DACB;
+    margin-left: 13px;
 }
 }
 
@@ -580,20 +583,30 @@
     <div class="chat-main">
         <!-- 右侧进度条 -->
         <div class="chat-progress" id="chatProgress">
-            <div class="progress-step active" data-step="1">1</div>
-            <div class="progress-step-label">项目概述</div>
+            <div class="progress-item">
+                <div class="progress-step active" data-step="1">1</div>
+                <span class="progress-step-label">项目概述</span>
+            </div>
             <div class="progress-line"></div>
-            <div class="progress-step" data-step="2">2</div>
-            <div class="progress-step-label">市场分析</div>
+            <div class="progress-item">
+                <div class="progress-step" data-step="2">2</div>
+                <span class="progress-step-label">市场分析</span>
+            </div>
             <div class="progress-line"></div>
-            <div class="progress-step" data-step="3">3</div>
-            <div class="progress-step-label">运营策略</div>
+            <div class="progress-item">
+                <div class="progress-step" data-step="3">3</div>
+                <span class="progress-step-label">运营策略</span>
+            </div>
             <div class="progress-line"></div>
-            <div class="progress-step" data-step="4">4</div>
-            <div class="progress-step-label">财务规划</div>
+            <div class="progress-item">
+                <div class="progress-step" data-step="4">4</div>
+                <span class="progress-step-label">财务规划</span>
+            </div>
             <div class="progress-line"></div>
-            <div class="progress-step" data-step="5">✓</div>
-            <div class="progress-step-label">生成报告</div>
+            <div class="progress-item">
+                <div class="progress-step" data-step="5">✓</div>
+                <span class="progress-step-label">生成报告</span>
+            </div>
         </div>
     <!-- 欢迎界面 -->
     <div class="welcome-screen" id="welcomeScreen">
