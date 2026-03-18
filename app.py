@@ -147,6 +147,9 @@ def chat_post():
         if 'temp_context' not in session:
             session['temp_context'] = []
 
+        # 检查是否是第一次对话
+        is_first_message = len(session.get('temp_context', [])) == 0
+
         # 构建消息列表
         messages = [{'role': 'system', 'content': SYSTEM_PROMPT}] + session['temp_context'] + [{'role': 'user', 'content': message}]
 
@@ -186,7 +189,18 @@ def chat_post():
             {'role': 'assistant', 'content': response}
         ]
 
-        return jsonify({'response': response})
+        # 如果是第一次对话，生成标题
+        result = {'response': response}
+        if is_first_message:
+            # 生成标题
+            title_prompt = f"请根据用户的以下问题提炼出12个字以内的关键词标题，不要有标点符号，直接返回标题：{message}"
+            title_messages = [{'role': 'user', 'content': title_prompt}]
+            title_response = client.chat(title_messages)
+            # 清理标题（去除标点、空白等）
+            title = title_response.strip().replace('。', '').replace('，', '').replace('！', '').replace('？', '').replace(' ', '')[:12]
+            result['title'] = title
+
+        return jsonify(result)
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500

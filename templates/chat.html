@@ -906,14 +906,9 @@ function sendMessage() {
     input.value = '';
     messageCount++;
 
-    // 首次对话时更新标题为对话摘要
-    if (messageCount === 1) {
-        const summary = message.length > 12 ? message.substring(0, 12) + '...' : message;
-        document.querySelector('.chat-header-title').textContent = summary;
-        // 创建新对话ID
-        currentConversationId = Date.now().toString();
-        localStorage.setItem('lastConversationId', currentConversationId);
-    }
+    // 创建新对话ID
+    currentConversationId = Date.now().toString();
+    localStorage.setItem('lastConversationId', currentConversationId);
 
     // 保存当前对话（实时保存）
     saveCurrentConversation();
@@ -940,6 +935,11 @@ function sendMessage() {
             addMessage('assistant', '抱歉，发生了错误：' + data.error);
         } else {
             addMessage('assistant', data.response);
+
+            // 首次对话时，使用AI生成的标题
+            if (messageCount === 1 && data.title) {
+                document.querySelector('.chat-header-title').textContent = data.title;
+            }
 
             // 保存对话
             saveCurrentConversation();
