@@ -777,11 +777,8 @@ function saveCurrentConversation() {
     });
 
     if (messages.length > 0) {
-        // 获取用户的第一句话作为标题
-        const firstUserMessage = messages.find(m => m.role === 'user');
-        const title = firstUserMessage
-            ? (firstUserMessage.content.substring(0, 12) + (firstUserMessage.content.length > 12 ? '...' : ''))
-            : '新对话';
+        // 使用当前显示的标题（AI生成的）
+        const title = document.querySelector('.chat-header-title').textContent || '新对话';
         saveToHistory(title, messages);
     }
 }
