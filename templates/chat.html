@@ -164,6 +164,11 @@
     margin: 0 auto;
 }
 
+/* 欢迎界面隐藏类 */
+.welcome-screen.hidden {
+    display: none !important;
+}
+
 .welcome-logo {
     width: 60px;
     height: 60px;
@@ -590,7 +595,7 @@
     }
 
     /* 移动端欢迎界面调整 */
-    .welcome-screen {
+    .welcome-screen:not(.hidden) {
         display: flex !important;
         flex-direction: column;
         align-items: center;
@@ -599,6 +604,11 @@
         width: 100% !important;
         max-width: 100% !important;
         margin: 0 auto !important;
+    }
+
+    /* 移动端隐藏欢迎界面 */
+    .welcome-screen.hidden {
+        display: none !important;
     }
 
     /* 移动端欢迎卡片改为2列 */
@@ -770,7 +780,7 @@
         <!-- 主聊天区域 -->
         <div class="chat-main">
     <!-- 欢迎界面 -->
-    <div class="welcome-screen" id="welcomeScreen">
+    <div class="welcome-screen{% if initial_prompt %} hidden{% endif %}" id="welcomeScreen"{% if initial_prompt %} style="display: none !important;"{% endif %}>
         <div class="welcome-logo">
             <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="24" cy="24" r="22" stroke="#141412" stroke-width="2" fill="none"/>
@@ -778,7 +788,7 @@
                 <circle cx="24" cy="26" r="4" fill="#141412"/>
             </svg>
         </div>
-        <h1 class="welcome-title">品牌AI顾问</h1>
+        <h1 class="welcome-title">品牌AI顾问{% if initial_prompt %} [DEBUG: has prompt]{% endif %}</h1>
         <p class="welcome-subtitle">通过智能对话，了解您的创业想法，生成专业商业计划书</p>
 
         <div class="welcome-cards">
@@ -810,7 +820,7 @@
     </div>
 
     <!-- 对话界面 -->
-    <div class="chat-container" id="chatContainer">
+    <div class="chat-container{% if initial_prompt %} active{% endif %}" id="chatContainer"{% if initial_prompt %} style="display: flex !important;"{% endif %}>
         <!-- 聊天头部 -->
         <div class="chat-header">
             <button class="chat-header-menu" onclick="toggleSidebar()">
@@ -1083,23 +1093,17 @@ function startNewChat() {
 document.addEventListener('DOMContentLoaded', function() {
     renderHistoryList();
 
-    document.getElementById('welcomeScreen').style.display = 'none';
-    document.getElementById('chatContainer').classList.add('active');
-
-    // 如果有初始prompt（从首页点击品类卡片进入），先发送开场白，再发送用户问题
+    // 如果有初始prompt（从首页点击品类卡片进入），隐藏欢迎界面，显示聊天界面
     {% if initial_prompt %}
+    document.getElementById('welcomeScreen').classList.add('hidden');
+    document.getElementById('chatContainer').classList.add('active');
     document.getElementById('chatInput').value = '{{ initial_prompt }}';
-    // 先获取开场白
     sendInitialMessage();
     {% else %}
-    // 自动加载最后一次对话记录
-    const lastConversationId = localStorage.getItem('lastConversationId');
-    if (lastConversationId) {
-        loadConversation(lastConversationId);
-    } else {
-        // 没有历史记录，发送开场白
-        sendInitialMessage();
-    }
+    // 没有初始prompt时，显示欢迎界面
+    document.getElementById('welcomeScreen').classList.remove('hidden');
+    document.getElementById('welcomeScreen').style.display = 'flex';
+    document.getElementById('chatContainer').classList.remove('active');
     {% endif %}
 });
 
