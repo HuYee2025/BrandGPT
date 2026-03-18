@@ -904,13 +904,13 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('welcomeScreen').style.display = 'none';
     document.getElementById('chatContainer').classList.add('active');
 
-    // 如果有初始prompt，自动发送
+    // 如果有初始prompt（从首页点击品类卡片进入），自动发送
     {% if initial_prompt %}
     document.getElementById('chatInput').value = '{{ initial_prompt }}';
     sendMessage();
     {% else %}
-    // 没有选择品类时，发送初始请求获取开场白
-    sendInitialMessage();
+    // 页面刷新时，只显示空白输入框，等待用户输入，不自动发送消息
+    document.getElementById('chatInput').focus();
     {% endif %}
 });
 
