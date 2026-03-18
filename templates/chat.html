@@ -16,16 +16,17 @@
 /* 左侧历史记录栏 */
 .chat-sidebar {
     width: 260px;
-    background: var(--card-bg);
-    border-right: 1px solid var(--border-color);
+    background: #F0EEE6;
+    border-radius: 16px;
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
+    margin: 16px 0 16px 16px;
+    overflow: hidden;
 }
 
 .sidebar-header {
     padding: 16px;
-    border-bottom: 1px solid var(--border-color);
 }
 
 .sidebar-new-btn {
@@ -460,6 +461,25 @@
 .message {
     max-width: 700px;
 }
+
+/* 极简滚动条 */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #CCC;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #AAA;
+}
 </style>
 {% endblock %}
 
@@ -528,7 +548,6 @@
                 返回
             </button>
             <span class="chat-header-title">新对话</span>
-            <button class="chat-header-new" onclick="newChat()">新建对话</button>
         </div>
         <div class="chat-messages" id="chatMessages">
             <!-- 消息将在这里显示 -->
