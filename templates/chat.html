@@ -29,10 +29,15 @@
     min-width: 200px;
     background: #F0EEE6;
     border-radius: 16px 0 0 16px;
-    display: flex;
+    display: none;
     flex-direction: column;
     overflow: hidden;
     flex-shrink: 0;
+}
+
+/* 对话列表展开状态 */
+.chat-sidebar.open {
+    display: flex;
 }
 
 /* 中间聊天区域 */
