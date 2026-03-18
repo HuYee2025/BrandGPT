@@ -77,11 +77,11 @@
 }
 
 .history-item:hover .history-delete {
-    opacity: 1;
+    opacity: 1 !important;
 }
 
 .history-item.active {
-    background: #E3DACB;
+    background: #E4E2DA;
     color: #141412;
 }
 
@@ -89,6 +89,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
 }
 
 .history-item .history-delete {
@@ -102,6 +103,7 @@
     font-size: 0.9rem;
     transition: all 0.2s;
     margin-left: 8px;
+    flex-shrink: 0;
 }
 
 .history-item .history-delete:hover {
@@ -777,10 +779,12 @@ function renderHistoryList() {
         const date = new Date(conv.updatedAt);
         const dateStr = date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
         const isActive = conv.id === currentConversationId ? 'active' : '';
+        // 限制标题为16个字符
+        const title = conv.title.length > 16 ? conv.title.substring(0, 16) + '...' : conv.title;
         return `
             <button class="history-item ${isActive}" onclick="loadConversation('${conv.id}')">
                 <div class="history-title">
-                    <span>${conv.title}</span>
+                    <span>${title}</span>
                     <span class="history-delete" onclick="event.stopPropagation(); deleteConversation('${conv.id}')">✕</span>
                 </div>
                 <div class="history-date">${dateStr}</div>
