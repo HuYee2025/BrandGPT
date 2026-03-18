@@ -314,7 +314,7 @@
     align-self: flex-end;
     background: var(--text-dark);
     color: #F1EEE7;
-    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
 }
 
 .message.assistant {
@@ -322,7 +322,7 @@
     background: #FFFFFF;
     color: var(--text-dark);
     border: 1px solid var(--border-color);
-    border-bottom-right-radius: 6px;
+    border-top-left-radius: 6px;
 }
 
 .message-avatar {
@@ -579,12 +579,6 @@
                 返回
             </button>
             <span class="chat-header-title">新对话</span>
-            <button class="chat-header-back" onclick="startNewChat()">
-                新建对话
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 5v14M5 12h14"/>
-                </svg>
-            </button>
         </div>
         <div class="chat-messages" id="chatMessages">
             <!-- 消息将在这里显示 -->
