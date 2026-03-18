@@ -732,7 +732,7 @@ function saveCurrentConversation() {
         // 获取用户的第一句话作为标题
         const firstUserMessage = messages.find(m => m.role === 'user');
         const title = firstUserMessage
-            ? (firstUserMessage.content.substring(0, 13) + (firstUserMessage.content.length > 13 ? '...' : ''))
+            ? (firstUserMessage.content.substring(0, 10) + (firstUserMessage.content.length > 10 ? '...' : ''))
             : '新对话';
         saveToHistory(title, messages);
     }
@@ -766,10 +766,11 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('welcomeScreen').style.display = 'none';
     document.getElementById('chatContainer').classList.add('active');
 
-    // 如果有初始prompt（从首页点击品类卡片进入），自动发送
+    // 如果有初始prompt（从首页点击品类卡片进入），先发送开场白，再发送用户问题
     {% if initial_prompt %}
     document.getElementById('chatInput').value = '{{ initial_prompt }}';
-    sendMessage();
+    // 先获取开场白
+    sendInitialMessage();
     {% else %}
     // 自动加载最后一次对话记录
     const lastConversationId = localStorage.getItem('lastConversationId');
@@ -803,6 +804,11 @@ function sendInitialMessage() {
             addMessage('assistant', '抱歉，发生了错误：' + data.error);
         } else {
             addMessage('assistant', data.response);
+            // 开场白发送完毕后，再发送用户的问题
+            const userPrompt = document.getElementById('chatInput').value;
+            if (userPrompt) {
+                setTimeout(() => sendMessage(), 500);
+            }
         }
     })
     .catch(error => {
