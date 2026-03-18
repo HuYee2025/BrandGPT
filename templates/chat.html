@@ -9,8 +9,8 @@
     height: calc(100vh - 70px);
     display: flex;
     flex-direction: row;
-    margin: 0 0 0 50px;
-    width: calc(100% - 50px);
+    margin: 0 0 0 200px;
+    width: calc(100% - 200px);
     overflow: hidden;
 }
 
@@ -871,7 +871,7 @@ function sendMessage() {
 
     // 首次对话时更新标题为对话摘要
     if (messageCount === 1) {
-        const summary = message.length > 15 ? message.substring(0, 15) + '...' : message;
+        const summary = message.length > 10 ? message.substring(0, 10) + '...' : message;
         document.querySelector('.chat-header-title').textContent = summary;
         // 创建新对话ID
         currentConversationId = Date.now().toString();
