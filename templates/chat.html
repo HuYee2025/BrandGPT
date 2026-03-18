@@ -566,7 +566,7 @@
     <div class="chat-container" id="chatContainer">
         <!-- 聊天头部 -->
         <div class="chat-header">
-            <button class="chat-header-back" onclick="window.location.href='{{ url_for('index') }}'">
+            <button class="chat-header-back" onclick="goBack()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M19 12H5M12 19l-7-7 7-7"/>
                 </svg>
@@ -616,6 +616,7 @@ function saveToHistory(title, messages) {
     if (currentConversationId === null) {
         // 创建新对话
         currentConversationId = Date.now().toString();
+        localStorage.setItem('lastConversationId', currentConversationId);
     }
 
     const conversation = {
@@ -699,6 +700,7 @@ function loadConversation(conversationId) {
 
     // 切换对话
     currentConversationId = conversationId;
+    localStorage.setItem('lastConversationId', conversationId);
     document.getElementById('chatMessages').innerHTML = '';
     messageCount = 0;
 
@@ -745,6 +747,7 @@ function startNewChat() {
 
     // 清除当前显示
     currentConversationId = null;
+    localStorage.removeItem('lastConversationId');
     document.getElementById('chatMessages').innerHTML = '';
     messageCount = 0;
     document.querySelector('.chat-header-title').textContent = '新对话';
@@ -768,8 +771,13 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('chatInput').value = '{{ initial_prompt }}';
     sendMessage();
     {% else %}
-    // 页面刷新时，只显示空白输入框，等待用户输入，不自动发送消息
-    document.getElementById('chatInput').focus();
+    // 自动加载最后一次对话记录
+    const lastConversationId = localStorage.getItem('lastConversationId');
+    if (lastConversationId) {
+        loadConversation(lastConversationId);
+    } else {
+        document.getElementById('chatInput').focus();
+    }
     {% endif %}
 });
 
@@ -800,6 +808,19 @@ function sendInitialMessage() {
     .catch(error => {
         addMessage('assistant', '抱歉，发生了错误，请稍后重试');
     });
+}
+
+// 返回首页（保存当前对话）
+function goBack() {
+    // 保存当前对话
+    if (messageCount > 0) {
+        saveCurrentConversation();
+        // 保存最后一次对话ID
+        if (currentConversationId) {
+            localStorage.setItem('lastConversationId', currentConversationId);
+        }
+    }
+    window.location.href = '{{ url_for("index") }}';
 }
 
 // 新建对话（清除当前聊天记录）
@@ -847,6 +868,7 @@ function sendMessage() {
         document.querySelector('.chat-header-title').textContent = summary;
         // 创建新对话ID
         currentConversationId = Date.now().toString();
+        localStorage.setItem('lastConversationId', currentConversationId);
     }
 
     // 保存当前对话（实时保存）
