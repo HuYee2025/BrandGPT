@@ -683,7 +683,11 @@ function saveCurrentConversation() {
     });
 
     if (messages.length > 0) {
-        const title = messages[0].content.substring(0, 20) + (messages[0].content.length > 20 ? '...' : '');
+        // 获取用户的第一句话作为标题
+        const firstUserMessage = messages.find(m => m.role === 'user');
+        const title = firstUserMessage
+            ? (firstUserMessage.content.substring(0, 20) + (firstUserMessage.content.length > 20 ? '...' : ''))
+            : '新对话';
         saveToHistory(title, messages);
     }
 }
