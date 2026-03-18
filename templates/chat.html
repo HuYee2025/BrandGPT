@@ -589,9 +589,34 @@
         padding-bottom: 0;
     }
 
-    /* 移动端隐藏欢迎界面 */
+    /* 移动端欢迎界面调整 */
     .welcome-screen {
-        display: none;
+        display: flex;
+        padding: 20px 16px;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* 移动端欢迎卡片改为2列 */
+    .welcome-cards {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .welcome-card {
+        min-width: 0;
+        padding: 16px;
+    }
+
+    .welcome-card h4 {
+        font-size: 0.9rem;
+    }
+
+    .welcome-card p {
+        font-size: 0.75rem;
     }
 
     /* 聊天头部扩展到屏幕边缘，固定在顶部 */
