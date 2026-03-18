@@ -237,6 +237,34 @@
     margin-bottom: 16px;
 }
 
+/* 移动端适配 - 使用流程垂直排列 */
+@media (max-width: 768px) {
+    .process-steps {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .step {
+        flex-direction: row;
+        padding: 16px 20px;
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .step-arrow {
+        transform: rotate(90deg);
+        font-size: 1.2rem;
+    }
+
+    .process {
+        padding: 40px 20px 60px;
+    }
+
+    .process-title {
+        font-size: 1.5rem;
+    }
+}
+
 /* 响应式 - 仅针对大屏幕优化 */
 @media (min-width: 1400px) {
     .hero-title {
