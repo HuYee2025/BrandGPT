@@ -4,7 +4,7 @@
 
 {% block extra_head %}
 <style>
-/* ChatGPT风格对话框 - 自适应三列布局 */
+/* ChatGPT风格对话框 - 两列布局 */
 .chat-page {
     height: calc(100vh - 70px);
     display: flex;
@@ -16,7 +16,7 @@
 
 /* 左侧历史记录栏 */
 .chat-sidebar {
-    width: 20%;
+    width: 260px;
     min-width: 200px;
     background: #F0EEE6;
     border-radius: 16px 0 0 16px;
@@ -34,28 +34,6 @@
     flex-direction: column;
     position: relative;
     background: var(--bg-color);
-}
-
-/* 右侧进度条栏 */
-.chat-sidebar-right {
-    width: 10%;
-    min-width: 80px;
-    background: var(--bg-color);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    padding-top: 80px;
-    box-sizing: border-box;
-    flex-shrink: 0;
-}
-
-.progress-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
-    width: 100%;
 }
 
 .sidebar-header {
@@ -168,59 +146,6 @@
     background: var(--bg-color);
     grid-column: 2;
     grid-row: 1;
-}
-
-/* 右侧进度条 - 垂直布局 */
-.progress-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    height: auto;
-}
-
-.progress-step {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: #E3DACB;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    transition: all 0.3s;
-    cursor: default;
-    flex-shrink: 0;
-}
-
-.progress-step.active {
-    background: #141412;
-    color: #FFFFFF;
-}
-
-.progress-step.completed {
-    background: #141412;
-    color: #FFFFFF;
-}
-
-.progress-step-label {
-    font-size: 0.65rem;
-    color: var(--text-muted);
-    white-space: nowrap;
-    text-align: center;
-}
-
-.progress-step.active ~ .progress-item .progress-step-label {
-    color: #141412;
-}
-
-.progress-line {
-    width: 2px;
-    height: 12px;
-    background: #E3DACB;
-    margin-left: 13px;
-}
 }
 
 /* 欢迎界面 */
@@ -680,84 +605,11 @@
             </div>
         </div>
     </div>
-
-    <!-- 右侧进度条栏 -->
-    <div class="chat-sidebar-right">
-        <div class="progress-container">
-            <div class="progress-item">
-                <div class="progress-step active" data-step="1">1</div>
-                <span class="progress-step-label">项目概述</span>
-            </div>
-            <div class="progress-line"></div>
-            <div class="progress-item">
-                <div class="progress-step" data-step="2">2</div>
-                <span class="progress-step-label">市场分析</span>
-            </div>
-            <div class="progress-line"></div>
-            <div class="progress-item">
-                <div class="progress-step" data-step="3">3</div>
-                <span class="progress-step-label">运营策略</span>
-            </div>
-            <div class="progress-line"></div>
-            <div class="progress-item">
-                <div class="progress-step" data-step="4">4</div>
-                <span class="progress-step-label">财务规划</span>
-            </div>
-            <div class="progress-line"></div>
-            <div class="progress-item">
-                <div class="progress-step" data-step="5">✓</div>
-                <span class="progress-step-label">生成报告</span>
-            </div>
-        </div>
-    </div>
 </div>
 
 <script>
 let messageCount = 0;
 let currentConversationId = null;
-let currentProgress = 1;
-
-// ==================== 进度条更新 ====================
-
-// 更新进度条
-function updateProgress(step) {
-    currentProgress = step;
-    const steps = document.querySelectorAll('.progress-step');
-    const labels = document.querySelectorAll('.progress-step-label');
-
-    steps.forEach((s, i) => {
-        const sNum = i + 1;
-        s.classList.remove('active', 'completed');
-        if (sNum < step) {
-            s.classList.add('completed');
-            s.innerHTML = '✓';
-        } else if (sNum === step) {
-            s.classList.add('active');
-            s.innerHTML = sNum;
-        } else {
-            s.innerHTML = sNum;
-        }
-    });
-}
-
-// 根据消息数量自动更新进度
-function autoUpdateProgress() {
-    // 根据对话轮数更新进度
-    // 1轮 = 步骤1, 2-3轮 = 步骤2, 4-5轮 = 步骤3, 6轮以上 = 步骤4, 可以生成报告 = 步骤5
-    let progress = 1;
-    if (messageCount <= 2) {
-        progress = 1;
-    } else if (messageCount <= 4) {
-        progress = 2;
-    } else if (messageCount <= 6) {
-        progress = 3;
-    } else if (messageCount <= 8) {
-        progress = 4;
-    } else {
-        progress = 5; // 可以生成报告
-    }
-    updateProgress(progress);
-}
 
 // ==================== 历史对话管理 ====================
 
@@ -871,9 +723,6 @@ function loadConversation(conversationId) {
     // 更新标题
     document.querySelector('.chat-header-title').textContent = conversation.title;
 
-    // 根据消息数量更新进度条
-    autoUpdateProgress();
-
     // 重新渲染列表（更新active状态）
     renderHistoryList();
 
@@ -912,9 +761,6 @@ function startNewChat() {
     document.getElementById('chatMessages').innerHTML = '';
     messageCount = 0;
     document.querySelector('.chat-header-title').textContent = '新对话';
-
-    // 重置进度条
-    updateProgress(1);
 
     // 重新渲染历史列表
     renderHistoryList();
@@ -962,8 +808,6 @@ function sendInitialMessage() {
             addMessage('assistant', '抱歉，发生了错误：' + data.error);
         } else {
             addMessage('assistant', data.response);
-            // 更新进度条
-            autoUpdateProgress();
         }
     })
     .catch(error => {
@@ -1040,9 +884,6 @@ function sendMessage() {
             addMessage('assistant', '抱歉，发生了错误：' + data.error);
         } else {
             addMessage('assistant', data.response);
-
-            // 更新进度条
-            autoUpdateProgress();
 
             // 保存对话
             saveCurrentConversation();
