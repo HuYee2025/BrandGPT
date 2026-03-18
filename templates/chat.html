@@ -8,10 +8,100 @@
 .chat-page {
     height: calc(100vh - 70px);
     display: flex;
-    flex-direction: column;
-    max-width: 850px;
     margin: 0 auto;
     width: 100%;
+    max-width: 1200px;
+}
+
+/* 左侧历史记录栏 */
+.chat-sidebar {
+    width: 260px;
+    background: var(--card-bg);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.sidebar-header {
+    padding: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-new-btn {
+    width: 100%;
+    padding: 12px 16px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    color: var(--text-dark);
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+}
+
+.sidebar-new-btn:hover {
+    background: var(--text-dark);
+    color: #FFFFFF;
+    border-color: var(--text-dark);
+}
+
+.sidebar-history {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+}
+
+.history-item {
+    width: 100%;
+    padding: 12px 14px;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    color: var(--text-dark);
+    font-size: 0.85rem;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.history-item:hover {
+    background: rgba(0,0,0,0.05);
+}
+
+.history-item.active {
+    background: var(--text-dark);
+    color: #FFFFFF;
+}
+
+.history-item .history-title {
+    font-size: 0.85rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.history-item .history-date {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+.history-item.active .history-date {
+    color: rgba(255,255,255,0.7);
+}
+
+/* 聊天区域 */
+.chat-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
 }
 
 /* 欢迎界面 */
@@ -375,6 +465,18 @@
 
 {% block content %}
 <div class="chat-page">
+    <!-- 左侧历史记录栏 -->
+    <div class="chat-sidebar">
+        <div class="sidebar-header">
+            <button class="sidebar-new-btn" onclick="startNewChat()">+ 新建对话</button>
+        </div>
+        <div class="sidebar-history" id="sidebarHistory">
+            <!-- 历史记录将通过JS动态生成 -->
+        </div>
+    </div>
+
+    <!-- 主聊天区域 -->
+    <div class="chat-main">
     <!-- 欢迎界面 -->
     <div class="welcome-screen" id="welcomeScreen">
         <div class="welcome-logo">
@@ -449,13 +551,148 @@
             </div>
         </div>
     </div>
+    </div>
 </div>
 
 <script>
 let messageCount = 0;
+let currentConversationId = null;
 
-// 页面加载时直接显示对话界面
+// ==================== 历史对话管理 ====================
+
+// 获取历史对话列表
+function getHistoryList() {
+    const history = localStorage.getItem('chatHistory');
+    return history ? JSON.parse(history) : [];
+}
+
+// 保存对话到历史记录
+function saveToHistory(title, messages) {
+    const history = getHistoryList();
+
+    if (currentConversationId === null) {
+        // 创建新对话
+        currentConversationId = Date.now().toString();
+    }
+
+    const conversation = {
+        id: currentConversationId,
+        title: title || '新对话',
+        messages: messages,
+        updatedAt: new Date().toISOString()
+    };
+
+    // 查找并更新或添加
+    const existingIndex = history.findIndex(h => h.id === currentConversationId);
+    if (existingIndex >= 0) {
+        history[existingIndex] = conversation;
+    } else {
+        history.unshift(conversation); // 添加到开头
+    }
+
+    // 只保留最近20个对话
+    if (history.length > 20) {
+        history.pop();
+    }
+
+    localStorage.setItem('chatHistory', JSON.stringify(history));
+    renderHistoryList();
+}
+
+// 渲染历史对话列表
+function renderHistoryList() {
+    const history = getHistoryList();
+    const container = document.getElementById('sidebarHistory');
+
+    if (history.length === 0) {
+        container.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted); font-size: 0.85rem;">暂无历史对话</div>';
+        return;
+    }
+
+    container.innerHTML = history.map(conv => {
+        const date = new Date(conv.updatedAt);
+        const dateStr = date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
+        const isActive = conv.id === currentConversationId ? 'active' : '';
+        return `
+            <button class="history-item ${isActive}" onclick="loadConversation('${conv.id}')">
+                <div class="history-title">${conv.title}</div>
+                <div class="history-date">${dateStr}</div>
+            </button>
+        `;
+    }).join('');
+}
+
+// 加载历史对话
+function loadConversation(conversationId) {
+    const history = getHistoryList();
+    const conversation = history.find(h => h.id === conversationId);
+
+    if (!conversation) return;
+
+    // 保存当前对话（如果有）
+    if (messageCount > 0) {
+        saveCurrentConversation();
+    }
+
+    // 切换对话
+    currentConversationId = conversationId;
+    document.getElementById('chatMessages').innerHTML = '';
+    messageCount = 0;
+
+    // 渲染消息
+    conversation.messages.forEach(msg => {
+        addMessage(msg.role, msg.content);
+    });
+
+    // 更新标题
+    document.querySelector('.chat-header-title').textContent = conversation.title;
+
+    // 重新渲染列表（更新active状态）
+    renderHistoryList();
+
+    // 聚焦输入框
+    document.getElementById('chatInput').focus();
+}
+
+// 保存当前对话
+function saveCurrentConversation() {
+    const messages = [];
+    document.querySelectorAll('.message').forEach(msgDiv => {
+        const role = msgDiv.classList.contains('user') ? 'user' : 'assistant';
+        const content = msgDiv.querySelector('.message-content').textContent;
+        messages.push({ role, content });
+    });
+
+    if (messages.length > 0) {
+        const title = messages[0].content.substring(0, 20) + (messages[0].content.length > 20 ? '...' : '');
+        saveToHistory(title, messages);
+    }
+}
+
+// 开始新对话
+function startNewChat() {
+    // 保存当前对话
+    if (messageCount > 0) {
+        saveCurrentConversation();
+    }
+
+    // 清除当前显示
+    currentConversationId = null;
+    document.getElementById('chatMessages').innerHTML = '';
+    messageCount = 0;
+    document.querySelector('.chat-header-title').textContent = '新对话';
+
+    // 重新渲染历史列表
+    renderHistoryList();
+
+    // 发送初始消息
+    sendInitialMessage();
+}
+
+// 页面加载时初始化历史记录
 document.addEventListener('DOMContentLoaded', function() {
+    renderHistoryList();
+
     document.getElementById('welcomeScreen').style.display = 'none';
     document.getElementById('chatContainer').classList.add('active');
 
@@ -467,6 +704,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // 没有选择品类时，发送初始请求获取开场白
     sendInitialMessage();
     {% endif %}
+});
+
+// 页面离开时保存当前对话
+window.addEventListener('beforeunload', function() {
+    if (messageCount > 0) {
+        saveCurrentConversation();
+    }
 });
 
 // 发送初始消息（获取AI开场白）
@@ -534,7 +778,12 @@ function sendMessage() {
     if (messageCount === 1) {
         const summary = message.length > 15 ? message.substring(0, 15) + '...' : message;
         document.querySelector('.chat-header-title').textContent = summary;
+        // 创建新对话ID
+        currentConversationId = Date.now().toString();
     }
+
+    // 保存当前对话（实时保存）
+    saveCurrentConversation();
 
     // 显示加载状态
     showTyping();
@@ -555,6 +804,9 @@ function sendMessage() {
             addMessage('assistant', '抱歉，发生了错误：' + data.error);
         } else {
             addMessage('assistant', data.response);
+
+            // 保存对话
+            saveCurrentConversation();
 
             // 如果是生成报告的回复，添加生成报告按钮
             if (data.response.includes('商业计划书') || data.response.includes('报告')) {
