@@ -108,7 +108,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
+    width: 285px;
 }
 
 .history-item .history-delete {
@@ -596,8 +596,8 @@
                     rows="1"
                     onkeydown="handleKeyDown(event)"
                 ></textarea>
-                <button class="btn-send" onclick="sendMessage()" id="sendBtn">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <button class="btn-send" onclick="handleSendClick()" id="sendBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" id="sendIcon">
                         <path d="M12 19V5M5 12l7-7 7 7"/>
                     </svg>
                 </button>
@@ -610,6 +610,8 @@
 <script>
 let messageCount = 0;
 let currentConversationId = null;
+let abortController = null;
+let isAIThinking = false;
 
 // ==================== 历史对话管理 ====================
 
@@ -868,11 +870,26 @@ function handleKeyDown(event) {
     }
 }
 
+function handleSendClick() {
+    if (isAIThinking) {
+        // 如果AI正在思考，点击停止按钮
+        stopAIResponse();
+    } else {
+        // 正常发送消息
+        sendMessage();
+    }
+}
+
 function sendMessage() {
     const input = document.getElementById('chatInput');
     const message = input.value.trim();
 
     if (!message) return;
+
+    // 创建AbortController用于停止请求
+    abortController = new AbortController();
+    isAIThinking = true;
+    updateSendButton(true);
 
     // 添加用户消息
     addMessage('user', message);
@@ -900,11 +917,14 @@ function sendMessage() {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
+        signal: abortController.signal,
         body: 'message=' + encodeURIComponent(message)
     })
     .then(response => response.json())
     .then(data => {
         hideTyping();
+        isAIThinking = false;
+        updateSendButton(false);
 
         if (data.error) {
             addMessage('assistant', '抱歉，发生了错误：' + data.error);
@@ -924,8 +944,36 @@ function sendMessage() {
     })
     .catch(error => {
         hideTyping();
-        addMessage('assistant', '抱歉，发生了网络错误，请稍后重试。');
+        isAIThinking = false;
+        updateSendButton(false);
+
+        if (error.name === 'AbortError') {
+            addMessage('assistant', '已停止生成回复。');
+        } else {
+            addMessage('assistant', '抱歉，发生了网络错误，请稍后重试。');
+        }
     });
+}
+
+function stopAIResponse() {
+    if (abortController) {
+        abortController.abort();
+    }
+}
+
+function updateSendButton(isThinking) {
+    const sendBtn = document.getElementById('sendBtn');
+    const sendIcon = document.getElementById('sendIcon');
+
+    if (isThinking) {
+        // 切换为停止按钮
+        sendIcon.innerHTML = '<rect x="6" y="6" width="12" height="12" rx="2" stroke="currentColor" stroke-width="2"/>';
+        sendBtn.style.background = '#e74c3c';
+    } else {
+        // 切换回发送按钮
+        sendIcon.innerHTML = '<path d="M12 19V5M5 12l7-7 7 7"/>';
+        sendBtn.style.background = '#141412';
+    }
 }
 
 function addMessage(role, content) {
