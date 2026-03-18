@@ -76,17 +76,27 @@
 
 /* 侧边栏切换按钮 */
 .sidebar-toggle {
-    display: none;
     width: 100%;
     padding: 12px 8px;
     cursor: pointer;
     border-bottom: 1px solid var(--border-color);
-    text-align: center;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .sidebar-toggle-icon {
     font-size: 1.2rem;
     color: var(--text-dark);
+    flex-shrink: 0;
+}
+
+.sidebar-toggle-text {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
 }
 
 .sidebar-history-title {
@@ -551,7 +561,7 @@
 @media (max-width: 768px) {
     /* 显示侧边栏切换按钮 */
     .sidebar-toggle {
-        display: block;
+        display: flex;
     }
 
     /* 侧边栏默认收起状态 - 只显示切换按钮 */
@@ -561,8 +571,8 @@
         border-radius: 0;
     }
 
-    /* 隐藏历史记录标题 */
-    .chat-sidebar .sidebar-history-title {
+    /* 收起时隐藏文字 */
+    .sidebar-toggle-text {
         display: none;
     }
 
@@ -578,10 +588,9 @@
         border-radius: 0 16px 16px 0;
     }
 
-    .chat-sidebar.expanded .sidebar-history-title {
-        display: block;
-        border-bottom: 1px solid var(--border-color);
-        padding-bottom: 8px;
+    /* 展开时显示文字 */
+    .chat-sidebar.expanded .sidebar-toggle-text {
+        display: inline;
     }
 
     .chat-sidebar.expanded .sidebar-history {
@@ -654,9 +663,9 @@
         <div class="chat-sidebar" id="chatSidebar">
             <div class="sidebar-toggle" onclick="toggleSidebar()">
                 <span class="sidebar-toggle-icon">☰</span>
+                <span class="sidebar-toggle-text">对话列表</span>
             </div>
             <div class="sidebar-history" id="sidebarHistory">
-                <div class="sidebar-history-title">对话列表</div>
                 <!-- 历史记录将通过JS动态生成 -->
             </div>
         </div>
