@@ -107,7 +107,6 @@
     opacity: 0;
     background: transparent;
     border: none;
-    color: var(--text-muted);
     cursor: pointer;
     padding: 2px 6px;
     border-radius: 4px;
@@ -115,11 +114,12 @@
     transition: all 0.2s;
     margin-left: 8px;
     flex-shrink: 0;
+    width: 16px;
+    height: 16px;
 }
 
 .history-item .history-delete:hover {
-    background: #C62828;
-    color: #FFFFFF;
+    opacity: 1;
 }
     font-size: 0.85rem;
     overflow: hidden;
@@ -660,7 +660,7 @@ function renderHistoryList() {
             <button class="history-item ${isActive}" onclick="loadConversation('${conv.id}')">
                 <div class="history-title">
                     <span>${title}</span>
-                    <span class="history-delete" onclick="event.stopPropagation(); deleteConversation('${conv.id}')">🗑️</span>
+                    <img class="history-delete" src="{{ url_for('static', filename='images/delete-bin-line.png') }}" onclick="event.stopPropagation(); deleteConversation('${conv.id}')" alt="删除">
                 </div>
             </button>
         `;
