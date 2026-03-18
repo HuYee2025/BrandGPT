@@ -582,10 +582,30 @@
         transform: translateX(-100%);
         transition: transform 0.3s ease;
         border-radius: 0;
+        background: #E3DACB;
+        color: #FFFFFF;
     }
 
     .chat-sidebar.open {
         transform: translateX(0);
+    }
+
+    /* 覆盖层内文字颜色 */
+    .chat-sidebar .sidebar-history-title {
+        color: #FFFFFF;
+    }
+
+    .chat-sidebar .history-item {
+        color: #FFFFFF;
+    }
+
+    .chat-sidebar .history-item:hover {
+        background: rgba(255,255,255,0.15);
+    }
+
+    .chat-sidebar .history-item.active {
+        background: rgba(255,255,255,0.25);
+        color: #FFFFFF;
     }
 
     /* 聊天区域全宽 */
