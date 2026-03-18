@@ -1036,6 +1036,13 @@ function saveCurrentConversation() {
 
 // 开始新对话
 function startNewChat() {
+    // 检查历史记录数量，不能超过3条
+    const history = getHistoryList();
+    if (history.length >= 3) {
+        alert('对话列表最多保存3条，请先删除一些对话');
+        return;
+    }
+
     // 移动端新建对话时收起侧边栏
     if (window.innerWidth <= 768) {
         document.getElementById('chatSidebar').classList.remove('open');
