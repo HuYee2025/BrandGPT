@@ -237,8 +237,48 @@
     margin-bottom: 16px;
 }
 
-/* 移动端适配 - 使用流程垂直排列 */
+/* 移动端适配 - 全面适配 */
 @media (max-width: 768px) {
+    /* Hero区域 */
+    .hero {
+        padding: 60px 20px 40px;
+        min-height: calc(100vh - 120px);
+    }
+
+    .hero-title {
+        font-size: 2rem;
+        margin-bottom: 16px;
+    }
+
+    .hero-desc {
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    .hero-desc br {
+        display: none;
+    }
+
+    /* 类别卡片 */
+    .category-cards {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 0 16px;
+    }
+
+    .category-card {
+        padding: 16px;
+    }
+
+    .category-card h4 {
+        font-size: 1rem;
+    }
+
+    .category-card p {
+        font-size: 0.8rem;
+    }
+
+    /* 使用流程 */
     .process-steps {
         flex-direction: column;
         gap: 16px;
@@ -262,6 +302,42 @@
 
     .process-title {
         font-size: 1.5rem;
+    }
+
+    .step-number {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+
+    .step-content h4 {
+        font-size: 0.95rem;
+    }
+
+    .step-content p {
+        font-size: 0.8rem;
+    }
+
+    /* CTA区域 */
+    .cta {
+        padding: 40px 20px;
+    }
+
+    .cta-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .cta-content p {
+        font-size: 0.9rem;
+    }
+
+    /* 页脚 */
+    .footer {
+        padding: 20px;
+    }
+
+    .footer p {
+        font-size: 0.8rem;
     }
 }
 
