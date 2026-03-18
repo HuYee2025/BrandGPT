@@ -279,7 +279,11 @@
 }
 
 .chat-header-menu:hover {
-    background: rgba(0,0,0,0.05);
+    background: #141412;
+}
+
+.chat-header-menu:hover .menu-icon {
+    color: #fff;
 }
 
 .chat-header-back {
@@ -302,6 +306,10 @@
 .chat-header-back:hover {
     background: #141412;
     color: #FFFFFF;
+}
+
+.chat-header-back:hover svg {
+    stroke: #FFFFFF;
 }
 
 .chat-header-back svg {
@@ -792,7 +800,6 @@
             </button>
             <span class="chat-header-title">新对话</span>
             <button class="chat-header-back" onclick="startNewChat()">
-                <span class="header-btn-text">新建对话</span>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M12 5v14M5 12h14"/>
                 </svg>
