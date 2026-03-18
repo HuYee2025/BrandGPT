@@ -4,38 +4,39 @@
 
 {% block extra_head %}
 <style>
-/* ChatGPT风格对话框 - PC端宽度 */
+/* ChatGPT风格对话框 - 自适应三列布局 */
 .chat-page {
     height: calc(100vh - 70px);
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 20% 70% 10%;
+    grid-template-rows: 1fr;
+    margin: 0;
     width: 100%;
-    max-width: 1400px;
     overflow: hidden;
 }
 
 /* 左侧历史记录栏 */
 .chat-sidebar {
-    width: 260px;
     background: #F0EEE6;
     border-radius: 16px 0 0 16px;
     display: flex;
     flex-direction: column;
-    flex-shrink: 0;
-    margin: 0;
     overflow: hidden;
+    grid-column: 1;
+    grid-row: 1;
 }
 
 /* 右侧进度条栏 */
 .chat-sidebar-right {
-    width: 100px;
+    background: var(--bg-color);
     display: flex;
     flex-direction: column;
-    flex-shrink: 0;
-    align-self: flex-start;
+    justify-content: flex-start;
+    align-items: center;
     padding-top: 80px;
+    box-sizing: border-box;
+    grid-column: 3;
+    grid-row: 1;
 }
 
 .progress-container {
@@ -43,6 +44,7 @@
     flex-direction: column;
     align-items: center;
     gap: 0;
+    width: 100%;
 }
 
 .sidebar-header {
@@ -148,12 +150,13 @@
 
 /* 聊天区域 */
 .chat-main {
-    flex: 1;
-    width: auto;
+    min-width: 0;
     display: flex;
     flex-direction: column;
-    min-width: 0;
     position: relative;
+    background: var(--bg-color);
+    grid-column: 2;
+    grid-row: 1;
 }
 
 /* 右侧进度条 - 垂直布局 */
