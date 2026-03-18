@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}品牌AI顾问{% endblock %}</title>
+    <title>{% block title %}虎翼品牌AI顾问{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     {% block extra_head %}{% endblock %}
 </head>
@@ -11,8 +11,8 @@
     <nav class="navbar">
         <div class="nav-container">
             <a href="{{ url_for('index') }}" class="nav-logo">
-                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo" style="height: 28px; width: auto; vertical-align: middle; margin-right: 8px;">
-                品牌AI顾问
+                <img src="{{ url_for('static', filename='images/logo1.png') }}" alt="logo" style="height: 28px; width: auto; vertical-align: middle; margin-right: 8px;">
+                虎翼品牌AI顾问
             </a>
             <div class="nav-links">
                 <a href="#" class="nav-link" onclick="showApiAdmin()">API管理</a>
