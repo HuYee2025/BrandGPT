@@ -73,30 +73,6 @@
     overflow-y: auto;
     padding: 20px 8px 8px;
 }
-
-/* 侧边栏切换按钮 */
-.sidebar-toggle {
-    width: 100%;
-    padding: 12px 8px;
-    cursor: pointer;
-    border-bottom: 1px solid var(--border-color);
-    text-align: left;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.sidebar-toggle-icon {
-    font-size: 1.2rem;
-    color: var(--text-dark);
-    flex-shrink: 0;
-}
-
-.sidebar-toggle-text {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    flex-shrink: 0;
-}
 }
 
 .sidebar-history-title {
@@ -271,6 +247,30 @@
     width: 100%;
     margin: 0 auto;
     box-sizing: border-box;
+}
+
+/* 头部菜单按钮 */
+.chat-header-menu {
+    display: none;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.menu-icon {
+    font-size: 1.2rem;
+    color: var(--text-dark);
+}
+
+.chat-header-menu:hover {
+    background: rgba(0,0,0,0.05);
 }
 
 .chat-header-back {
@@ -557,48 +557,40 @@
     -ms-overflow-style: none;
 }
 
-/* 移动端适配 - 侧边栏 */
+/* 移动端适配 - 侧边栏覆盖层 */
 @media (max-width: 768px) {
-    /* 显示侧边栏切换按钮 */
-    .sidebar-toggle {
+    /* 显示菜单按钮 */
+    .chat-header-menu {
         display: flex;
     }
 
-    /* 侧边栏默认收起状态 - 只显示切换按钮 */
+    /* 聊天容器占满宽度 */
+    .chat-wrapper {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    /* 侧边栏作为覆盖层 */
     .chat-sidebar {
-        width: 30px;
-        min-width: 30px;
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 75%;
+        max-width: 300px;
+        z-index: 100;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
         border-radius: 0;
     }
 
-    /* 收起时隐藏文字 */
-    .sidebar-toggle-text {
-        display: none;
+    .chat-sidebar.open {
+        transform: translateX(0);
     }
 
-    /* 隐藏历史记录项 */
-    .chat-sidebar .sidebar-history {
-        display: none;
-    }
-
-    /* 展开状态 */
-    .chat-sidebar.expanded {
-        width: 260px;
-        min-width: 200px;
-        border-radius: 0 16px 16px 0;
-    }
-
-    /* 展开时显示文字 */
-    .chat-sidebar.expanded .sidebar-toggle-text {
-        display: inline;
-    }
-
-    .chat-sidebar.expanded .sidebar-history {
-        display: block;
-    }
-
-    /* 聊天区域自适应 */
-    .chat-wrapper {
+    /* 聊天区域全宽 */
+    .chat-main {
+        width: 100%;
         max-width: 100%;
     }
 
@@ -661,11 +653,8 @@
     <div class="chat-wrapper">
         <!-- 左侧历史记录栏 -->
         <div class="chat-sidebar" id="chatSidebar">
-            <div class="sidebar-toggle" onclick="toggleSidebar()">
-                <span class="sidebar-toggle-icon">☰</span>
-                <span class="sidebar-toggle-text">对话列表</span>
-            </div>
             <div class="sidebar-history" id="sidebarHistory">
+                <div class="sidebar-history-title">对话列表</div>
                 <!-- 历史记录将通过JS动态生成 -->
             </div>
         </div>
@@ -716,11 +705,8 @@
     <div class="chat-container" id="chatContainer">
         <!-- 聊天头部 -->
         <div class="chat-header">
-            <button class="chat-header-back" onclick="goBack()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M19 12H5M12 19l-7-7 7-7"/>
-                </svg>
-                <span class="header-btn-text">返回</span>
+            <button class="chat-header-menu" onclick="toggleSidebar()">
+                <span class="menu-icon">☰</span>
             </button>
             <span class="chat-header-title">新对话</span>
             <button class="chat-header-back" onclick="startNewChat()">
@@ -763,7 +749,7 @@ let isAIThinking = false;
 // ==================== 侧边栏展开/收起 ====================
 function toggleSidebar() {
     const sidebar = document.getElementById('chatSidebar');
-    sidebar.classList.toggle('expanded');
+    sidebar.classList.toggle('open');
 }
 
 // 滑动手势支持
@@ -786,12 +772,12 @@ function handleSwipe() {
     const sidebar = document.getElementById('chatSidebar');
 
     // 向右滑 > 50px 展开
-    if (swipeDistance > 50 && !sidebar.classList.contains('expanded')) {
-        sidebar.classList.add('expanded');
+    if (swipeDistance > 50 && !sidebar.classList.contains('open')) {
+        sidebar.classList.add('open');
     }
     // 向左滑 < -50px 收起
-    else if (swipeDistance < -50 && sidebar.classList.contains('expanded')) {
-        sidebar.classList.remove('expanded');
+    else if (swipeDistance < -50 && sidebar.classList.contains('open')) {
+        sidebar.classList.remove('open');
     }
 }
 
@@ -909,7 +895,7 @@ function deleteConversation(conversationId) {
 function loadConversation(conversationId) {
     // 移动端点击历史记录时收起侧边栏
     if (window.innerWidth <= 768) {
-        document.getElementById('chatSidebar').classList.remove('expanded');
+        document.getElementById('chatSidebar').classList.remove('open');
     }
 
     const history = getHistoryList();
@@ -963,7 +949,7 @@ function saveCurrentConversation() {
 function startNewChat() {
     // 移动端新建对话时收起侧边栏
     if (window.innerWidth <= 768) {
-        document.getElementById('chatSidebar').classList.remove('expanded');
+        document.getElementById('chatSidebar').classList.remove('open');
     }
 
     // 保存当前对话
