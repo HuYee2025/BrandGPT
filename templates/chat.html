@@ -17,11 +17,11 @@
 .chat-sidebar {
     width: 260px;
     background: #F0EEE6;
-    border-radius: 16px;
+    border-radius: 16px 0 0 16px;
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
-    margin: 16px 0 16px 16px;
+    margin: 0;
     overflow: hidden;
 }
 
@@ -133,12 +133,14 @@
     flex-direction: column;
     min-width: 0;
     position: relative;
+    padding-right: 80px;
+    box-sizing: border-box;
 }
 
 /* 右侧进度条 - 垂直布局 */
 .chat-progress {
     position: absolute;
-    right: 20px;
+    right: 40px;
     top: 50%;
     transform: translateY(-50%);
     display: flex;
