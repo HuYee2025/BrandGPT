@@ -1053,11 +1053,8 @@ function startNewChat() {
 document.addEventListener('DOMContentLoaded', function() {
     renderHistoryList();
 
-    // 如果有初始prompt（从首页点击品类卡片进入），自动发送消息
-    {% if initial_prompt %}
-    document.getElementById('chatInput').value = '{{ initial_prompt }}';
+    // 页面加载时自动发送开场白
     sendInitialMessage();
-    {% endif %}
 });
 
 // 页面离开时保存当前对话
