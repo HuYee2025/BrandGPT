@@ -682,12 +682,21 @@ function renderHistoryList() {
     const history = getHistoryList();
     const container = document.getElementById('sidebarHistory');
 
+    // 获取或创建标题元素
+    let titleEl = container.querySelector('.sidebar-history-title');
+    if (!titleEl) {
+        titleEl = document.createElement('div');
+        titleEl.className = 'sidebar-history-title';
+        titleEl.textContent = '对话列表';
+        container.appendChild(titleEl);
+    }
+
     if (history.length === 0) {
-        container.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted); font-size: 0.85rem;">暂无历史对话</div>';
         return;
     }
 
-    container.innerHTML = history.map(conv => {
+    // 只渲染历史记录，保留标题
+    const historyHtml = history.map(conv => {
         const isActive = conv.id === currentConversationId ? 'active' : '';
         const title = conv.title;
         return `
@@ -699,6 +708,11 @@ function renderHistoryList() {
             </button>
         `;
     }).join('');
+
+    // 保留标题，只替换历史记录部分
+    container.innerHTML = '';
+    container.appendChild(titleEl);
+    container.insertAdjacentHTML('beforeend', historyHtml);
 }
 
 // 删除历史对话
