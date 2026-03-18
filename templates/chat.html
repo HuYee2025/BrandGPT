@@ -7,9 +7,8 @@
 /* ChatGPT风格对话框 - 自适应三列布局 */
 .chat-page {
     height: calc(100vh - 70px);
-    display: grid;
-    grid-template-columns: 20% 70% 10%;
-    grid-template-rows: 1fr;
+    display: flex;
+    flex-direction: row;
     margin: 0;
     width: 100%;
     overflow: hidden;
@@ -17,17 +16,30 @@
 
 /* 左侧历史记录栏 */
 .chat-sidebar {
+    width: 20%;
+    min-width: 200px;
     background: #F0EEE6;
     border-radius: 16px 0 0 16px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    grid-column: 1;
-    grid-row: 1;
+    flex-shrink: 0;
+}
+
+/* 中间聊天区域 */
+.chat-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background: var(--bg-color);
 }
 
 /* 右侧进度条栏 */
 .chat-sidebar-right {
+    width: 10%;
+    min-width: 80px;
     background: var(--bg-color);
     display: flex;
     flex-direction: column;
@@ -35,8 +47,7 @@
     align-items: center;
     padding-top: 80px;
     box-sizing: border-box;
-    grid-column: 3;
-    grid-row: 1;
+    flex-shrink: 0;
 }
 
 .progress-container {
