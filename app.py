@@ -191,13 +191,20 @@ def chat_post():
 
         # 如果是第一次对话，生成标题
         result = {'response': response}
-        if is_first_message:
-            # 生成标题
-            title_prompt = f"请根据用户的以下问题提炼出12个字以内的关键词标题，不要有标点符号，直接返回标题：{message}"
-            title_messages = [{'role': 'user', 'content': title_prompt}]
-            title_response = client.chat(title_messages)
-            # 清理标题（去除标点、空白等）
-            title = title_response.strip().replace('。', '').replace('，', '').replace('！', '').replace('？', '').replace(' ', '')[:12]
+        if is_first_message or (session.get('temp_context', []) == [] and message.startswith('我想开一家')):
+            # 尝试从用户消息中提取类别名称
+            import re
+            match = re.search(r'我想开一家(.+?)[，,]', message)
+            if match:
+                # 直接使用类别名作为标题
+                title = match.group(1)[:12]
+            else:
+                # 如果提取不到，调用AI生成标题
+                title_prompt = f"请根据用户的以下问题提炼出12个字以内的关键词标题，不要有标点符号，直接返回标题：{message}"
+                title_messages = [{'role': 'user', 'content': title_prompt}]
+                title_response = client.chat(title_messages)
+                # 清理标题（去除标点、空白等）
+                title = title_response.strip().replace('。', '').replace('，', '').replace('！', '').replace('？', '').replace(' ', '')[:12]
             result['title'] = title
 
         return jsonify(result)
