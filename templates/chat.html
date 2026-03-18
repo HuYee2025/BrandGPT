@@ -69,18 +69,45 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    position: relative;
 }
 
 .history-item:hover {
     background: rgba(0,0,0,0.05);
 }
 
+.history-item:hover .history-delete {
+    opacity: 1;
+}
+
 .history-item.active {
-    background: var(--text-dark);
-    color: #FFFFFF;
+    background: #E3DACB;
+    color: #141412;
 }
 
 .history-item .history-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.history-item .history-delete {
+    opacity: 0;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    margin-left: 8px;
+}
+
+.history-item .history-delete:hover {
+    background: #C62828;
+    color: #FFFFFF;
+}
     font-size: 0.85rem;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -634,11 +661,33 @@ function renderHistoryList() {
         const isActive = conv.id === currentConversationId ? 'active' : '';
         return `
             <button class="history-item ${isActive}" onclick="loadConversation('${conv.id}')">
-                <div class="history-title">${conv.title}</div>
+                <div class="history-title">
+                    <span>${conv.title}</span>
+                    <span class="history-delete" onclick="event.stopPropagation(); deleteConversation('${conv.id}')">✕</span>
+                </div>
                 <div class="history-date">${dateStr}</div>
             </button>
         `;
     }).join('');
+}
+
+// 删除历史对话
+function deleteConversation(conversationId) {
+    if (!confirm('确定要删除这条对话记录吗？')) return;
+
+    let history = getHistoryList();
+    history = history.filter(h => h.id !== conversationId);
+    localStorage.setItem('chatHistory', JSON.stringify(history));
+
+    // 如果删除的是当前对话，清空当前显示
+    if (currentConversationId === conversationId) {
+        currentConversationId = null;
+        document.getElementById('chatMessages').innerHTML = '';
+        messageCount = 0;
+        document.querySelector('.chat-header-title').textContent = '新对话';
+    }
+
+    renderHistoryList();
 }
 
 // 加载历史对话
