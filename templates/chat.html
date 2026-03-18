@@ -109,7 +109,7 @@
 }
 
 .history-item .history-delete {
-    opacity: 0;
+    opacity: 1;
     background: transparent;
     border: none;
     cursor: pointer;
@@ -739,7 +739,7 @@ function saveCurrentConversation() {
         // 获取用户的第一句话作为标题
         const firstUserMessage = messages.find(m => m.role === 'user');
         const title = firstUserMessage
-            ? (firstUserMessage.content.substring(0, 10) + (firstUserMessage.content.length > 10 ? '...' : ''))
+            ? (firstUserMessage.content.substring(0, 12) + (firstUserMessage.content.length > 12 ? '...' : ''))
             : '新对话';
         saveToHistory(title, messages);
     }
@@ -878,7 +878,7 @@ function sendMessage() {
 
     // 首次对话时更新标题为对话摘要
     if (messageCount === 1) {
-        const summary = message.length > 10 ? message.substring(0, 10) + '...' : message;
+        const summary = message.length > 12 ? message.substring(0, 12) + '...' : message;
         document.querySelector('.chat-header-title').textContent = summary;
         // 创建新对话ID
         currentConversationId = Date.now().toString();
