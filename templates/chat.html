@@ -779,48 +779,8 @@
 
         <!-- 主聊天区域 -->
         <div class="chat-main">
-    <!-- 欢迎界面 -->
-    <div class="welcome-screen{% if initial_prompt %} hidden{% endif %}" id="welcomeScreen"{% if initial_prompt %} style="display: none !important;"{% endif %}>
-        <div class="welcome-logo">
-            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="24" cy="24" r="22" stroke="#141412" stroke-width="2" fill="none"/>
-                <path d="M16 32V20L24 16L32 20V32L24 36V24L16 20V32Z" stroke="#141412" stroke-width="2" fill="none"/>
-                <circle cx="24" cy="26" r="4" fill="#141412"/>
-            </svg>
-        </div>
-        <h1 class="welcome-title">品牌AI顾问</h1>
-        <p class="welcome-subtitle">通过智能对话，了解您的创业想法，生成专业商业计划书</p>
-
-        <div class="welcome-cards">
-            <div class="welcome-card" onclick="startChat('我想开一家火锅店，请帮我规划')">
-                <h4>火锅店</h4>
-                <p>选址、装修、菜品定价等全面建议</p>
-            </div>
-            <div class="welcome-card" onclick="startChat('我想开一家面馆，请帮我做商业计划')">
-                <h4>面馆</h4>
-                <p>品牌定位、成本控制和营销策略</p>
-            </div>
-            <div class="welcome-card" onclick="startChat('我想开一家美甲店，请给我一些建议')">
-                <h4>美甲店</h4>
-                <p>项目定价、选址和运营模式</p>
-            </div>
-            <div class="welcome-card" onclick="startChat('我想开一家连锁超市，请帮我规划')">
-                <h4>连锁超市</h4>
-                <p>供应链管理、成本控制和扩张策略</p>
-            </div>
-            <div class="welcome-card" onclick="startChat('我想开一家西餐厅，请帮我做商业计划')">
-                <h4>西餐厅</h4>
-                <p>菜品定位、定价和客户群体分析</p>
-            </div>
-            <div class="welcome-card" onclick="startChat('我想开一家中餐厅，请给我一些建议')">
-                <h4>中餐厅</h4>
-                <p>菜系定位、厨师团队和运营策略</p>
-            </div>
-        </div>
-    </div>
-
     <!-- 对话界面 -->
-    <div class="chat-container{% if initial_prompt %} active{% endif %}" id="chatContainer"{% if initial_prompt %} style="display: flex !important;"{% endif %}>
+    <div class="chat-container active" id="chatContainer">
         <!-- 聊天头部 -->
         <div class="chat-header">
             <button class="chat-header-menu" onclick="toggleSidebar()">
@@ -1093,17 +1053,10 @@ function startNewChat() {
 document.addEventListener('DOMContentLoaded', function() {
     renderHistoryList();
 
-    // 如果有初始prompt（从首页点击品类卡片进入），隐藏欢迎界面，显示聊天界面
+    // 如果有初始prompt（从首页点击品类卡片进入），自动发送消息
     {% if initial_prompt %}
-    document.getElementById('welcomeScreen').classList.add('hidden');
-    document.getElementById('chatContainer').classList.add('active');
     document.getElementById('chatInput').value = '{{ initial_prompt }}';
     sendInitialMessage();
-    {% else %}
-    // 没有初始prompt时，显示欢迎界面
-    document.getElementById('welcomeScreen').classList.remove('hidden');
-    document.getElementById('welcomeScreen').style.display = 'flex';
-    document.getElementById('chatContainer').classList.remove('active');
     {% endif %}
 });
 
