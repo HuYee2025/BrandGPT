@@ -8,9 +8,12 @@
 .chat-page {
     height: calc(100vh - 70px);
     display: flex;
+    flex-direction: row;
+    align-items: stretch;
     margin: 0 auto;
     width: 100%;
     max-width: 1400px;
+    overflow: hidden;
 }
 
 /* 左侧历史记录栏 */
@@ -146,6 +149,7 @@
 /* 聊天区域 */
 .chat-main {
     flex: 1;
+    width: auto;
     display: flex;
     flex-direction: column;
     min-width: 0;
