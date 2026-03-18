@@ -720,6 +720,7 @@ function deleteConversation(conversationId) {
     if (!confirm('确定要删除这条对话记录吗？')) return;
 
     let history = getHistoryList();
+    const wasLastOne = history.length === 1;
     history = history.filter(h => h.id !== conversationId);
     localStorage.setItem('chatHistory', JSON.stringify(history));
 
@@ -729,6 +730,16 @@ function deleteConversation(conversationId) {
         document.getElementById('chatMessages').innerHTML = '';
         messageCount = 0;
         document.querySelector('.chat-header-title').textContent = '新对话';
+    }
+
+    // 如果删除了所有历史记录，清除服务器端的上下文
+    if (wasLastOne || history.length === 0) {
+        fetch('{{ url_for("clear_chat_context") }}', {
+            method: 'POST'
+        }).then(() => {
+            // 清除本地session
+            sessionStorage.clear();
+        });
     }
 
     renderHistoryList();

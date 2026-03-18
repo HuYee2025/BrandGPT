@@ -206,6 +206,14 @@ def chat_post():
         return jsonify({'error': str(e)}), 500
 
 
+@app.route('/api/chat/clear-context', methods=['POST'])
+def clear_chat_context():
+    """清除聊天上下文（当用户清空所有历史记录时调用）"""
+    if 'temp_context' in session:
+        session.pop('temp_context', None)
+    return jsonify({'success': True})
+
+
 @app.route('/api/chat/new', methods=['POST'])
 @login_required
 def new_conversation():
