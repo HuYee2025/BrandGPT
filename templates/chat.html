@@ -777,7 +777,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (lastConversationId) {
         loadConversation(lastConversationId);
     } else {
-        document.getElementById('chatInput').focus();
+        // 没有历史记录，发送开场白
+        sendInitialMessage();
     }
     {% endif %}
 });
