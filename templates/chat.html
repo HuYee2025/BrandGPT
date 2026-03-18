@@ -74,6 +74,21 @@
     padding: 20px 8px 8px;
 }
 
+/* 侧边栏切换按钮 */
+.sidebar-toggle {
+    display: none;
+    width: 100%;
+    padding: 12px 8px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border-color);
+    text-align: center;
+}
+
+.sidebar-toggle-icon {
+    font-size: 1.2rem;
+    color: var(--text-dark);
+}
+
 .sidebar-history-title {
     font-size: 0.75rem;
     color: var(--text-muted);
@@ -477,153 +492,6 @@
     width: 8px;
     height: 8px;
     background: var(--text-light);
-}
-
-/* 菜单按钮 */
-.chat-header-menu {
-    display: none;
-    width: 36px;
-    height: 36px;
-    padding: 0;
-    background: transparent;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.chat-header-menu svg {
-    width: 20px;
-    height: 20px;
-    color: var(--text-dark);
-}
-
-.chat-header-menu:hover {
-    background: rgba(0,0,0,0.05);
-}
-
-/* 侧边栏遮罩层 */
-.sidebar-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 260px;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.3);
-    z-index: 90;
-}
-
-/* 移动端适配 */
-@media (max-width: 768px) {
-    /* 显示菜单按钮 */
-    .chat-header-menu {
-        display: flex;
-    }
-
-    /* 侧边栏默认隐藏，固定定位 */
-    .chat-sidebar {
-        position: fixed;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 260px;
-        z-index: 100;
-        transform: translateX(-100%);
-        transition: transform 0.3s ease;
-        border-radius: 0;
-    }
-
-    .chat-sidebar.open {
-        transform: translateX(0);
-    }
-
-    /* 显示遮罩层 */
-    .sidebar-overlay {
-        display: block;
-    }
-
-    .sidebar-overlay.open {
-        display: block;
-    }
-
-    /* 聊天容器占满宽度 */
-    .chat-wrapper {
-        max-width: 100%;
-    }
-
-    /* 调整聊天区域padding */
-    .chat-main {
-        padding-left: 0;
-        padding-right: 0;
-    }
-
-    /* 对话消息调整 */
-    .message {
-        max-width: 85%;
-        padding: 12px 16px;
-    }
-
-    .message-avatar {
-        width: 28px;
-        height: 28px;
-        margin-right: 8px;
-    }
-
-    .message-avatar svg {
-        width: 16px;
-        height: 16px;
-    }
-
-    .message.user .message-avatar {
-        margin-left: 8px;
-        margin-right: 0;
-    }
-
-    /* 输入区域调整 */
-    .chat-input-wrapper {
-        padding: 12px;
-    }
-
-    .chat-input-container {
-        width: 100%;
-        border-radius: 20px;
-    }
-
-    .chat-input {
-        padding: 12px 16px 40px 16px;
-        font-size: 0.95rem;
-        height: 100px;
-        min-height: 100px;
-    }
-
-    .btn-send {
-        width: 32px;
-        height: 32px;
-        right: 8px;
-        bottom: 8px;
-    }
-
-    /* 聊天消息区域padding */
-    .chat-messages {
-        padding: 16px 12px;
-    }
-
-    /* 头部调整 */
-    .chat-header {
-        padding: 12px;
-    }
-
-    .chat-header-back {
-        min-width: 32px;
-    }
-
-    .chat-header-title {
-        font-size: 1rem;
-    }
-}
     border-radius: 50%;
     animation: typing 1.4s infinite ease-in-out;
 }
@@ -678,6 +546,102 @@
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
+
+/* 移动端适配 - 侧边栏 */
+@media (max-width: 768px) {
+    /* 显示侧边栏切换按钮 */
+    .sidebar-toggle {
+        display: block;
+    }
+
+    /* 侧边栏默认收起状态 - 只显示切换按钮 */
+    .chat-sidebar {
+        width: 50px;
+        min-width: 50px;
+        border-radius: 0;
+    }
+
+    /* 隐藏历史记录标题 */
+    .chat-sidebar .sidebar-history-title {
+        display: none;
+    }
+
+    /* 隐藏历史记录项 */
+    .chat-sidebar .sidebar-history {
+        display: none;
+    }
+
+    /* 展开状态 */
+    .chat-sidebar.expanded {
+        width: 260px;
+        min-width: 200px;
+        border-radius: 0 16px 16px 0;
+    }
+
+    .chat-sidebar.expanded .sidebar-history-title {
+        display: block;
+    }
+
+    .chat-sidebar.expanded .sidebar-history {
+        display: block;
+    }
+
+    /* 聊天区域自适应 */
+    .chat-wrapper {
+        max-width: 100%;
+    }
+
+    /* 对话消息调整 */
+    .message {
+        max-width: 85%;
+        padding: 12px 16px;
+    }
+
+    .message-avatar {
+        width: 28px;
+        height: 28px;
+        margin-right: 8px;
+    }
+
+    .message-avatar svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .message.user .message-avatar {
+        margin-left: 8px;
+        margin-right: 0;
+    }
+
+    /* 输入区域调整 */
+    .chat-input-wrapper {
+        padding: 12px;
+    }
+
+    .chat-input-container {
+        width: 100%;
+        border-radius: 20px;
+    }
+
+    .chat-input {
+        padding: 12px 16px 40px 16px;
+        font-size: 0.95rem;
+        height: 100px;
+        min-height: 100px;
+    }
+
+    .btn-send {
+        width: 32px;
+        height: 32px;
+        right: 8px;
+        bottom: 8px;
+    }
+
+    /* 聊天消息区域padding */
+    .chat-messages {
+        padding: 16px 12px;
+    }
+}
 </style>
 {% endblock %}
 
@@ -686,13 +650,14 @@
     <div class="chat-wrapper">
         <!-- 左侧历史记录栏 -->
         <div class="chat-sidebar" id="chatSidebar">
+            <div class="sidebar-toggle" onclick="toggleSidebar()">
+                <span class="sidebar-toggle-icon">☰</span>
+            </div>
             <div class="sidebar-history" id="sidebarHistory">
                 <div class="sidebar-history-title">对话列表</div>
                 <!-- 历史记录将通过JS动态生成 -->
             </div>
         </div>
-        <!-- 遮罩层 -->
-        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
         <!-- 主聊天区域 -->
         <div class="chat-main">
@@ -740,11 +705,6 @@
     <div class="chat-container" id="chatContainer">
         <!-- 聊天头部 -->
         <div class="chat-header">
-            <button class="chat-header-menu" onclick="toggleSidebar()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M3 12h18M3 6h18M3 18h18"/>
-                </svg>
-            </button>
             <button class="chat-header-back" onclick="goBack()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M19 12H5M12 19l-7-7 7-7"/>
@@ -792,9 +752,36 @@ let isAIThinking = false;
 // ==================== 侧边栏展开/收起 ====================
 function toggleSidebar() {
     const sidebar = document.getElementById('chatSidebar');
-    const overlay = document.getElementById('sidebarOverlay');
-    sidebar.classList.toggle('open');
-    overlay.classList.toggle('open');
+    sidebar.classList.toggle('expanded');
+}
+
+// 滑动手势支持
+let touchStartX = 0;
+let touchEndX = 0;
+
+document.addEventListener('touchstart', function(e) {
+    touchStartX = e.changedTouches[0].screenX;
+}, false);
+
+document.addEventListener('touchend', function(e) {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+}, false);
+
+function handleSwipe() {
+    if (window.innerWidth > 768) return;
+
+    const swipeDistance = touchEndX - touchStartX;
+    const sidebar = document.getElementById('chatSidebar');
+
+    // 向右滑 > 50px 展开
+    if (swipeDistance > 50 && !sidebar.classList.contains('expanded')) {
+        sidebar.classList.add('expanded');
+    }
+    // 向左滑 < -50px 收起
+    else if (swipeDistance < -50 && sidebar.classList.contains('expanded')) {
+        sidebar.classList.remove('expanded');
+    }
 }
 
 // ==================== 历史对话管理 ====================
@@ -909,9 +896,9 @@ function deleteConversation(conversationId) {
 
 // 加载历史对话
 function loadConversation(conversationId) {
-    // 移动端点击历史记录时关闭侧边栏
+    // 移动端点击历史记录时收起侧边栏
     if (window.innerWidth <= 768) {
-        toggleSidebar();
+        document.getElementById('chatSidebar').classList.remove('expanded');
     }
 
     const history = getHistoryList();
@@ -963,12 +950,9 @@ function saveCurrentConversation() {
 
 // 开始新对话
 function startNewChat() {
-    // 移动端新建对话时关闭侧边栏
+    // 移动端新建对话时收起侧边栏
     if (window.innerWidth <= 768) {
-        const sidebar = document.getElementById('chatSidebar');
-        if (sidebar.classList.contains('open')) {
-            toggleSidebar();
-        }
+        document.getElementById('chatSidebar').classList.remove('expanded');
     }
 
     // 保存当前对话
