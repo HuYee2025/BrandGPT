@@ -567,15 +567,22 @@
     /* 聊天页面占满屏幕宽度，固定不滚动 */
     .chat-page {
         max-width: 100%;
+        width: 100%;
         margin: 0;
         border-radius: 0;
         height: 100vh;
         overflow: hidden;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
     }
 
     /* 聊天头部扩展到屏幕边缘，固定在顶部 */
     .chat-header {
         max-width: 100%;
+        width: 100%;
         padding: 12px 16px;
         flex-shrink: 0;
     }
@@ -594,6 +601,8 @@
         overflow: hidden;
         display: flex;
         flex-direction: column;
+        width: 100%;
+        max-width: 100%;
     }
 
     /* 侧边栏作为覆盖层 */
