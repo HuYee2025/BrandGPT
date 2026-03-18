@@ -130,6 +130,64 @@
     display: flex;
     flex-direction: column;
     min-width: 0;
+    position: relative;
+}
+
+/* 右侧进度条 */
+.chat-progress {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    z-index: 10;
+}
+
+.progress-step {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #E3DACB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    transition: all 0.3s;
+    cursor: default;
+}
+
+.progress-step.active {
+    background: #141412;
+    color: #FFFFFF;
+}
+
+.progress-step.completed {
+    background: #141412;
+    color: #FFFFFF;
+}
+
+.progress-step-label {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-align: center;
+    width: 60px;
+    margin-right: -20px;
+}
+
+.progress-step.active + .progress-step-label {
+    color: #141412;
+    font-weight: 600;
+}
+
+.progress-line {
+    width: 2px;
+    height: 30px;
+    background: #E3DACB;
 }
 
 /* 欢迎界面 */
@@ -524,6 +582,23 @@
 
     <!-- 主聊天区域 -->
     <div class="chat-main">
+        <!-- 右侧进度条 -->
+        <div class="chat-progress" id="chatProgress">
+            <div class="progress-step active" data-step="1">1</div>
+            <div class="progress-step-label">项目概述</div>
+            <div class="progress-line"></div>
+            <div class="progress-step" data-step="2">2</div>
+            <div class="progress-step-label">市场分析</div>
+            <div class="progress-line"></div>
+            <div class="progress-step" data-step="3">3</div>
+            <div class="progress-step-label">运营策略</div>
+            <div class="progress-line"></div>
+            <div class="progress-step" data-step="4">4</div>
+            <div class="progress-step-label">财务规划</div>
+            <div class="progress-line"></div>
+            <div class="progress-step" data-step="5">✓</div>
+            <div class="progress-step-label">生成报告</div>
+        </div>
     <!-- 欢迎界面 -->
     <div class="welcome-screen" id="welcomeScreen">
         <div class="welcome-logo">
@@ -603,6 +678,49 @@
 <script>
 let messageCount = 0;
 let currentConversationId = null;
+let currentProgress = 1;
+
+// ==================== 进度条更新 ====================
+
+// 更新进度条
+function updateProgress(step) {
+    currentProgress = step;
+    const steps = document.querySelectorAll('.progress-step');
+    const labels = document.querySelectorAll('.progress-step-label');
+
+    steps.forEach((s, i) => {
+        const sNum = i + 1;
+        s.classList.remove('active', 'completed');
+        if (sNum < step) {
+            s.classList.add('completed');
+            s.innerHTML = '✓';
+        } else if (sNum === step) {
+            s.classList.add('active');
+            s.innerHTML = sNum;
+        } else {
+            s.innerHTML = sNum;
+        }
+    });
+}
+
+// 根据消息数量自动更新进度
+function autoUpdateProgress() {
+    // 根据对话轮数更新进度
+    // 1轮 = 步骤1, 2-3轮 = 步骤2, 4-5轮 = 步骤3, 6轮以上 = 步骤4, 可以生成报告 = 步骤5
+    let progress = 1;
+    if (messageCount <= 2) {
+        progress = 1;
+    } else if (messageCount <= 4) {
+        progress = 2;
+    } else if (messageCount <= 6) {
+        progress = 3;
+    } else if (messageCount <= 8) {
+        progress = 4;
+    } else {
+        progress = 5; // 可以生成报告
+    }
+    updateProgress(progress);
+}
 
 // ==================== 历史对话管理 ====================
 
@@ -715,6 +833,9 @@ function loadConversation(conversationId) {
     // 更新标题
     document.querySelector('.chat-header-title').textContent = conversation.title;
 
+    // 根据消息数量更新进度条
+    autoUpdateProgress();
+
     // 重新渲染列表（更新active状态）
     renderHistoryList();
 
@@ -753,6 +874,9 @@ function startNewChat() {
     document.getElementById('chatMessages').innerHTML = '';
     messageCount = 0;
     document.querySelector('.chat-header-title').textContent = '新对话';
+
+    // 重置进度条
+    updateProgress(1);
 
     // 重新渲染历史列表
     renderHistoryList();
@@ -800,6 +924,8 @@ function sendInitialMessage() {
             addMessage('assistant', '抱歉，发生了错误：' + data.error);
         } else {
             addMessage('assistant', data.response);
+            // 更新进度条
+            autoUpdateProgress();
         }
     })
     .catch(error => {
@@ -876,6 +1002,9 @@ function sendMessage() {
             addMessage('assistant', '抱歉，发生了错误：' + data.error);
         } else {
             addMessage('assistant', data.response);
+
+            // 更新进度条
+            autoUpdateProgress();
 
             // 保存对话
             saveCurrentConversation();
