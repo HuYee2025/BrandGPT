@@ -903,10 +903,7 @@ function addMessage(role, content) {
     let avatarHtml = '';
     if (role === 'assistant') {
         avatarHtml = `<div class="message-avatar">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="M12 16v-4M12 8h.01"/>
-            </svg>
+            <img src="{{ url_for('static', filename='images/tx01.png') }}" alt="AI" style="width: 32px; height: 32px; border-radius: 50%;">
         </div>`;
     }
 
