@@ -127,16 +127,6 @@
     white-space: nowrap;
 }
 
-.history-item .history-date {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    margin-top: 4px;
-}
-
-.history-item.active .history-date {
-    color: rgba(255,255,255,0.7);
-}
-
 /* 聊天区域 */
 .chat-main {
     min-width: 0;
@@ -663,17 +653,14 @@ function renderHistoryList() {
     }
 
     container.innerHTML = history.map(conv => {
-        const date = new Date(conv.updatedAt);
-        const dateStr = date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
         const isActive = conv.id === currentConversationId ? 'active' : '';
         const title = conv.title;
         return `
             <button class="history-item ${isActive}" onclick="loadConversation('${conv.id}')">
                 <div class="history-title">
                     <span>${title}</span>
-                    <span class="history-delete" onclick="event.stopPropagation(); deleteConversation('${conv.id}')">✕</span>
+                    <span class="history-delete" onclick="event.stopPropagation(); deleteConversation('${conv.id}')">🗑️</span>
                 </div>
-                <div class="history-date">${dateStr}</div>
             </button>
         `;
     }).join('');
@@ -743,7 +730,7 @@ function saveCurrentConversation() {
         // 获取用户的第一句话作为标题
         const firstUserMessage = messages.find(m => m.role === 'user');
         const title = firstUserMessage
-            ? (firstUserMessage.content.substring(0, 20) + (firstUserMessage.content.length > 20 ? '...' : ''))
+            ? (firstUserMessage.content.substring(0, 13) + (firstUserMessage.content.length > 13 ? '...' : ''))
             : '新对话';
         saveToHistory(title, messages);
     }
