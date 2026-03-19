@@ -841,35 +841,6 @@ function toggleSidebar() {
     sidebar.classList.toggle('open');
 }
 
-// 滑动手势支持
-let touchStartX = 0;
-let touchEndX = 0;
-
-document.addEventListener('touchstart', function(e) {
-    touchStartX = e.changedTouches[0].screenX;
-}, false);
-
-document.addEventListener('touchend', function(e) {
-    touchEndX = e.changedTouches[0].screenX;
-    handleSwipe();
-}, false);
-
-function handleSwipe() {
-    if (window.innerWidth > 768) return;
-
-    const swipeDistance = touchEndX - touchStartX;
-    const sidebar = document.getElementById('chatSidebar');
-
-    // 向右滑 > 50px 展开
-    if (swipeDistance > 50 && !sidebar.classList.contains('open')) {
-        sidebar.classList.add('open');
-    }
-    // 向左滑 < -50px 收起
-    else if (swipeDistance < -50 && sidebar.classList.contains('open')) {
-        sidebar.classList.remove('open');
-    }
-}
-
 // ==================== 历史对话管理 ====================
 
 // 获取历史对话列表
@@ -1181,12 +1152,11 @@ function sendMessage() {
     input.value = '';
     messageCount++;
 
-    // 创建新对话ID
-    currentConversationId = Date.now().toString();
-    localStorage.setItem('lastConversationId', currentConversationId);
-
-    // 保存当前对话（实时保存）
-    saveCurrentConversation();
+    // 只有在没有对话ID时才创建新的
+    if (!currentConversationId) {
+        currentConversationId = Date.now().toString();
+        localStorage.setItem('lastConversationId', currentConversationId);
+    }
 
     // 显示加载状态
     showTyping();
