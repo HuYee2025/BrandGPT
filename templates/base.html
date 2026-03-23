@@ -16,10 +16,54 @@
                 虎翼品牌创业顾问
             </a>
             <div class="nav-links">
+                <div class="dropdown">
+                    <a href="#" class="nav-link dropdown-toggle">经营小工具</a>
+                    <div class="dropdown-menu">
+                        <a href="/复利计算器.html" class="dropdown-item">复利计算</a>
+                        <a href="/餐饮店利润率计算器.html" class="dropdown-item">利润分析</a>
+                    </div>
+                </div>
                 <a href="#" class="nav-link" onclick="showApiAdmin()">API管理</a>
             </div>
         </div>
     </nav>
+
+    <style>
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+    .dropdown-toggle {
+        cursor: pointer;
+    }
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 100%;
+        background: #FFFFFF;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+        min-width: 140px;
+        z-index: 1001;
+        overflow: hidden;
+    }
+    .dropdown-item {
+        display: block;
+        padding: 12px 20px;
+        color: var(--text-dark);
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: background 0.2s;
+    }
+    .dropdown-item:hover {
+        background: #F1EEE7;
+    }
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+    </style>
 
     <!-- API管理弹窗 -->
     <div id="apiAdminModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center;">
