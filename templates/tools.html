@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}经营小工具 - 虎翼品牌创业顾问{% endblock %}
+
+{% block extra_head %}
+<style>
+.tools-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.tools-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    padding: 28px 20px 4px 20px;
+    border-bottom: 1px solid var(--border-color);
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+.tools-title-text {
+    flex: 1;
+    text-align: center;
+}
+
+.tools-title-back {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.2rem;
+    color: var(--text-dark);
+}
+
+.tools-title-back:hover {
+    background: #141412;
+    color: #fff;
+}
+
+.tools-grid {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    flex-wrap: wrap;
+    padding-top: 30px;
+}
+
+.tool-card {
+    text-decoration: none;
+    display: block;
+    transition: transform 0.2s;
+}
+
+.tool-card:hover {
+    transform: translateY(-5px);
+}
+
+.tool-preview {
+    width: 300px;
+    height: 300px;
+    border-radius: 25px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    background: #FFFFFF;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.tool-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.tool-name {
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-top: 16px;
+}
+
+.tool-desc {
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-dark);
+    opacity: 0.6;
+    margin-top: 0;
+}
+
+@media (max-width: 600px) {
+    .tool-preview {
+        width: 100%;
+        max-width: 280px;
+        height: 280px;
+    }
+    .tools-grid {
+        gap: 30px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="tools-page">
+    <div class="tools-title">
+        <span class="tools-title-text">经营小工具</span>
+        <button class="tools-title-back" onclick="location.href='{{ url_for('index') }}'">×</button>
+    </div>
+
+    <div class="tools-grid">
+        <a href="{{ url_for('fuli_calc') }}" class="tool-card">
+            <div class="tool-preview">
+                <img src="{{ url_for('static', filename='images/fuli-calc-preview.png') }}" alt="复利计算器预览">
+            </div>
+            <div class="tool-name">复利计算器</div>
+            <div class="tool-desc">被爱因斯坦称为"世界第八大奇迹"</div>
+        </a>
+
+        <a href="{{ url_for('profit_calc') }}" class="tool-card">
+            <div class="tool-preview">
+                <img src="{{ url_for('static', filename='images/profit-calc-preview.png') }}" alt="利润分析器预览">
+            </div>
+            <div class="tool-name">餐饮店利润率分析器</div>
+            <div class="tool-desc">利润率是企业生存与发展的核心指标</div>
+        </a>
+    </div>
+</div>
+{% endblock %}

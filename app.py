@@ -54,6 +54,12 @@ def architecture():
     return render_template('architecture.html')
 
 
+@app.route('/tools')
+def tools():
+    """经营小工具页面"""
+    return render_template('tools.html')
+
+
 @app.route('/复利计算器.html')
 def fuli_calc():
     """复利计算器页面"""

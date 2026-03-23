@@ -1,168 +1,377 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>复利计算器 - 利滚利的威力</title>
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:system-ui,-apple-system,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-    .container{max-width:620px;width:100%;background:#fff;border-radius:16px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
-    .header{text-align:center;padding-bottom:20px;border-bottom:1px solid #E2E8F0;margin-bottom:20px}
-    .header h1{font-size:24px;font-weight:600;color:#1E293B;margin-bottom:4px}
-    .header p{font-size:13px;color:#64748B}
-    .controls{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
-    .control-group{display:flex;flex-direction:column;gap:6px}
-    .control-group label{font-size:12px;color:#64748B;font-weight:500}
-    .control-group input[type=range]{width:100%;height:6px;-webkit-appearance:none;background:#E2E8F0;border-radius:3px;outline:none;cursor:pointer}
-    .control-group input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;background:#667eea;border-radius:50%;cursor:pointer;box-shadow:0 2px 6px rgba(102,126,234,0.4)}
-    .control-group .value{font-size:18px;font-weight:600;color:#667eea;text-align:center}
-    .chart-wrap{position:relative;height:260px;margin-bottom:20px;background:#F8FAFC;border-radius:12px;padding:16px}
-    .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
-    .metric{background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:14px 10px;text-align:center}
-    .metric .label{font-size:11px;color:#64748B;margin-bottom:6px}
-    .metric .val{font-size:16px;font-weight:600;color:#1E293B}
-    .metric.green{background:#ECFDF5;border-color:#A7F3D0}
-    .metric.green .val{color:#059669}
-    .metric.amber{background:#FFFBEB;border-color:#FDE68A}
-    .metric.amber .val{color:#D97706}
-    .metric.rose{background:#FEF2F2;border-color:#FECACA}
-    .metric.rose .val{color:#E11D48}
-    .formula{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);border-radius:10px;padding:16px;text-align:center;color:#fff;font-size:13px;line-height:1.8}
-    .formula strong{font-size:15px}
-    .formula sup{font-size:11px;opacity:0.9}
-    @media(max-width:560px){
-      .controls{grid-template-columns:1fr}
-      .metrics{grid-template-columns:repeat(2,1fr)}
+{% extends "base.html" %}
+
+{% block title %}复利计算器 - 虎翼品牌创业顾问{% endblock %}
+
+{% block extra_head %}
+<style>
+.tool-page {
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 0 20px 40px 20px;
+    background: #F1EEE7;
+}
+
+.tool-header {
+    display: flex;
+    align-items: center;
+    padding: 28px 20px 4px 20px;
+    border-bottom: 1px solid var(--border-color);
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+.tool-header-menu {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.tool-header-menu:hover {
+    background: #141412;
+}
+
+.tool-header-menu:hover .menu-icon {
+    color: #fff;
+}
+
+.menu-icon {
+    font-size: 1.2rem;
+    color: var(--text-dark);
+}
+
+.tool-header-title {
+    flex: 1;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.tool-header-back {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.2rem;
+    color: var(--text-dark);
+}
+
+.tool-header-back:hover {
+    background: #141412;
+    color: #fff;
+}
+
+.tool-header h1 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #141412;
+    margin-bottom: 8px;
+}
+
+.tool-header p {
+    font-size: 15px;
+    color: #6B6560;
+}
+
+.tool-content {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.card-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: #8C857A;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.ctrl {
+    background: #F1EEE7;
+    border-radius: 8px;
+    padding: 12px 10px;
+    text-align: center;
+}
+
+.ctrl label {
+    display: block;
+    font-size: 11px;
+    color: #8C857A;
+    margin-bottom: 2px;
+    font-weight: 500;
+}
+
+.ctrl input[type=range] {
+    width: 100%;
+    height: 2px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #CEC6B9;
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+}
+
+.ctrl input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #141412;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.ctrl .val {
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 8px;
+    color: #141412;
+}
+
+.chart-wrap {
+    height: 260px;
+    position: relative;
+    margin-top: 8px;
+}
+
+.chart-wrap canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.metric {
+    background: #E3DACB;
+    border-radius: 8px;
+    padding: 16px 8px;
+    text-align: center;
+}
+
+.metric .lbl {
+    font-size: 10px;
+    color: #8C857A;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.metric .val {
+    font-size: 17px;
+    font-weight: 600;
+    color: #141412;
+}
+
+.metric.highlight {
+    background: #141412;
+}
+
+.metric.highlight .lbl {
+    color: #CEC6B9;
+}
+
+.metric.highlight .val {
+    color: #fff;
+}
+
+.formula {
+    text-align: center;
+    padding: 20px 0 8px;
+    border-top: 1px solid #CEC6B9;
+    margin-top: 8px;
+}
+
+.formula p {
+    font-size: 13px;
+    color: #8C857A;
+}
+
+.formula strong {
+    color: #141412;
+    font-size: 15px;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 32px;
+    font-size: 12px;
+    color: #B5AFA6;
+}
+
+@media (max-width: 560px) {
+    .controls {
+        grid-template-columns: 1fr;
     }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <h1>复利计算器</h1>
-      <p>本金 + 利息 × 利率，时间越长威力越大</p>
+    .metrics {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="tool-page">
+    <div class="tool-header">
+        <button class="tool-header-menu" onclick="location.href='{{ url_for('tools') }}'">
+            <span class="menu-icon">☰</span>
+        </button>
+        <span class="tool-header-title">复利计算器</span>
+        <button class="tool-header-back" onclick="location.href='{{ url_for('tools') }}'">×</button>
     </div>
 
-    <div class="controls">
-      <div class="control-group">
-        <label>本金 (万元)</label>
-        <input type="range" id="principal" min="1" max="100" value="10" oninput="update()">
-        <div class="value" id="vPrincipal">10</div>
-      </div>
-      <div class="control-group">
-        <label>年利率 (%)</label>
-        <input type="range" id="rate" min="1" max="20" value="8" oninput="update()">
-        <div class="value" id="vRate">8%</div>
-      </div>
-      <div class="control-group">
-        <label>年数</label>
-        <input type="range" id="years" min="1" max="40" value="20" oninput="update()">
-        <div class="value" id="vYears">20年</div>
-      </div>
+    <div class="tool-content">
+        <div class="card-title">调整参数</div>
+        <div class="controls">
+            <div class="ctrl">
+                <label>本金</label>
+                <input type="range" id="principal" min="1" max="100" value="5" oninput="update()">
+                <div class="val" id="vPrincipal">5万</div>
+            </div>
+            <div class="ctrl">
+                <label>年利率</label>
+                <input type="range" id="rate" min="1" max="20" value="8" oninput="update()">
+                <div class="val" id="vRate">8%</div>
+            </div>
+            <div class="ctrl">
+                <label>年数</label>
+                <input type="range" id="years" min="1" max="40" value="20" oninput="update()">
+                <div class="val" id="vYears">20年</div>
+            </div>
+        </div>
     </div>
 
-    <div class="chart-wrap">
-      <canvas id="c"></canvas>
+    <div class="tool-content">
+        <div class="card-title">增长曲线对比</div>
+        <div class="chart-wrap">
+            <canvas id="c"></canvas>
+        </div>
     </div>
 
-    <div class="metrics">
-      <div class="metric">
-        <div class="label">本金</div>
-        <div class="val" id="mPrincipal">10万</div>
-      </div>
-      <div class="metric amber">
-        <div class="label">单利总额</div>
-        <div class="val" id="mSimple">26万</div>
-      </div>
-      <div class="metric green">
-        <div class="label">复利总额</div>
-        <div class="val" id="mCompound">46.6万</div>
-      </div>
-      <div class="metric rose">
-        <div class="label">利息差</div>
-        <div class="val" id="mDiff">20.6万</div>
-      </div>
+    <div class="tool-content">
+        <div class="card-title">计算结果</div>
+        <div class="metrics">
+            <div class="metric">
+                <div class="lbl">本金</div>
+                <div class="val" id="mPrincipal">5万</div>
+            </div>
+            <div class="metric">
+                <div class="lbl">单利总额</div>
+                <div class="val" id="mSimple">26万</div>
+            </div>
+            <div class="metric highlight">
+                <div class="lbl">复利总额</div>
+                <div class="val" id="mCompound">46.6万</div>
+            </div>
+            <div class="metric">
+                <div class="lbl">利息差</div>
+                <div class="val" id="mDiff">20.6万</div>
+            </div>
+        </div>
+        <div class="formula">
+            <p>单利公式: <strong>A = P(1 + rt)</strong>&nbsp;&nbsp;|&nbsp;&nbsp;复利公式: <strong>A = P(1 + r)<sup>t</sup></strong></p>
+        </div>
     </div>
 
-    <div class="formula">
-      复利公式: <strong>A = P(1+r)<sup>t</sup></strong>
-      &nbsp;&nbsp;|&nbsp;&nbsp; 单利: <strong>A = P(1+rt)</strong>
-    </div>
-  </div>
+    <div class="footer">被爱因斯坦称为"世界第八大奇迹"的概念</div>
+</div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js" onload="init()"></script>
-  <script>
-    var chart;
-    function init(){buildChart();update();}
-    if(window.Chart)init();
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js" onload="init()"></script>
+<script>
+var chart;
+function init(){buildChart();update()}
+if(window.Chart)init();
 
-    function buildChart(){
-      chart=new Chart(document.getElementById('c'),{
+function buildChart(){
+    chart=new Chart(document.getElementById('c'),{
         type:'line',
-        data:{labels:[],datasets:[
-          {label:'复利',data:[],borderColor:'#059669',backgroundColor:'rgba(5,150,105,0.1)',fill:true,tension:0.4,borderWidth:3,pointRadius:0,pointHoverRadius:5},
-          {label:'单利',data:[],borderColor:'#D97706',backgroundColor:'rgba(217,119,6,0.08)',fill:true,tension:0.4,borderWidth:2,borderDash:[6,4],pointRadius:0,pointHoverRadius:5}
-        ]},
+        data:{
+            labels:[],
+            datasets:[
+                {label:'复利',data:[],borderColor:'#141412',backgroundColor:'rgba(20,20,18,0.06)',fill:true,tension:0.4,borderWidth:2.5,pointRadius:0,pointHoverRadius:4},
+                {label:'单利',data:[],borderColor:'#CEC6B9',backgroundColor:'rgba(206,198,185,0.1)',fill:true,tension:0.4,borderWidth:2,borderDash:[6,4],pointRadius:0,pointHoverRadius:4}
+            ]
+        },
         options:{
-          responsive:true,
-          maintainAspectRatio:false,
-          interaction:{intersect:false,mode:'index'},
-          plugins:{
-            legend:{
-              display:true,
-              position:'top',
-              labels:{font:{size:12},boxWidth:14,padding:16,usePointStyle:true}
-            }
-          },
-          scales:{
-            y:{
-              grid:{color:'rgba(0,0,0,0.05)'},
-              ticks:{font:{size:11},callback:function(v){return v+'万'}},
-              beginAtZero:true
+            responsive:true,
+            maintainAspectRatio:false,
+            interaction:{intersect:false,mode:'index'},
+            plugins:{
+                legend:{display:true,position:'top',labels:{font:{size:12},boxWidth:16,padding:16,usePointStyle:true,color:'#141412'}},
+                tooltip:{backgroundColor:'#141412',titleFont:{size:13},bodyFont:{size:12},padding:10,cornerRadius:6}
             },
-            x:{
-              grid:{display:false},
-              ticks:{font:{size:10}}
+            scales:{
+                y:{
+                    grid:{color:'rgba(206,198,185,0.5)'},
+                    ticks:{font:{size:11},color:'#8C857A',callback:function(v){return v+'万'}},
+                    beginAtZero:true
+                },
+                x:{
+                    grid:{display:false},
+                    ticks:{font:{size:11},color:'#8C857A',maxTicksLimit:10}
+                }
             }
-          }
         }
-      });
-    }
+    });
+}
 
-    function calc(p,r,t){
-      var simple=[],compound=[],labels=[];
-      for(var i=0;i<=t;i++){
+function calc(p,r,t){
+    var simple=[],compound=[],labels=[];
+    for(var i=0;i<=t;i++){
         labels.push(i+'年');
         simple.push(Math.round(p*(1+r*i/100)*100)/100);
         compound.push(Math.round(p*Math.pow(1+r/100,i)*100)/100);
-      }
-      return{labels:labels,simple:simple,compound:compound};
     }
+    return{labels:labels,simple:simple,compound:compound};
+}
 
-    function update(){
-      var p=+document.getElementById('principal').value;
-      var r=+document.getElementById('rate').value;
-      var t=+document.getElementById('years').value;
-
-      document.getElementById('vPrincipal').textContent=p;
-      document.getElementById('vRate').textContent=r+'%';
-      document.getElementById('vYears').textContent=t+'年';
-
-      var d=calc(p,r,t);
-      chart.data.labels=d.labels;
-      chart.data.datasets[0].data=d.compound;
-      chart.data.datasets[1].data=d.simple;
-      chart.update();
-
-      var lastC=d.compound[d.compound.length-1];
-      var lastS=d.simple[d.simple.length-1];
-
-      document.getElementById('mPrincipal').textContent=p+'万';
-      document.getElementById('mSimple').textContent=lastS+'万';
-      document.getElementById('mCompound').textContent=lastC+'万';
-      document.getElementById('mDiff').textContent=Math.round((lastC-lastS)*100)/100+'万';
-    }
-  </script>
-</body>
-</html>
+function update(){
+    var p=+document.getElementById('principal').value;
+    var r=+document.getElementById('rate').value;
+    var t=+document.getElementById('years').value;
+    document.getElementById('vPrincipal').textContent=p+'万';
+    document.getElementById('vRate').textContent=r+'%';
+    document.getElementById('vYears').textContent=t+'年';
+    var d=calc(p,r,t);
+    chart.data.labels=d.labels;
+    chart.data.datasets[0].data=d.compound;
+    chart.data.datasets[1].data=d.simple;
+    chart.update();
+    var lastC=d.compound[d.compound.length-1];
+    var lastS=d.simple[d.simple.length-1];
+    document.getElementById('mPrincipal').textContent=p+'万';
+    document.getElementById('mSimple').textContent=lastS+'万';
+    document.getElementById('mCompound').textContent=lastC+'万';
+    document.getElementById('mDiff').textContent=Math.round((lastC-lastS)*100)/100+'万';
+}
+</script>
+{% endblock %}

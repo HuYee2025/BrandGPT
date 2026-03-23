@@ -259,7 +259,6 @@
     box-sizing: border-box;
 }
 
-/* 头部菜单按钮 */
 .chat-header-menu {
     width: 36px;
     height: 36px;
@@ -268,14 +267,10 @@
     border: none;
     border-radius: 8px;
     cursor: pointer;
+    display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-}
-
-.menu-icon {
-    font-size: 1.2rem;
-    color: var(--text-dark);
 }
 
 .chat-header-menu:hover {
@@ -286,45 +281,30 @@
     color: #fff;
 }
 
+.menu-icon {
+    font-size: 1.2rem;
+    color: var(--text-dark);
+}
+
 .chat-header-back {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    color: var(--text-light);
-    font-size: 0.9rem;
-    cursor: pointer;
-    padding: 8px 12px;
-    border-radius: 8px;
-    background: transparent;
-    border: none;
-    min-width: 36px;
-    height: 36px;
-    box-sizing: border-box;
+    flex-shrink: 0;
+    font-size: 1.2rem;
+    color: var(--text-dark);
 }
 
 .chat-header-back:hover {
     background: #141412;
-    color: #FFFFFF;
-}
-
-.chat-header-back:hover svg {
-    stroke: #FFFFFF;
-}
-
-.chat-header-back svg {
-    width: 18px;
-    height: 18px;
-}
-
-/* 头部按钮文字默认隐藏，悬停时显示 */
-.header-btn-text {
-    display: none;
-    white-space: nowrap;
-}
-
-.chat-header-back:hover .header-btn-text {
-    display: inline;
+    color: #fff;
 }
 
 .chat-header-title {
@@ -799,11 +779,7 @@
                 <span class="menu-icon">☰</span>
             </button>
             <span class="chat-header-title">新对话</span>
-            <button class="chat-header-back" onclick="startNewChat()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 5v14M5 12h14"/>
-                </svg>
-            </button>
+            <button class="chat-header-back" onclick="location.href='{{ url_for('index') }}'">×</button>
         </div>
         <div class="chat-messages" id="chatMessages">
             <!-- 消息将在这里显示 -->
