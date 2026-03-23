@@ -46,6 +46,12 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/architecture')
+def architecture():
+    """系统架构演示页面"""
+    return render_template('architecture.html')
+
+
 # ==================== 用户认证 ====================
 
 @app.route('/register', methods=['GET', 'POST'])

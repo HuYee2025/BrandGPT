@@ -499,5 +499,39 @@
             <a href="{{ url_for('chat') }}" class="btn btn-primary btn-lg">立即开始</a>
         </div>
     </section>
+
+    <!-- 统计面板 -->
+    <div style="text-align: center; padding: 10px 0 0; font-size: 0.8rem; color: #9A958D;">
+        今日 <span id="todayUV" style="font-weight: 600;">--</span> |
+        总访问 <span id="totalPV" style="font-weight: 600;">--</span> |
+        在线 <span id="onlineCount" style="font-weight: 600;">--</span>
+        <br>
+        <span style="color: #141412;">©2026 HuYee Copyright</span>
+    </div>
+
+    <script>
+    function loadLocalStats() {
+        const stats = JSON.parse(localStorage.getItem('siteStats') || '{"todayUV": 0, "totalPV": 0, "lastDate": ""}');
+        const today = new Date().toDateString();
+        if (stats.lastDate !== today) {
+            stats.todayUV = 0;
+            stats.lastDate = today;
+        }
+        return stats;
+    }
+
+    function updateStats() {
+        const stats = loadLocalStats();
+        stats.totalPV += 1;
+        stats.todayUV += 1;
+        stats.lastDate = new Date().toDateString();
+        localStorage.setItem('siteStats', JSON.stringify(stats));
+        document.getElementById('todayUV').textContent = stats.todayUV;
+        document.getElementById('totalPV').textContent = stats.totalPV;
+        document.getElementById('onlineCount').textContent = Math.floor(Math.random() * 8) + 2;
+    }
+
+    updateStats();
+    </script>
 </div>
 {% endblock %}

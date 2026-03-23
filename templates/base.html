@@ -137,11 +137,20 @@
     </main>
 
     <!-- 版权信息 -->
-    <footer style="text-align: center; padding: 8px; color: #141412; font-size: 0.8rem;">
-        ©2026 HuYee Copyright
-    </footer>
+    <footer style="display: none;">
 
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
     {% block scripts %}{% endblock %}
+
+    <!-- 百度统计 -->
+    <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e133204eccf6cfbf3bbd3d8fc67cf283";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
 </body>
 </html>
