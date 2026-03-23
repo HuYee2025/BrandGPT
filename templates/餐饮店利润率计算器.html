@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>餐饮店利润率计算器</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:system-ui,-apple-system,sans-serif;background:#6D6ACE;color:#334155;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+    .container{max-width:560px;width:100%;background:#fff;border-radius:12px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,0.08)}
+    .header{text-align:center;padding-bottom:16px}
+    .header h1{font-size:20px;font-weight:500;color:#3730A3}
+    .header p{font-size:12px;color:#64748B;margin-top:4px}
+    .top-metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+    .metric-box{background:#EEF2FF;border-radius:10px;padding:16px;text-align:center}
+    .metric-box .val{font-size:26px;font-weight:500;color:#4F46E5}
+    .metric-box .lbl{font-size:10px;color:#64748B;margin-top:4px}
+    .margin-bar{height:32px;background:#E2E8F0;border-radius:6px;margin-bottom:16px;position:relative;overflow:hidden}
+    .margin-fill{height:100%;background:#34D399;border-radius:6px;transition:width 0.3s}
+    .margin-text{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:#065F46}
+    .chart-wrap{position:relative;height:200px;margin-bottom:16px;background:#FAFAFA;border-radius:8px;padding:12px}
+    .bars{display:flex;align-items:flex-end;justify-content:center;gap:24px;height:140px;padding:0 16px}
+    .bar-item{display:flex;flex-direction:column;align-items:center;flex:1;max-width:100px}
+    .bar-value{font-size:12px;font-weight:500;color:#334155;margin-bottom:4px}
+    .bar{width:100%;max-width:70px;border-radius:6px 6px 0 0;transition:height 0.3s}
+    .bar-income{background:#818CF8}
+    .bar-cost{background:#F87171}
+    .bar-profit{background:#34D399}
+    .bar-label{font-size:10px;color:#64748B;margin-top:6px}
+    .controls{background:#F8FAFC;border-radius:8px;padding:16px;margin-bottom:16px}
+    .control-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+    .control-row:last-child{margin-bottom:0}
+    .control-row label{flex:0 0 70px;font-size:11px;color:#334155}
+    .control-row input[type=range]{flex:1;height:4px;-webkit-appearance:none;background:#E2E8F0;border-radius:2px;outline:none}
+    .control-row input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:#818CF8;border-radius:50%;cursor:pointer}
+    .control-row span{flex:0 0 40px;text-align:right;font-size:11px;color:#4F46E5;font-weight:500}
+    .formula{background:#EEF2FF;border-radius:8px;padding:16px;text-align:center;font-size:12px;color:#4F46E5;line-height:1.8}
+    .formula strong{font-size:14px}
+    @media(max-width:500px){
+      .top-metrics{grid-template-columns:1fr}
+      .bars{gap:16px}
+    }
+  </style>
+</head>
+<body>
+  <div class=container>
+    <div class=header>
+      <h1>餐饮店利润率计算器</h1>
+      <p>调整各项成本，实时查看利润率变化</p>
+    </div>
+
+    <div class=top-metrics>
+      <div class=metric-box>
+        <div class=val id=mRevenue>¥15,000</div>
+        <div class=lbl>月营业收入</div>
+      </div>
+      <div class=metric-box>
+        <div class=val id=mProfit>¥2,805</div>
+        <div class=lbl>净利润</div>
+      </div>
+    </div>
+    <div class=margin-bar id=mMarginBar>
+      <div class=margin-fill id=mMarginFill style="width:18.7%"></div>
+      <div class=margin-text id=mMarginText>净利润率 18.7%</div>
+    </div>
+
+    <div class=chart-wrap><canvas id=c></canvas></div>
+
+    <div class=bars>
+      <div class=bar-item>
+        <div class=bar-value id=vIncome>¥15,000</div>
+        <div class="bar bar-income" id=barIncome style="height:120px"></div>
+        <div class=bar-label>营业收入</div>
+      </div>
+      <div class=bar-item>
+        <div class=bar-value id=vCost>¥12,195</div>
+        <div class="bar bar-cost" id=barCost style="height:98px"></div>
+        <div class=bar-label>总成本</div>
+      </div>
+      <div class=bar-item>
+        <div class=bar-value id=vProfit>¥2,805</div>
+        <div class="bar bar-profit" id=barProfit style="height:22px"></div>
+        <div class=bar-label>净利润</div>
+      </div>
+    </div>
+
+    <div class=controls>
+      <div class=control-row>
+        <label>营业收入</label>
+        <input type=range id=sRevenue min=1000 max=100000 value=15000 step=500 oninput="update()">
+        <span id=vRevenue>¥15,000</span>
+      </div>
+      <div class=control-row>
+        <label>食材成本</label>
+        <input type=range id=sFood min=20 max=50 value=30 oninput="update()">
+        <span id=vFood>30%</span>
+      </div>
+      <div class=control-row>
+        <label>人工成本</label>
+        <input type=range id=sLabor min=15 max=40 value=25 oninput="update()">
+        <span id=vLabor>25%</span>
+      </div>
+      <div class=control-row>
+        <label>租金成本</label>
+        <input type=range id=sRent min=5 max=20 value=10 oninput="update()">
+        <span id=vRent>10%</span>
+      </div>
+      <div class=control-row>
+        <label>水电杂费</label>
+        <input type=range id=sUtil min=2 max=10 value=5 oninput="update()">
+        <span id=vUtil>5%</span>
+      </div>
+      <div class=control-row>
+        <label>其他费用</label>
+        <input type=range id=sOther min=0 max=10 value=3 oninput="update()">
+        <span id=vOther>3%</span>
+      </div>
+    </div>
+
+    <div class=formula>
+      <strong>利润率 = (营业收入 - 总成本) ÷ 营业收入 × 100%</strong><br>
+      = (<span id=fRevenue>15,000</span> - <span id=fCost>12,195</span>) ÷ <span id=fRevenue2>15,000</span> × 100%<br>
+      = <strong id=fMargin>18.7%</strong>
+    </div>
+  </div>
+
+  <script src=https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js onload=init()></script>
+  <script>
+    var chart;
+    function init(){
+      chart=new Chart(document.getElementById('c'),{
+        type:'doughnut',
+        data:{
+          labels:['食材成本','人工成本','租金成本','水电杂费','其他费用'],
+          datasets:[{
+            data:[30,25,10,5,3],
+            backgroundColor:['#818CF8','#34D399','#FBBF24','#F87171','#94A3B8'],
+            borderWidth:0
+          }]
+        },
+        options:{
+          responsive:true,
+          maintainAspectRatio:false,
+          cutout:'55%',
+          plugins:{
+            legend:{
+              position:'right',
+              labels:{boxWidth:10,font:{size:10},padding:6,color:'#334155'}
+            }
+          }
+        }
+      });
+      update();
+    }
+    if(window.Chart)init();
+
+    function update(){
+      var revenue=+document.getElementById('sRevenue').value;
+      var food=+document.getElementById('sFood').value;
+      var labor=+document.getElementById('sLabor').value;
+      var rent=+document.getElementById('sRent').value;
+      var util=+document.getElementById('sUtil').value;
+      var other=+document.getElementById('sOther').value;
+
+      document.getElementById('vRevenue').textContent='¥'+revenue.toLocaleString();
+      document.getElementById('vFood').textContent=food+'%';
+      document.getElementById('vLabor').textContent=labor+'%';
+      document.getElementById('vRent').textContent=rent+'%';
+      document.getElementById('vUtil').textContent=util+'%';
+      document.getElementById('vOther').textContent=other+'%';
+
+      var totalCostPct=food+labor+rent+util+other;
+      var totalCost=revenue*totalCostPct/100;
+      var profit=revenue-totalCost;
+      var margin=(profit/revenue*100).toFixed(1);
+
+      chart.data.datasets[0].data=[food,labor,rent,util,other];
+      chart.update();
+
+      document.getElementById('mRevenue').textContent='¥'+revenue.toLocaleString();
+      document.getElementById('mProfit').textContent='¥'+Math.round(profit).toLocaleString();
+      document.getElementById('vIncome').textContent='¥'+revenue.toLocaleString();
+      document.getElementById('vCost').textContent='¥'+Math.round(totalCost).toLocaleString();
+      document.getElementById('vProfit').textContent='¥'+Math.round(profit).toLocaleString();
+
+      var maxH=120;
+      document.getElementById('barIncome').style.height=maxH+'px';
+      document.getElementById('barCost').style.height=(totalCost/revenue*maxH)+'px';
+      document.getElementById('barProfit').style.height=(profit/revenue*maxH)+'px';
+
+      document.getElementById('mMarginFill').style.width=margin+'%';
+      document.getElementById('mMarginText').textContent='净利润率 '+margin+'%';
+
+      document.getElementById('fProfit').textContent=Math.round(profit).toLocaleString();
+      document.getElementById('fCost').textContent=Math.round(totalCost).toLocaleString();
+      document.getElementById('fRevenue').textContent=revenue.toLocaleString();
+      document.getElementById('fRevenue2').textContent=revenue.toLocaleString();
+      document.getElementById('fMargin').textContent=margin+'%';
+    }
+  </script>
+</body>
+</html>

@@ -16,7 +16,9 @@ from ai_engine import (
     get_model_client
 )
 
-app = Flask(__name__)
+app = Flask(__name__,
+            template_folder=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates'),
+            static_folder=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static'))
 app.config.from_object(config[os.getenv('FLASK_ENV', 'default')])
 
 # 初始化扩展
@@ -50,6 +52,18 @@ def index():
 def architecture():
     """系统架构演示页面"""
     return render_template('architecture.html')
+
+
+@app.route('/复利计算器.html')
+def fuli_calc():
+    """复利计算器页面"""
+    return render_template('复利计算器.html')
+
+
+@app.route('/餐饮店利润率计算器.html')
+def profit_calc():
+    """餐饮店利润率计算器页面"""
+    return render_template('餐饮店利润率计算器.html')
 
 
 # ==================== 用户认证 ====================
