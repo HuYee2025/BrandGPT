@@ -60,6 +60,258 @@ def tools():
     return render_template('tools.html')
 
 
+@app.route('/report-demo')
+def report_demo():
+    """报告示例页面"""
+    return render_template('report_demo.html')
+
+
+@app.route('/report-demo/download')
+def download_report_demo():
+    """下载示例报告Word文档"""
+    from flask import send_file
+    from docx import Document
+    from docx.shared import Pt, RGBColor
+    from docx.enum.text import WD_ALIGN_PARAGRAPH
+    from io import BytesIO
+
+    doc = Document()
+
+    # 设置默认字体为微软雅黑
+    style = doc.styles['Normal']
+    style.font.name = 'Microsoft YaHei'
+    style.font.size = Pt(11)
+    # 设置中文字体的东亚字符集
+    style._element.rPr.rFonts.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}ascii', 'Microsoft YaHei')
+    style._element.rPr.rFonts.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}hAnsi', 'Microsoft YaHei')
+    style._element.rPr.rFonts.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}eastAsia', 'Microsoft YaHei')
+
+    # 设置所有内置样式
+    for style_name in ['Heading 1', 'Heading 2', 'Heading 3', 'List Bullet', 'List Paragraph']:
+        if style_name in doc.styles:
+            s = doc.styles[style_name]
+            s.font.name = 'Microsoft YaHei'
+            s.font.size = Pt(11)
+            s._element.rPr.rFonts.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}ascii', 'Microsoft YaHei')
+            s._element.rPr.rFonts.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}hAnsi', 'Microsoft YaHei')
+            s._element.rPr.rFonts.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}eastAsia', 'Microsoft YaHei')
+
+    # 辅助函数：设置run的字体
+    def set_run_font(run, font_name='Microsoft YaHei', font_size=None):
+        run.font.name = font_name
+        run._element.rPr.rFonts.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}ascii', font_name)
+        run._element.rPr.rFonts.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}hAnsi', font_name)
+        run._element.rPr.rFonts.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}eastAsia', font_name)
+        if font_size:
+            run.font.size = font_size
+
+    # 标题
+    title = doc.add_heading('「面咖」面馆+咖啡商业计划书', 0)
+    title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    for run in title.runs:
+        set_run_font(run, 'Microsoft YaHei', Pt(22))
+
+    # 内容
+    content = """
+一、项目概述
+
+「面咖」是一家创新型餐饮品牌，将传统面食文化与现代咖啡生活方式相结合，打造"一碗好面+一杯好咖啡"的复合式餐饮空间。项目面向25-40岁的都市白领群体，提供快捷、优质、性价比高的中式面食与精品咖啡服务。
+
+1.1 项目定位
+
+品牌理念：传统与时尚的完美融合
+核心产品：手工拉面 + 精品咖啡
+目标客群：都市白领、年轻家庭、文艺青年
+消费场景：早餐、午餐、下午茶、商务简餐
+
+1.2 项目优势
+
+差异化竞争：避免与传统面馆和咖啡馆的正面竞争
+提高客单价：双品类带来更高的客均消费
+时段互补：咖啡提升早餐和下午茶时段的营收
+场景丰富：满足一人食、朋友小聚、商务洽谈等多种场景
+
+二、市场分析
+
+2.1 行业现状
+
+根据美团研究院数据，2024年中国面食市场规模突破5000亿元，年增长率保持在8%以上。咖啡市场规模超过2000亿元，连续多年保持15%以上的增速。两者的消费人群高度重合，市场基础扎实。
+
+2.2 目标市场
+
+以一线城市核心商圈和二线城市繁华地段为主，目标客群特征：
+年龄：25-40岁，占比70%以上
+月收入：8000-20000元
+消费习惯：注重品质与效率，愿意为体验付费
+
+2.3 竞争分析
+
+竞争对手分析：
+传统面馆 - 优势：品类丰富、价格优势；劣势：环境简陋、缺乏品牌
+连锁咖啡店 - 优势：品牌影响力、空间体验；劣势：主食选择有限、价格偏高
+日式拉面店 - 优势：产品标准化、品牌精致；劣势：口味单一、翻台率低
+
+三、产品与服务
+
+3.1 产品结构
+
+品类 | 主打产品 | 价格区间 | 占比
+招牌面食 | 红烧牛肉面、担担面、酸汤面 | 28-38元 | 45%
+精品咖啡 | 拿铁、美式、手冲 | 22-38元 | 25%
+小食甜点 | 卤味、凉菜、芝士蛋糕 | 12-28元 | 20%
+饮品配套 | 鲜榨果汁、气泡水 | 15-22元 | 10%
+
+3.2 服务特色
+
+快速出餐：面食3分钟、咖啡2分钟，确保高峰时段效率
+半自助服务：线上点单、扫码支付，减少等待时间
+会员体系：积分兑换、会员专享价、生日礼遇
+社群运营：定期组织品鉴会、烹饪课堂等活动
+
+四、选址与装修
+
+4.1 选址标准
+
+首选位置：写字楼底商、商业综合体、地铁交通枢纽
+面积要求：80-150平方米
+层高要求：3.5米以上，具备餐饮条件
+租金预算：月租金控制在营收的10%以内
+
+4.2 装修风格
+
+采用"现代中式"风格，融合工业风与国潮元素：
+开放式厨房，可视化制作过程
+原木色桌椅搭配皮质卡座
+墙面采用手绘插画，讲述面食文化故事
+暖色调灯光营造温馨氛围
+
+五、盈利预测
+
+5.1 投资预算
+
+项目 | 金额 | 备注
+品牌加盟费 | 8万元 | 含品牌使用、技术培训
+装修费用 | 15万元 | 100㎡中等装修
+设备采购 | 12万元 | 厨房设备、咖啡设备
+首月租金 | 3万元 | 押一付三
+原材料储备 | 5万元 | 首批原材料采购
+流动资金 | 7万元 | 日常运营周转
+合计 | 50万元 |
+
+5.2 营收预测
+
+月份 | 日均客流 | 客单价 | 月营收
+开业期(1-3月) | 80人 | 45元 | 10.8万元
+成长期(4-6月) | 120人 | 50元 | 18万元
+稳定期(7-12月) | 150人 | 55元 | 24.75万元
+
+5.3 成本结构
+
+成本项目 | 占比 | 说明
+原材料成本 | 30% | 食材、调料、咖啡豆
+人工成本 | 25% | 员工工资、社保
+租金成本 | 10% | 月租3万元
+水电杂费 | 5% | 能耗、日常损耗
+营销费用 | 5% | 推广、优惠活动
+其他支出 | 5% | 设备折旧、税费
+净利润率 | 20% |
+
+六、发展规划
+
+6.1 三年发展目标
+
+第一年：打磨单店模型，建立标准化体系，开出2-3家直营店
+第二年：开放加盟，发展5-8家加盟店，覆盖核心城市
+第三年：品牌规模化运营，开出20家以上门店，布局全国市场
+
+6.2 品牌愿景
+
+成为中国新式餐饮的领先品牌，让"面咖"成为都市人生活中不可或缺的品质之选。
+
+七、风险与应对
+
+7.1 主要风险
+
+选址风险：位置不佳导致客流不足
+运营风险：人员流动大，品质难以保证
+竞争风险：同类型竞争者模仿跟进
+供应链风险：原材料价格波动影响成本
+
+7.2 应对策略
+
+建立专业的选址评估体系，严格把关
+完善员工培训体系，建立激励机制
+持续创新，保持产品差异化优势
+建立稳定的供应商合作关系
+"""
+
+    # 解析内容并添加到文档
+    table = None
+    lines = content.strip().split('\n')
+    for line in lines:
+        line = line.strip()
+        if not line:
+            continue
+        if line.startswith('#'):
+            level = min(line.count('#'), 3)
+            h = doc.add_heading(line.replace('#', '').strip(), level=level)
+            for run in h.runs:
+                set_run_font(run)
+        elif line.startswith('-') or line.startswith('•'):
+            p = doc.add_paragraph(line.lstrip('-• ').strip(), style='List Bullet')
+            for run in p.runs:
+                set_run_font(run)
+        elif ' | ' in line:
+            # 表格行（以 | 分隔）
+            parts = [p.strip() for p in line.split('|')]
+            parts = [p for p in parts if p]  # 过滤空字符串
+            if parts:
+                if '占比' in parts or '项目' in parts or '月份' in parts or '竞争对手' in parts or '品类' in parts or '成本项目' in parts:
+                    # 表头
+                    table = doc.add_table(rows=1, cols=len(parts))
+                    table.style = 'Table Grid'
+                    hdr_cells = table.rows[0].cells
+                    for i, part in enumerate(parts):
+                        hdr_cells[i].text = part
+                        for run in hdr_cells[i].paragraphs[0].runs:
+                            set_run_font(run)
+                            run.font.bold = True
+                else:
+                    if table is not None:
+                        row_cells = table.add_row().cells
+                        for i, part in enumerate(parts):
+                            if i < len(row_cells):
+                                row_cells[i].text = part
+                                for run in row_cells[i].paragraphs[0].runs:
+                                    set_run_font(run)
+        else:
+            p = doc.add_paragraph(line)
+            for run in p.runs:
+                set_run_font(run)
+
+    # 添加免责声明
+    doc.add_paragraph('')
+    p = doc.add_paragraph('——' * 20)
+    for run in p.runs:
+        set_run_font(run)
+    disclaimer = doc.add_paragraph('本文由 AI 模型生成，未必正确无误，请核查重要信息。')
+    disclaimer.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    for run in disclaimer.runs:
+        set_run_font(run)
+
+    # 保存到内存
+    buffer = BytesIO()
+    doc.save(buffer)
+    buffer.seek(0)
+
+    return send_file(
+        buffer,
+        as_attachment=True,
+        download_name='「面咖」商业计划书.docx',
+        mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    )
+
+
 @app.route('/复利计算器.html')
 def fuli_calc():
     """复利计算器页面"""

@@ -800,6 +800,7 @@
                     </svg>
                 </button>
             </div>
+            <div style="text-align:center;padding:8px 0 4px;font-size:11px;color:#141412;">©2026 HuYee Copyright</div>
         </div>
     </div>
     </div>
@@ -1258,55 +1259,8 @@ function addGenerateButton() {
 }
 
 function generateReport() {
-    // 显示付费弹窗
-    const messagesDiv = document.getElementById('chatMessages');
-
-    const payDiv = document.createElement('div');
-    payDiv.className = 'message assistant';
-    payDiv.innerHTML = `
-        <div style="text-align: center; padding: 20px;">
-            <h3 style="margin-bottom: 16px; color: var(--text-dark);">生成商业计划书</h3>
-            <p style="margin-bottom: 20px; color: var(--text-light);">
-                感谢您的咨询！AI对话免费，生成完整商业计划书需要付费
-            </p>
-            <div style="background: #F1EEE7; padding: 24px; border-radius: 12px; margin-bottom: 20px;">
-                <div style="font-size: 2.5rem; font-weight: 700; color: var(--text-dark); margin-bottom: 8px;">
-                    ¥19.9
-                </div>
-                <div style="color: var(--text-muted); font-size: 0.9rem;">完整商业计划书</div>
-            </div>
-            <div style="display: flex; gap: 12px; justify-content: center;">
-                <button onclick="processPayment()" style="
-                    background: var(--text-dark);
-                    color: #F1EEE7;
-                    border: none;
-                    padding: 14px 32px;
-                    border-radius: 10px;
-                    font-size: 1rem;
-                    font-weight: 600;
-                    cursor: pointer;
-                ">
-                    立即支付
-                </button>
-                <button onclick="this.closest('.message').remove()" style="
-                    background: transparent;
-                    color: var(--text-light);
-                    border: 1px solid var(--border-color);
-                    padding: 14px 24px;
-                    border-radius: 10px;
-                    font-size: 1rem;
-                    cursor: pointer;
-                ">
-                    取消
-                </button>
-            </div>
-            <p style="margin-top: 16px; font-size: 0.8rem; color: var(--text-muted);">
-                支付完成后，您将获得完整的商业计划书
-            </p>
-        </div>
-    `;
-    messagesDiv.appendChild(payDiv);
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    // 打开报告页面
+    window.open('{{ url_for("report") }}', '_blank');
 }
 
 function processPayment() {

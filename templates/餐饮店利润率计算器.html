@@ -151,8 +151,8 @@
     align-items: center;
     justify-content: center;
     font-size: 13px;
-    font-weight: 500;
-    color: #FFFFFF;
+    font-weight: 700;
+    color: #D97757;
 }
 
 .chart-wrap {
@@ -247,6 +247,7 @@
     outline: none;
 }
 
+
 .control-row input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 14px;
@@ -257,11 +258,12 @@
 }
 
 .control-row span {
-    flex: 0 0 40px;
+    flex: 0 0 110px;
     text-align: right;
     font-size: 11px;
     color: #141412;
     font-weight: 500;
+    white-space: nowrap;
 }
 
 .formula {
@@ -302,18 +304,18 @@
     <div class="tool-content">
         <div class="top-metrics">
             <div class="metric-box">
-                <div class="val" id="mRevenue">¥15,000</div>
+                <div class="val" id="mRevenue">¥180,000</div>
                 <div class="lbl">月营业收入</div>
             </div>
             <div class="metric-box">
-                <div class="val" id="mProfit">¥2,805</div>
+                <div class="val" id="mProfit">¥54,000</div>
                 <div class="lbl">净利润</div>
             </div>
         </div>
 
         <div class="margin-bar" id="mMarginBar">
-            <div class="margin-fill" id="mMarginFill" style="width:18.7%"></div>
-            <div class="margin-text" id="mMarginText">净利润率 18.7%</div>
+            <div class="margin-fill" id="mMarginFill" style="width:30%"></div>
+            <div class="margin-text" id="mMarginText">净利润率 30%</div>
         </div>
 
         <div class="chart-wrap">
@@ -324,18 +326,18 @@
 
         <div class="bars">
             <div class="bar-item">
-                <div class="bar-value" id="vIncome">¥15,000</div>
+                <div class="bar-value" id="vIncome">¥180,000</div>
                 <div class="bar bar-income" id="barIncome" style="height:120px"></div>
                 <div class="bar-label">营业收入</div>
             </div>
             <div class="bar-item">
-                <div class="bar-value" id="vCost">¥12,195</div>
-                <div class="bar bar-cost" id="barCost" style="height:98px"></div>
+                <div class="bar-value" id="vCost">¥126,000</div>
+                <div class="bar bar-cost" id="barCost" style="height:84px"></div>
                 <div class="bar-label">总成本</div>
             </div>
             <div class="bar-item">
-                <div class="bar-value" id="vProfit">¥2,805</div>
-                <div class="bar bar-profit" id="barProfit" style="height:22px"></div>
+                <div class="bar-value" id="vProfit">¥54,000</div>
+                <div class="bar bar-profit" id="barProfit" style="height:36px"></div>
                 <div class="bar-label">净利润</div>
             </div>
         </div>
@@ -343,42 +345,43 @@
         <div class="controls">
             <div class="control-row">
                 <label>营业收入</label>
-                <input type="range" id="sRevenue" min="1000" max="100000" value="15000" step="500" oninput="update()">
-                <span id="vRevenue">¥15,000</span>
+                <input type="range" id="sRevenue" min="5000" max="500000" value="180000" step="1000" oninput="update()">
+                <span id="vRevenue">¥180,000</span>
             </div>
             <div class="control-row">
                 <label>食材成本</label>
-                <input type="range" id="sFood" min="20" max="50" value="30" oninput="update()">
-                <span id="vFood">30%</span>
+                <input type="range" id="sFood" min="20" max="50" value="30" oninput="update()" class="cost-slider">
+                <span id="vFood">¥54,000 (30%)</span>
             </div>
             <div class="control-row">
                 <label>人工成本</label>
-                <input type="range" id="sLabor" min="15" max="40" value="25" oninput="update()">
-                <span id="vLabor">25%</span>
+                <input type="range" id="sLabor" min="15" max="40" value="25" oninput="update()" class="cost-slider">
+                <span id="vLabor">¥45,000 (25%)</span>
             </div>
             <div class="control-row">
                 <label>租金成本</label>
-                <input type="range" id="sRent" min="5" max="20" value="10" oninput="update()">
-                <span id="vRent">10%</span>
+                <input type="range" id="sRent" min="5" max="20" value="8" oninput="update()" class="cost-slider">
+                <span id="vRent">¥14,400 (8%)</span>
             </div>
             <div class="control-row">
                 <label>水电杂费</label>
-                <input type="range" id="sUtil" min="2" max="10" value="5" oninput="update()">
-                <span id="vUtil">5%</span>
+                <input type="range" id="sUtil" min="2" max="10" value="4" oninput="update()" class="cost-slider">
+                <span id="vUtil">¥7,200 (4%)</span>
             </div>
             <div class="control-row">
                 <label>其他费用</label>
-                <input type="range" id="sOther" min="0" max="10" value="3" oninput="update()">
-                <span id="vOther">3%</span>
+                <input type="range" id="sOther" min="0" max="10" value="3" oninput="update()" class="cost-slider">
+                <span id="vOther">¥5,400 (3%)</span>
             </div>
         </div>
 
         <div class="formula">
             <strong>利润率 = (营业收入 - 总成本) ÷ 营业收入 × 100%</strong><br>
-            = (<span id="fRevenue">15,000</span> - <span id="fCost">12,195</span>) ÷ <span id="fRevenue2">15,000</span> × 100%<br>
-            = <strong id="fMargin">18.7%</strong>
+            = (<span id="fRevenue">180,000</span> - <span id="fCost">126,000</span>) ÷ <span id="fRevenue2">180,000</span> × 100%<br>
+            = <strong id="fMargin">30%</strong>
         </div>
     </div>
+    <div style="text-align:center;margin-top:12px;margin-bottom:20px;font-size:11px;color:#141412;">©2026 HuYee Copyright</div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js" onload="init()"></script>
@@ -403,6 +406,19 @@ function init(){
                 legend:{
                     position:'right',
                     labels:{boxWidth:10,font:{size:10},padding:6,color:'#141412'}
+                },
+                tooltip:{
+                    displayColors:false,
+                    titleText:'',
+                    bodyText:'',
+                    callbacks:{
+                        title:function(){
+                            return '';
+                        },
+                        label:function(context){
+                            return context.label+' '+context.parsed+'%';
+                        }
+                    }
                 }
             }
         }
@@ -420,16 +436,23 @@ function update(){
     var other=+document.getElementById('sOther').value;
 
     document.getElementById('vRevenue').textContent='¥'+revenue.toLocaleString();
-    document.getElementById('vFood').textContent=food+'%';
-    document.getElementById('vLabor').textContent=labor+'%';
-    document.getElementById('vRent').textContent=rent+'%';
-    document.getElementById('vUtil').textContent=util+'%';
-    document.getElementById('vOther').textContent=other+'%';
 
     var totalCostPct=food+labor+rent+util+other;
     var totalCost=revenue*totalCostPct/100;
     var profit=revenue-totalCost;
-    var margin=(profit/revenue*100).toFixed(1);
+    var margin=Math.round(profit/revenue*100);
+
+    var foodAmt=revenue*food/100;
+    var laborAmt=revenue*labor/100;
+    var rentAmt=revenue*rent/100;
+    var utilAmt=revenue*util/100;
+    var otherAmt=revenue*other/100;
+
+    document.getElementById('vFood').textContent='¥'+Math.round(foodAmt).toLocaleString()+' ('+food+'%)';
+    document.getElementById('vLabor').textContent='¥'+Math.round(laborAmt).toLocaleString()+' ('+labor+'%)';
+    document.getElementById('vRent').textContent='¥'+Math.round(rentAmt).toLocaleString()+' ('+rent+'%)';
+    document.getElementById('vUtil').textContent='¥'+Math.round(utilAmt).toLocaleString()+' ('+util+'%)';
+    document.getElementById('vOther').textContent='¥'+Math.round(otherAmt).toLocaleString()+' ('+other+'%)';
 
     chart.data.datasets[0].data=[food,labor,rent,util,other];
     chart.update();
@@ -448,7 +471,6 @@ function update(){
     document.getElementById('mMarginFill').style.width=margin+'%';
     document.getElementById('mMarginText').textContent='净利润率 '+margin+'%';
 
-    document.getElementById('fProfit').textContent=Math.round(profit).toLocaleString();
     document.getElementById('fCost').textContent=Math.round(totalCost).toLocaleString();
     document.getElementById('fRevenue').textContent=revenue.toLocaleString();
     document.getElementById('fRevenue2').textContent=revenue.toLocaleString();

@@ -17,12 +17,33 @@
             </a>
             <div class="nav-links">
                 <a href="{{ url_for('tools') }}" class="nav-link">经营小工具</a>
+                <div class="nav-dropdown">
+                    <a href="#" class="nav-link" onclick="toggleFeedback()">用户反馈</a>
+                    <div class="nav-dropdown-content" id="feedbackDropdown" style="display:none;">
+                        <img src="{{ url_for('static', filename='images/作者微信.jpg') }}" alt="作者微信" style="max-width: 200px; border-radius: 8px;">
+                    </div>
+                </div>
                 <a href="#" class="nav-link" onclick="showApiAdmin()">API管理</a>
             </div>
         </div>
     </nav>
 
     <style>
+    .nav-dropdown {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    .nav-dropdown-content {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: #FFFFFF;
+        border-radius: 8px;
+        padding: 12px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        z-index: 1000;
+    }
     </style>
 
     <!-- API管理弹窗 -->
@@ -85,6 +106,20 @@
     function closeApiAdmin() {
         document.getElementById('apiAdminModal').style.display = 'none';
     }
+
+    function toggleFeedback() {
+        var dropdown = document.getElementById('feedbackDropdown');
+        dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // 点击其他地方关闭下拉菜单
+    document.addEventListener('click', function(e) {
+        var dropdown = document.getElementById('feedbackDropdown');
+        var trigger = document.querySelector('.nav-dropdown');
+        if (!trigger.contains(e.target)) {
+            dropdown.style.display = 'none';
+        }
+    });
 
     function checkAdminPassword() {
         const password = document.getElementById('adminPassword').value;

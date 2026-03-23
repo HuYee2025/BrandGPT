@@ -211,6 +211,51 @@
     padding: 0 20px;
 }
 
+/* 用户答疑 */
+.faq {
+    padding: 60px 40px;
+    margin: 0 40px;
+}
+
+.faq-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.faq-list {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    margin-bottom: 28px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #E3DACB;
+}
+
+.faq-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.faq-item h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+
+.faq-item p {
+    font-size: 0.95rem;
+    color: var(--text-light);
+    line-height: 1.7;
+    margin: 0;
+}
+
 /* CTA区域 - 简约 */
 .cta {
     padding: 80px 40px;
@@ -345,6 +390,15 @@
     .footer p {
         font-size: 0.8rem;
     }
+
+    .faq {
+        padding: 40px 20px;
+        margin: 0 20px;
+    }
+
+    .faq-title {
+        font-size: 1.5rem;
+    }
 }
 
 /* 响应式 - 仅针对大屏幕优化 */
@@ -476,7 +530,7 @@
                 <div class="step-number">3</div>
                 <div class="step-content">
                     <h4>生成报告</h4>
-                    <p>在线查看带水印计划书</p>
+                    <p>在线查看商业计划书</p>
                 </div>
             </div>
             <div class="step-arrow">→</div>
@@ -484,9 +538,36 @@
             <div class="step">
                 <div class="step-number">4</div>
                 <div class="step-content">
-                    <h4>付费获取</h4>
-                    <p>下载无水印Word/PDF</p>
+                    <h4>下载报告</h4>
+                    <p>将报告下载到本地</p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 用户答疑区域 -->
+    <section class="faq">
+        <div class="faq-title">用户答疑</div>
+        <div class="faq-list">
+            <div class="faq-item">
+                <h4>数据安全及隐私</h4>
+                <p>网站遵循小工具而设计，无需注册即可使用，不保存任何用户信息。所有对话数据仅存储在浏览器缓存中，不会上传到服务器，请你放心使用。</p>
+            </div>
+            <div class="faq-item">
+                <h4>AI对话收费吗</h4>
+                <p>AI对话功能目前完全免费，您可以和AI进行多轮沟通，询问任何创业相关问题。</p>
+            </div>
+            <div class="faq-item">
+                <h4>为什么AI能写好商业计划书</h4>
+                <p>网站集成了先进的AI大模型，经过专门训练，分析过大量成功的商业案例，具备高水准的商业分析和写作能力，能够为您提供专业的商业计划书。</p>
+            </div>
+            <div class="faq-item">
+                <h4>如何生成商业计划书</h4>
+                <p>在AI问答页面输入您的创业想法，AI会通过追问帮您完善项目细节。对话完成后，点击"生成商业计划书"按钮即可在线查看完整报告。</p>
+            </div>
+            <div class="faq-item">
+                <h4>报告可以下载吗</h4>
+                <p>可以。点击报告页面中的"下载文档"按钮，可以将商业计划书下载为Word格式，方便离线查看和编辑。</p>
             </div>
         </div>
     </section>
