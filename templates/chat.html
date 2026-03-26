@@ -21,6 +21,7 @@
     max-width: 1200px;
     width: 100%;
     margin: 0 auto;
+    box-sizing: border-box;
 }
 
 /* 左侧历史记录栏 */
@@ -48,6 +49,7 @@
     flex-direction: column;
     position: relative;
     background: var(--bg-color);
+    box-sizing: border-box;
 }
 
 .sidebar-header {
@@ -245,6 +247,27 @@
     height: 100%;
     flex-direction: column;
     padding-bottom: 40px;
+    box-sizing: border-box;
+}
+
+/* 统一对话框 — 白色气泡容器 */
+.dialog-box {
+    background: #FFFFFF;
+    border-radius: 24px;
+    margin: 24px auto 4px;
+    max-width: 900px;
+    width: calc(100% - 40px);
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    animation: fadeInUp 0.5s ease-out both;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .chat-header {
@@ -336,68 +359,122 @@
 }
 
 .chat-messages {
-    flex: 1;
-    padding: 20px 0;
-    overflow-y: auto;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     gap: 24px;
 }
 
 .message {
-    max-width: 75%;
-    padding: 16px 20px;
-    border-radius: 18px;
-    line-height: 1.6;
-    white-space: pre-wrap;
-    font-size: 0.98rem;
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.message.ai {
+    flex-direction: row;
 }
 
 .message.user {
-    align-self: flex-end;
-    background: var(--text-dark);
-    color: #F1EEE7;
-    border-bottom-right-radius: 6px;
-}
-
-.message.assistant {
-    align-self: flex-start;
-    background: #FFFFFF;
-    color: var(--text-dark);
-    border: 1px solid var(--border-color);
-    border-top-left-radius: 6px;
+    flex-direction: row-reverse;
 }
 
 .message-avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    margin-right: 12px;
+    overflow: hidden;
+    margin-top: 6px;
 }
 
-.message-avatar svg {
-    width: 20px;
-    height: 20px;
+.message.ai .message-avatar {
+    background: #E3DACB;
+    margin-right: 10px;
+}
+
+.message.ai .message-avatar img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
 }
 
 .message.user .message-avatar {
-    background: var(--text-dark);
+    background: #EBBD58;
+    color: #141412;
     order: 2;
     margin-right: 0;
-    margin-left: 12px;
-}
-
-.message.user + .message.assistant,
-.message.assistant + .message.user {
-    margin-top: 4px;
+    margin-left: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
 }
 
 .message-content {
+    max-width: 72%;
+    padding: 12px 16px;
+    border-radius: 14px;
+    line-height: 1.6;
+    position: relative;
     animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* AI 气泡 — 左尖角指着头像 */
+.message.ai .message-content {
+    background: #F8F6F1;
+    color: var(--text-dark);
+    border: 1px solid #C4C2BC;
+    border-top-left-radius: 14px;
+}
+
+.message.ai .message-content::before {
+    content: '';
+    position: absolute;
+    top: 18px;
+    left: -8px;
+    width: 0;
+    height: 0;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-right: 9px solid #C4C2BC;
+}
+
+.message.ai .message-content::after {
+    content: '';
+    position: absolute;
+    top: 18px;
+    left: -6px;
+    width: 0;
+    height: 0;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-right: 9px solid #F8F6F1;
+}
+
+/* 用户气泡 — 右尖角指着头像 */
+.message.user .message-content {
+    background: #EBBD58;
+    color: #141412;
+    border-top-right-radius: 14px;
+}
+
+.message.user .message-content::before {
+    content: '';
+    position: absolute;
+    top: 18px;
+    right: -8px;
+    width: 0;
+    height: 0;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 9px solid #EBBD58;
 }
 
 .message-content p {
@@ -408,15 +485,11 @@
     margin-bottom: 0;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
 /* 输入区域 */
 .chat-input-wrapper {
     padding: 20px;
     background: transparent;
+    box-sizing: border-box;
 }
 
 .chat-input-container {
@@ -426,8 +499,8 @@
     position: relative;
     background: #FFFFFF;
     border-radius: 24px;
-    border: 1px solid var(--border-color);
     box-sizing: border-box;
+    border: 1px solid var(--border-color);
 }
 
 .chat-input {
@@ -537,10 +610,6 @@
 /* 固定宽度 - 不考虑移动端 */
 .welcome-card {
     min-width: 320px;
-}
-
-.message {
-    max-width: 700px;
 }
 
 /* 隐藏滚动条 */
@@ -698,7 +767,6 @@
     /* 对话消息调整 */
     .message {
         max-width: 85%;
-        padding: 12px 16px;
     }
 
     .message-avatar {
@@ -707,9 +775,9 @@
         margin-right: 8px;
     }
 
-    .message-avatar svg {
-        width: 16px;
-        height: 16px;
+    .message-avatar img {
+        width: 26px;
+        height: 26px;
     }
 
     .message.user .message-avatar {
@@ -743,11 +811,19 @@
         bottom: 8px;
     }
 
-    /* 聊天消息区域 - 可滚动 */
+    /* 聊天消息区域 */
     .chat-messages {
-        padding: 16px 8px;
-        overflow-y: auto;
-        flex: 1;
+        padding: 16px;
+    }
+
+    /* 对话框在移动端 */
+    .dialog-box {
+        margin: 16px 0;
+        width: 100%;
+        max-width: 100%;
+        border-radius: 20px;
+        border-left: none;
+        border-right: none;
     }
 
     /* 输入区域固定在底部 */
@@ -781,8 +857,10 @@
             <span class="chat-header-title">新对话</span>
             <button class="chat-header-back" onclick="location.href='{{ url_for('index') }}'">×</button>
         </div>
-        <div class="chat-messages" id="chatMessages">
-            <!-- 消息将在这里显示 -->
+        <div class="dialog-box">
+            <div class="chat-messages" id="chatMessages">
+                <!-- 消息将在这里显示 -->
+            </div>
         </div>
 
         <div class="chat-input-wrapper">
@@ -970,7 +1048,7 @@ function loadConversation(conversationId) {
 function saveCurrentConversation() {
     const messages = [];
     document.querySelectorAll('.message').forEach(msgDiv => {
-        const role = msgDiv.classList.contains('user') ? 'user' : 'assistant';
+        const role = msgDiv.classList.contains('ai') ? 'assistant' : 'user';
         const content = msgDiv.querySelector('.message-content').textContent;
         messages.push({ role, content });
     });
@@ -1217,10 +1295,15 @@ function addMessage(role, content) {
     let avatarHtml = '';
     if (role === 'assistant') {
         avatarHtml = `<div class="message-avatar">
-            <img src="{{ url_for('static', filename='images/tx01.png') }}" alt="AI" style="width: 32px; height: 32px; border-radius: 50%;">
+            <img src="{{ url_for('static', filename='images/tx01.png') }}" alt="AI">
         </div>`;
+    } else {
+        avatarHtml = `<div class="message-avatar">我</div>`;
     }
 
+    // 统一使用 ai/user class
+    const cssRole = role === 'assistant' ? 'ai' : 'user';
+    messageDiv.className = 'message ' + cssRole;
     messageDiv.innerHTML = avatarHtml + '<div class="message-content">' + content + '</div>';
     messagesDiv.appendChild(messageDiv);
 
@@ -1231,10 +1314,15 @@ function addMessage(role, content) {
 function showTyping() {
     const messagesDiv = document.getElementById('chatMessages');
     const typingDiv = document.createElement('div');
-    typingDiv.className = 'message assistant';
+    typingDiv.className = 'message ai';
     typingDiv.id = 'typingIndicator';
-    typingDiv.innerHTML = `<div class="typing-indicator">
-        <span></span><span></span><span></span>
+    typingDiv.innerHTML = `<div class="message-avatar">
+        <img src="{{ url_for('static', filename='images/tx01.png') }}" alt="AI">
+    </div>
+    <div class="message-content">
+        <div class="typing-indicator">
+            <span></span><span></span><span></span>
+        </div>
     </div>`;
     messagesDiv.appendChild(typingDiv);
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
@@ -1250,17 +1338,22 @@ function hideTyping() {
 function addGenerateButton() {
     const messagesDiv = document.getElementById('chatMessages');
     const btnDiv = document.createElement('div');
-    btnDiv.className = 'message assistant';
-    btnDiv.innerHTML = `<button class="btn-generate-report" onclick="generateReport()">
-        生成商业计划书
-    </button>`;
+    btnDiv.className = 'message ai';
+    btnDiv.innerHTML = `<div class="message-avatar">
+        <img src="{{ url_for('static', filename='images/tx01.png') }}" alt="AI">
+    </div>
+    <div class="message-content">
+        <button class="btn-generate-report" onclick="generateReport()">
+            生成商业计划书
+        </button>
+    </div>`;
     messagesDiv.appendChild(btnDiv);
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
 function generateReport() {
     // 打开报告页面
-    window.open('{{ url_for("report") }}', '_blank');
+    window.open('{{ url_for("report_demo") }}', '_blank');
 }
 
 function processPayment() {
